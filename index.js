@@ -21,6 +21,10 @@ window.vm = new Vue({
                 this.paste();
             } else if (e.key == "r" && e.ctrlKey) {
                 location.reload();
+            } else if (e.key == "s" && e.ctrlKey) {
+                this.$store.dispatch('save_state');
+            } else if (e.code == "KeyA" && e.ctrlKey && e.altKey && e.shiftKey) {
+                this.$store.dispatch('toggle_godmode');
             }
         },
         paste: function() {

@@ -29,6 +29,9 @@ export default {
         }
     },
     actions: {
+        save_state: function(context) {
+            context.commit('save_state');
+        },
         edit_sticky: function(context, payload) {
             context.commit('edit_sticky', payload);
             context.commit('save_state', payload.itemId);

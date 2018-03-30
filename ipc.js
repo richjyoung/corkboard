@@ -8,4 +8,9 @@ module.exports = function(win) {
         win.setFullScreen(!win.isFullScreen());
     });
 
+    ipcMain.on('toggle_devtools', function(event, arg) {
+        console.log('toggle_devtools');
+        win.toggleDevTools();
+    });
+
 }

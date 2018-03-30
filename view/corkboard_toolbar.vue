@@ -2,9 +2,10 @@
 <div class="toolbar-container">
     <div class="pad"></div>
     <div class="toolbar" :style="{ zIndex: this.z }">
+        <icon-wrapper v-if="this.godmode" icon="wrench" @click="devtools_click" />
         <icon-wrapper icon="sticky_note" @click="sticky_click" />
         <icon-wrapper icon="expand" @click="fullscreen_click" />
-        <icon-wrapper icon="sync" @click="refresh_click" />
+        <icon-wrapper v-if="this.godmode" icon="sync" @click="refresh_click" />
     </div>
 </div>
 </template>
@@ -21,6 +22,9 @@ export default {
     computed: {
         z: function() {
             return this.$store.state.board.maxZ + 1;
+        },
+        godmode: function() {
+            return this.$store.state.app.godmode;
         }
     },
     methods: {
@@ -41,6 +45,11 @@ export default {
             e.preventDefault();
             e.stopPropagation();
             ipcRenderer.send('toggle_fullscreen');
+        },
+        devtools_click: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            ipcRenderer.send('toggle_devtools');
         }
     },
     components: {

@@ -13,6 +13,7 @@ import faPaintBrush from '@fortawesome/fontawesome-free-solid/faPaintBrush';
 import faStickyNote from '@fortawesome/fontawesome-free-solid/faStickyNote';
 import faExpand from '@fortawesome/fontawesome-free-solid/faExpand';
 import faSync from '@fortawesome/fontawesome-free-solid/faSync';
+import faWrench from '@fortawesome/fontawesome-free-solid/faWrench';
 
 var icon_map = {
     trash: faTrash,
@@ -22,7 +23,8 @@ var icon_map = {
     paint_brush: faPaintBrush,
     sticky_note: faStickyNote,
     expand: faExpand,
-    sync: faSync
+    sync: faSync,
+    wrench: faWrench
 }
 
 export default {
