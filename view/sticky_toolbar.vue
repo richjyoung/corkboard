@@ -1,9 +1,9 @@
 <template>
 <div class="toolbar" @mousedown="toolbar_mousedown">
     <icon-wrapper icon="paint_brush" @click="colour_click" />
-    <icon-wrapper icon="align_centre" @click="centre_click" />
-    <icon-wrapper icon="arrows_alt_h" @click="wide_click" />
-    <icon-wrapper icon="bold" @click="bold_click" />
+    <icon-wrapper icon="align_centre" @click="toggle_click($event, 'centre')" />
+    <icon-wrapper icon="arrows_alt_h" @click="toggle_click($event, 'wide')" />
+    <icon-wrapper icon="bold" @click="toggle_click($event, 'bold')" />
     <icon-wrapper icon="trash" @click="trash_click" />
 </div>
 </template>
@@ -24,27 +24,20 @@ export default {
         trash_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.commit('delete_sticky', this.itemId);
+            this.$store.dispatch('delete_sticky', this.itemId);
         },
-        bold_click: function(e) {
+        toggle_click: function(e, field) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.commit('toggle_bold_sticky', this.itemId);
+            this.$store.dispatch('toggle_field', {
+                itemId: this.itemId,
+                field: field
+            });
         },
         colour_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.commit('toggle_colour_sticky', this.itemId);
-        },
-        wide_click: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.commit('toggle_wide_sticky', this.itemId);
-        },
-        centre_click: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.commit('toggle_centre_sticky', this.itemId);
+            this.$store.dispatch('cycle_sticky_colour', this.itemId);
         },
         toolbar_mousedown: function(e) {
             e = e || window.event;
@@ -59,14 +52,14 @@ export default {
                 document.onmouseup = function() {
                     document.onmouseup = null;
                     document.onmousemove = null;
-                    self.$store.dispatch('move_sticky_finished');
+                    self.$store.dispatch('move_sticky_finished', self.itemId);
                 }
 
                 document.onmousemove = function(e) {
                     e = e || window.event;
                     e.preventDefault();
 
-                    self.$store.commit('move_sticky', {
+                    self.$store.dispatch('move_sticky', {
                         itemId: self.itemId,
                         x: e.clientX - startX,
                         y: e.clientY - startY
@@ -76,7 +69,7 @@ export default {
                     startY = e.clientY;
                 }
 
-                self.$store.commit('promote_sticky', self.itemId);
+                self.$store.dispatch('promote_sticky', self.itemId);
             }
         }
     },

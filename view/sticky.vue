@@ -47,10 +47,10 @@ export default {
     methods: {
         sticky_clicked: function(e) {
             e.preventDefault();
-            this.$store.commit('promote_sticky', this.itemId);
+            this.$store.dispatch('promote_sticky', this.itemId);
         },
         sticky_input: function(e) {
-            this.$store.commit('edit_sticky', {
+            this.$store.dispatch('edit_sticky', {
                 itemId: this.itemId,
                 value: e.target.value
             });

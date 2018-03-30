@@ -20,15 +20,8 @@ export default {
             return this.$store.state.board.stickies
         }
     },
-    methods: {
-        corkboard_clicked: function(e) {
-            if(e.target == this.$el) {
-                this.$store.commit('new_sticky', {
-                    x: e.clientX,
-                    y: e.clientY
-                });
-            }
-        }
+    mounted: function() {
+        // this.$store.commit('load_state');
     }
 }
 </script>
