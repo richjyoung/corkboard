@@ -14,6 +14,9 @@ import faStickyNote from '@fortawesome/fontawesome-free-solid/faStickyNote';
 import faExpand from '@fortawesome/fontawesome-free-solid/faExpand';
 import faSync from '@fortawesome/fontawesome-free-solid/faSync';
 import faWrench from '@fortawesome/fontawesome-free-solid/faWrench';
+import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
+import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus';
+import faSearchMinus from '@fortawesome/fontawesome-free-solid/faSearchMinus';
 
 var icon_map = {
     trash: faTrash,
@@ -24,7 +27,10 @@ var icon_map = {
     sticky_note: faStickyNote,
     expand: faExpand,
     sync: faSync,
-    wrench: faWrench
+    wrench: faWrench,
+    search_plus: faSearchPlus,
+    search_minus: faSearchMinus,
+    search: faSearch
 }
 
 export default {

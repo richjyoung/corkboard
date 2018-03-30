@@ -78,7 +78,6 @@ export default {
 <style scoped>
 
 .sticky {
-    border: 1px solid #E8E8E8;
     box-shadow: 0.5rem 0.5rem 1.75rem rgba(33,33,33,.7);
     display: flex;
     flex-direction: column;

@@ -3,6 +3,9 @@
     <div class="pad"></div>
     <div class="toolbar" :style="{ zIndex: this.z }">
         <icon-wrapper v-if="this.godmode" icon="wrench" @click="devtools_click" />
+        <icon-wrapper icon="search_plus" @click="zoom_click($event, 0.1)" />
+        <icon-wrapper icon="search" @click="zoom_click($event, 0)" />
+        <icon-wrapper icon="search_minus" @click="zoom_click($event, -0.1)" />
         <icon-wrapper icon="sticky_note" @click="sticky_click" />
         <icon-wrapper icon="expand" @click="fullscreen_click" />
         <icon-wrapper v-if="this.godmode" icon="sync" @click="refresh_click" />
@@ -15,7 +18,7 @@
 import rem_to_px from '../utils/rem_to_px';
 import icon_wrapper from './icon_wrapper.vue';
 
-var { ipcRenderer } = require('electron');
+var { ipcRenderer, webFrame } = require('electron');
 
 export default {
     name: 'corkboard_toolbar',
@@ -40,6 +43,15 @@ export default {
             e.preventDefault();
             e.stopPropagation();
             location.reload();
+        },
+        zoom_click: function(e, zoom_factor) {
+            e.preventDefault();
+            e.stopPropagation();
+            if(zoom_factor == 0) {
+                webFrame.setZoomFactor(1);
+            } else {
+                webFrame.setZoomFactor(webFrame.getZoomFactor() + zoom_factor);
+            }
         },
         fullscreen_click: function(e) {
             e.preventDefault();
