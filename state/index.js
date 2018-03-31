@@ -1,17 +1,17 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import app from './app'
-import board from './board'
-import polaroids from './polaroids'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import app from './app';
+import stickies from './stickies';
+import polaroids from './polaroids';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production'
+const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
     modules: {
         app,
-        board,
+        stickies,
         polaroids
     },
     strict: true //debug
