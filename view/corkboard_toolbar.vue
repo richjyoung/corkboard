@@ -1,15 +1,12 @@
 <template>
-<div class="toolbar-container">
-    <div class="pad"></div>
-    <div class="toolbar" :style="{ zIndex: this.z }">
-        <icon-wrapper v-if="this.godmode" icon="wrench" @click="devtools_click" />
-        <icon-wrapper icon="search_plus" @click="zoom_click($event, 'in')" />
-        <icon-wrapper icon="search" @click="zoom_click($event, 'reset')" />
-        <icon-wrapper icon="search_minus" @click="zoom_click($event, 'out')" />
-        <icon-wrapper icon="sticky_note" @click="sticky_click" />
-        <icon-wrapper icon="expand" @click="fullscreen_click" />
-        <icon-wrapper v-if="this.godmode" icon="sync" @click="refresh_click" />
-    </div>
+<div class="toolbar" :style="{ zIndex: this.z }">
+    <icon-wrapper icon="sticky_note" @click="sticky_click" />
+    <icon-wrapper icon="search_plus" @click="zoom_click($event, 'in')" />
+    <icon-wrapper icon="search" @click="zoom_click($event, 'reset')" />
+    <icon-wrapper icon="search_minus" @click="zoom_click($event, 'out')" />
+    <icon-wrapper icon="expand" @click="fullscreen_click" />
+    <icon-wrapper v-if="this.godmode" icon="wrench" @click="devtools_click" />
+    <icon-wrapper v-if="this.godmode" icon="sync" @click="refresh_click" />
 </div>
 </template>
 
@@ -96,6 +93,8 @@ export default {
 }
 
 .toolbar {
+    position: fixed;
+    right: 8;
     flex: 0 0 auto;
     padding: 0rem 0.33rem;
     background: rgba(33, 33, 33, 0.25);
