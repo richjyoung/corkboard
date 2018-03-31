@@ -1,15 +1,12 @@
 <template>
-<div class="toolbar-container">
-    <div class="pad"></div>
-    <div class="toolbar" :style="{ zIndex: this.z }">
-        <icon-wrapper v-if="this.godmode" icon="wrench" @click="devtools_click" />
-        <icon-wrapper icon="search_plus" @click="zoom_click($event, 0.1)" />
-        <icon-wrapper icon="search" @click="zoom_click($event, 0)" />
-        <icon-wrapper icon="search_minus" @click="zoom_click($event, -0.1)" />
-        <icon-wrapper icon="sticky_note" @click="sticky_click" />
-        <icon-wrapper icon="expand" @click="fullscreen_click" />
-        <icon-wrapper v-if="this.godmode" icon="sync" @click="refresh_click" />
-    </div>
+<div class="toolbar" :style="{ zIndex: this.z }">
+    <icon-wrapper icon="sticky_note" @click="sticky_click" />
+    <icon-wrapper icon="search_plus" @click="zoom_click($event, 'in')" />
+    <icon-wrapper icon="search" @click="zoom_click($event, 'reset')" />
+    <icon-wrapper icon="search_minus" @click="zoom_click($event, 'out')" />
+    <icon-wrapper icon="expand" @click="fullscreen_click" />
+    <icon-wrapper v-if="this.godmode" icon="wrench" @click="devtools_click" />
+    <icon-wrapper v-if="this.godmode" icon="sync" @click="refresh_click" />
 </div>
 </template>
 
@@ -18,10 +15,13 @@
 import rem_to_px from '../utils/rem_to_px';
 import icon_wrapper from './icon_wrapper.vue';
 import {
-    A_STICKY_NEW
+    A_STICKY_NEW,
+    A_APP_ZOOM_RESET,
+    A_APP_ZOOM_IN,
+    A_APP_ZOOM_OUT
 } from '../state/action_types';
 
-var { ipcRenderer, webFrame } = require('electron');
+var { ipcRenderer } = require('electron');
 
 export default {
     name: 'corkboard_toolbar',
@@ -47,13 +47,21 @@ export default {
             e.stopPropagation();
             location.reload();
         },
-        zoom_click: function(e, zoom_factor) {
+        zoom_click: function(e, mode) {
             e.preventDefault();
             e.stopPropagation();
-            if(zoom_factor == 0) {
-                webFrame.setZoomFactor(1);
-            } else {
-                webFrame.setZoomFactor(webFrame.getZoomFactor() + zoom_factor);
+            switch (mode) {
+                case 'in':
+                    this.$store.dispatch(A_APP_ZOOM_IN);
+                    break;
+                case 'out':
+                    this.$store.dispatch(A_APP_ZOOM_OUT);
+                    break;
+                case 'reset':
+                    this.$store.dispatch(A_APP_ZOOM_RESET);
+                    break;
+                default:
+                    break;
             }
         },
         fullscreen_click: function(e) {
@@ -85,6 +93,8 @@ export default {
 }
 
 .toolbar {
+    position: fixed;
+    right: 8;
     flex: 0 0 auto;
     padding: 0rem 0.33rem;
     background: rgba(33, 33, 33, 0.25);
