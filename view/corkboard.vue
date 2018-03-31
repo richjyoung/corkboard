@@ -21,7 +21,7 @@ export default {
     },
     computed: {
         stickies: function() {
-            return this.$store.state.board.stickies;
+            return this.$store.state.stickies.items;
         },
         polaroids: function() {
             return this.$store.state.polaroids.items;

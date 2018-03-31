@@ -33,17 +33,7 @@ export default {
         state.items[payload.itemId].y += payload.y;
     },
     [M_POLAROID_NEW]: function(state, payload) {
-        var id = (new Date().getTime());
-        var obj = {
-            id: +id,
-            x: +payload.x,
-            y: +payload.y,
-            z: 1000,
-            url: payload.url,
-            caption: payload.caption || ''
-        }
-
-        Vue.set(state.items, id, obj);
+        Vue.set(state.items, payload.id, payload);
     },
     [M_POLAROID_DELETE]: function(state, itemId) {
         Vue.delete(state.items, itemId);

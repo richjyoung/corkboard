@@ -12,6 +12,15 @@
 <script>
 import icon_wrapper from './icon_wrapper.vue';
 
+import {
+    A_STICKY_DELETE,
+    A_STICKY_TOGGLE_FIELD,
+    A_STICKY_CYCLE_COLOUR,
+    A_STICKY_MOVE_FINISHED,
+    A_STICKY_MOVE,
+    A_STICKY_PROMOTE
+} from '../state/action_types';
+
 export default {
     name: 'sticky_toolbar',
     props: ['item-id'],
@@ -24,20 +33,20 @@ export default {
         trash_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.dispatch('delete_sticky', this.itemId);
+            this.$store.dispatch(A_STICKY_DELETE, this.itemId);
         },
         toggle_click: function(e, field) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.dispatch('toggle_field', {
-                itemId: this.itemId,
+            this.$store.dispatch(A_STICKY_TOGGLE_FIELD, {
+                id: this.itemId,
                 field: field
             });
         },
         colour_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.dispatch('cycle_sticky_colour', this.itemId);
+            this.$store.dispatch(A_STICKY_CYCLE_COLOUR, this.itemId);
         },
         toolbar_mousedown: function(e) {
             e = e || window.event;
@@ -52,15 +61,15 @@ export default {
                 document.onmouseup = function() {
                     document.onmouseup = null;
                     document.onmousemove = null;
-                    self.$store.dispatch('move_sticky_finished', self.itemId);
+                    self.$store.dispatch(A_STICKY_MOVE_FINISHED, self.itemId);
                 }
 
                 document.onmousemove = function(e) {
                     e = e || window.event;
                     e.preventDefault();
 
-                    self.$store.dispatch('move_sticky', {
-                        itemId: self.itemId,
+                    self.$store.dispatch(A_STICKY_MOVE, {
+                        id: self.itemId,
                         x: e.clientX - startX,
                         y: e.clientY - startY
                     });
@@ -69,7 +78,7 @@ export default {
                     startY = e.clientY;
                 }
 
-                self.$store.dispatch('promote_sticky', self.itemId);
+                self.$store.dispatch(A_STICKY_PROMOTE, self.itemId);
             }
         }
     },

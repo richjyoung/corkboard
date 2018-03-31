@@ -17,6 +17,9 @@
 <script>
 import rem_to_px from '../utils/rem_to_px';
 import icon_wrapper from './icon_wrapper.vue';
+import {
+    A_STICKY_NEW
+} from '../state/action_types';
 
 var { ipcRenderer, webFrame } = require('electron');
 
@@ -24,7 +27,7 @@ export default {
     name: 'corkboard_toolbar',
     computed: {
         z: function() {
-            return this.$store.state.board.maxZ + 1;
+            return this.$store.state.app.maxZ + 1;
         },
         godmode: function() {
             return this.$store.state.app.godmode;
@@ -34,7 +37,7 @@ export default {
         sticky_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.commit('new_sticky', {
+            this.$store.dispatch(A_STICKY_NEW, {
                 x: e.clientX - rem_to_px(15),
                 y: e.clientY
             });
