@@ -1,6 +1,7 @@
 // App
 export const M_APP_OBSERVE_Z = 'app_observe_z';
 export const M_APP_TOGGLE_GODMODE = 'app_toggle_godmode';
+export const M_APP_ZOOM_SET = 'app_zoom_set';
 
 // Sticky Store
 export const M_STICKY_LOAD = 'sticky_load';
