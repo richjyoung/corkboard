@@ -4,6 +4,7 @@
 
 
 <script>
+import { A_POLAROID_EDIT_CAPTION } from '../state/action_types';
 
 export default {
     name: 'polaroid_caption',
@@ -15,7 +16,7 @@ export default {
     },
     methods: {
         caption_input: function(e) {
-            this.$store.dispatch('polaroid_edit_caption', {
+            this.$store.dispatch(A_POLAROID_EDIT_CAPTION, {
                 itemId: this.itemId,
                 value: e.target.value
             });

@@ -1,12 +1,13 @@
 <template>
 <div class="toolbar" @mousedown="toolbar_mousedown">
-    <icon-wrapper icon="trash" />
+    <icon-wrapper icon="trash" @click="trash_click" />
 </div>
 </template>
 
 
 <script>
 import icon_wrapper from './icon_wrapper.vue';
+import { A_POLAROID_DELETE, A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED } from '../state/action_types';
 
 export default {
     name: 'polaroid_toolbar',
@@ -15,6 +16,11 @@ export default {
         return {};
     },
     methods: {
+        trash_click: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.$store.dispatch(A_POLAROID_DELETE, this.itemId);
+        },
         toolbar_mousedown: function(e) {
             e = e || window.event;
             var self = this;
@@ -28,14 +34,14 @@ export default {
                 document.onmouseup = function() {
                     document.onmouseup = null;
                     document.onmousemove = null;
-                    self.$store.dispatch('polaroid_move_finished', self.itemId);
+                    self.$store.dispatch(A_POLAROID_MOVE_FINISHED, self.itemId);
                 }
 
                 document.onmousemove = function(e) {
                     e = e || window.event;
                     e.preventDefault();
 
-                    self.$store.dispatch('polaroid_move', {
+                    self.$store.dispatch(A_POLAROID_MOVE, {
                         itemId: self.itemId,
                         x: e.clientX - startX,
                         y: e.clientY - startY
@@ -70,11 +76,24 @@ export default {
     font-size: 1rem;
 }
 
+.toolbar:hover svg {
+    display: inline-block;    
+}
+
+.toolbar svg {
+    display: none;
+    float: right;
+}
+
 svg {
     height: 1rem;
     padding-top: 0.25rem;
     padding-right: 0.25rem;
     color:rgba(0, 0, 0, 0.2);
+}
+
+svg:hover {
+    color: rgba(0, 0, 0, 0.3);    
 }
 
 </style>
