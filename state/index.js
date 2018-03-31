@@ -6,7 +6,7 @@ import polaroids from './polaroids';
 
 Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production';
+const debug = process.env.NODE_ENV == 'development';
 
 export default new Vuex.Store({
     modules: {
