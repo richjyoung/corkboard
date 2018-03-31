@@ -1,20 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { db } from '../data/indexeddb';
 
-var db;
-var db_open = indexedDB.open('corkboard', 1);
-
-db_open.onupgradeneeded = function() {
-    console.log('IndexedDB: onupgradeneeded');
-    db = db_open.result;
-    db.createObjectStore('stickies', {keyPath: "id"});
-}
-
-db_open.onsuccess = function() {
-    console.log('IndexedDB: onsuccess');
-    db = db_open.result;
-    window.vm.$store.dispatch('load_state');
-}
 
 export default {
     state: {
