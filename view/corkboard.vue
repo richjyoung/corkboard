@@ -1,5 +1,5 @@
 <template>
-<div class="corkboard">
+<div class="corkboard" @mousedown="corkboard_mousedown">
     <corkboard-toolbar />
     <sticky v-for="(sticky, index) in stickies" :key=index :item-id="index" />
     <polaroid v-for="(polaroid, index) in polaroids" :key=index :item-id="index" />
@@ -18,6 +18,37 @@ export default {
         'corkboard-toolbar': corkboard_toolbar,
         'sticky': sticky,
         'polaroid': polaroid
+    },
+    methods: {
+        corkboard_mousedown: function (e) {
+            e = e || window.event;
+            if(e.target == this.$el) {
+                e.preventDefault();
+                
+                var startX = e.clientX;
+                var startY = e.clientY;
+
+                document.onmouseup = function() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                }
+
+                document.onmousemove = function(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+
+                    var x = e.clientX - startX
+                    var y = e.clientY - startY
+
+                    // console.log('moved ' + xx + ' ' + yy)
+
+                    startX = e.clientX;
+                    startY = e.clientY;
+
+                    window.scrollTo(document.body.scrollLeft - x, document.body.scrollTop-y)
+                }
+            }
+        }
     },
     computed: {
         stickies: function() {
