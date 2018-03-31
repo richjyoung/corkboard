@@ -1,10 +1,10 @@
 <template>
 <div class="toolbar" @mousedown="toolbar_mousedown">
-    <icon-wrapper icon="paint_brush" @click="colour_click" />
-    <icon-wrapper icon="align_centre" @click="toggle_click($event, 'centre')" />
-    <icon-wrapper icon="arrows_alt_h" @click="toggle_click($event, 'wide')" />
-    <icon-wrapper icon="bold" @click="toggle_click($event, 'bold')" />
     <icon-wrapper icon="trash" @click="trash_click" />
+    <icon-wrapper icon="bold" @click="toggle_click($event, 'bold')" />
+    <icon-wrapper icon="arrows_alt_h" @click="toggle_click($event, 'wide')" />
+    <icon-wrapper icon="align_centre" @click="toggle_click($event, 'centre')" />
+    <icon-wrapper icon="paint_brush" @click="colour_click" />
 </div>
 </template>
 
