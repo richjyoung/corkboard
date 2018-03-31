@@ -62,12 +62,15 @@ export default {
 }
 
 img {
-    margin: 0rem 1.5rem;
-    width: 14rem;
-    border: 1px solid #dddddd;
-    border-top: 0px;
+    background: #eeeeee;
     border-bottom: 0px;
+    border-top: 0px;
+    border: 1px solid #dddddd;
     flex: 0 0 auto;
+    margin: 0rem 1.5rem;
+    max-height: 14rem;
+    max-width: 14rem;
+    object-fit: contain;
 }
 
 .spacer {
