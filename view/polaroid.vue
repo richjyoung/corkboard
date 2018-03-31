@@ -9,19 +9,18 @@
     }"
     >
 
-    <div class="toolbar">
-        <icon-wrapper icon="trash" />
-    </div>
+    <polaroid-toolbar :itemId="this.itemId" />
     <div class="spacer top"></div>
     <img :src="polaroid.url">
     <div class="spacer bottom"></div>
-    <div class="caption">{{ polaroid.caption }}</div>
+    <polaroid-caption :itemId="this.itemId" />
 </div>
 </template>
 
 
 <script>
-import icon_wrapper from './icon_wrapper.vue';
+import polaroid_toolbar from './polaroid_toolbar.vue';
+import polaroid_caption from './polaroid_caption.vue';
 
 export default {
     name: 'polaroid',
@@ -43,7 +42,8 @@ export default {
         self.rot = Math.random() * 10 - 5;
     },
     components: {
-        'icon-wrapper': icon_wrapper
+        'polaroid-toolbar': polaroid_toolbar,
+        'polaroid-caption': polaroid_caption
     }
 }
 </script>
@@ -70,13 +70,6 @@ img {
     flex: 0 0 auto;
 }
 
-.toolbar {
-    width: 17rem;
-    height: 1.5rem;
-    text-align: right;
-    font-size: 1rem;
-}
-
 .spacer {
     width: 14rem;
     background: #eeeeee;
@@ -94,18 +87,4 @@ img {
     border-top: 0px;
 }
 
-.caption {
-    width: 100%;
-    flex: 0 0 2.5rem;
-    font-family: 'Nanum Pen Script';
-    font-size: 2rem;
-    text-align: center;
-}
-
-svg {
-    height: 1rem;
-    padding-top: 0.25rem;
-    padding-right: 0.25rem;
-    color:rgba(0, 0, 0, 0.2);
-}
 </style>

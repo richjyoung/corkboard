@@ -17,6 +17,21 @@ export default {
             }
         }
     },
-    actions: {},
-    mutations: {}
+    actions: {
+        polaroid_edit_caption: function(context, payload) {
+            context.commit('polaroid_edit_caption', payload);
+        },
+        polaroid_move: function(context, payload) {
+            context.commit('polaroid_move', payload);
+        }
+    },
+    mutations: {
+        polaroid_edit_caption: function(state, payload) {
+            state.items[payload.itemId].caption = payload.value;
+        },
+        polaroid_move: function(state, payload) {
+            state.items[payload.itemId].x += payload.x;
+            state.items[payload.itemId].y += payload.y;
+        }
+    }
 }
