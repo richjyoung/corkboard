@@ -95,6 +95,7 @@ export default {
     flex-wrap: nowrap;
     flex: 1 0 auto;
     padding: 0rem 1rem;
+    background: linear-gradient(-45deg,rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0));
 }
 
 textarea {
