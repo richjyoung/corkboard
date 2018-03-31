@@ -33,7 +33,10 @@
 
 <script>
 import sticky_toolbar from './sticky_toolbar.vue';
-
+import {
+    A_STICKY_PROMOTE,
+    A_STICKY_EDIT_CONTENT
+} from '../state/action_types';
 
 export default {
     name: 'sticky',
@@ -47,11 +50,11 @@ export default {
     methods: {
         sticky_clicked: function(e) {
             e.preventDefault();
-            this.$store.dispatch('promote_sticky', this.itemId);
+            this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
         },
         sticky_input: function(e) {
-            this.$store.dispatch('edit_sticky', {
-                itemId: this.itemId,
+            this.$store.dispatch(A_STICKY_EDIT_CONTENT, {
+                id: this.itemId,
                 value: e.target.value
             });
         },
@@ -95,6 +98,7 @@ export default {
     flex-wrap: nowrap;
     flex: 1 0 auto;
     padding: 0rem 1rem;
+    background: linear-gradient(-45deg,rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0));
 }
 
 textarea {

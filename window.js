@@ -5,9 +5,13 @@ const url = require('url');
 
 module.exports = function(index) {
 
-    var win = new BrowserWindow({width: 800, height: 600});
+    var win = new BrowserWindow({
+        width: 800,
+        height: 600,
+        title: 'Corkboard'
+    });
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV == 'development') {
         require('vue-devtools').install();
         win.toggleDevTools();
     }

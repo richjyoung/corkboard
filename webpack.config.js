@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: './index.js',
-    mode: 'development',
+    mode: 'production',
     target: 'electron-renderer',
     output: {
         path: path.resolve(__dirname, './dist'),
