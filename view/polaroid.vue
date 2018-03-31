@@ -2,16 +2,20 @@
 <div
     class="polaroid"
         :style="{
+        top: polaroid.y,
+        left: polaroid.x,
+        zIndex: polaroid.z,
         transform: 'rotate(' + rot + 'deg)'
     }"
     >
+
     <div class="toolbar">
         <icon-wrapper icon="trash" />
     </div>
     <div class="spacer top"></div>
-    <img src="http://wowslider.com/sliders/demo-93/data1/images/sunset.jpg">
+    <img :src="polaroid.url">
     <div class="spacer bottom"></div>
-    <div class="caption">haiii</div>
+    <div class="caption">{{ polaroid.caption }}</div>
 </div>
 </template>
 
@@ -30,6 +34,9 @@ export default {
     methods: {
     },
     computed: {
+        polaroid: function() {
+            return this.$store.getters.polaroid(this.itemId);
+        }
     },
     created: function() {
         var self = this;
@@ -45,7 +52,7 @@ export default {
 <style scoped>
 
 .polaroid {
-    box-shadow: 0.5rem 0.5rem 1.75rem rgba(33,33,33,.7);    
+    box-shadow: 0.5rem 0.5rem 1.75rem rgba(33,33,33,.7);
     background: #ffffff;
     position: absolute;
     width: 17rem;

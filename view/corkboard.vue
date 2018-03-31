@@ -2,7 +2,7 @@
 <div class="corkboard">
     <corkboard-toolbar />
     <sticky v-for="(sticky, index) in stickies" :key=index :item-id="index" />
-    <polaroid />
+    <polaroid v-for="(polaroid, index) in polaroids" :key=index :item-id="index" />
 </div>
 </template>
 
@@ -21,7 +21,10 @@ export default {
     },
     computed: {
         stickies: function() {
-            return this.$store.state.board.stickies
+            return this.$store.state.board.stickies;
+        },
+        polaroids: function() {
+            return this.$store.state.polaroids.items;
         }
     },
     mounted: function() {
