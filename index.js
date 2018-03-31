@@ -28,11 +28,38 @@ window.vm = new Vue({
             }
         },
         paste: function() {
-            this.$store.dispatch('new_sticky', {
-                x: window.innerWidth / 2,
-                y: window.innerHeight / 2,
-                content: clipboard.readText()
-            });
+
+            var clipboard_text = clipboard.readText();
+            if(clipboard_text) {
+                console.log('Pasting text ' + clipboard_text + '...');
+            }
+
+            var clipboard_image = clipboard.readImage();
+            if(!clipboard_image.isEmpty()) {
+
+                var original_size = clipboard_image.getSize();
+                if(original_size.height > 250 || original_size.width > 250) {
+                    if(original_size.heigh > original_size.width) {
+                        var target_image = clipboard_image.resize({ height: 250 });
+                    } else {
+                        var target_image = clipboard_image.resize({ width: 250 });
+                    }
+                } else {
+                    var target_image = clipboard_image;
+                }
+
+                var target_size = target_image.getSize();
+                var data_url = target_image.toDataURL();
+                
+                console.log('Pasting ' + original_size.width + 'x' + original_size.height + ' image as '
+                    + target_size.width + 'x' + target_size.height + '...');
+
+                this.$store.dispatch('polaroid_new', {
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    url: data_url
+                });
+            }
         }
     }
 });

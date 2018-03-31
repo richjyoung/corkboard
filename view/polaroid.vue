@@ -75,7 +75,7 @@ img {
     background: #eeeeee;
     margin: 0rem 1.5rem;
     border: 1px solid #dddddd;
-    flex: 1 0 1em;
+    flex: 1 0 0px;
     display: inline-block;
 }
 
