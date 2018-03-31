@@ -1,5 +1,5 @@
 <template>
-    <input :value="polaroid.caption" @input="caption_input">
+    <input :value="polaroid.caption" @input="caption_input" @mousedown="mousedown">
 </template>
 
 
@@ -15,6 +15,9 @@ export default {
         }
     },
     methods: {
+        mousedown: function(e) {
+            e.stopPropagation();
+        },
         caption_input: function(e) {
             this.$store.dispatch(A_POLAROID_EDIT_CAPTION, {
                 itemId: this.itemId,
@@ -43,6 +46,7 @@ input {
     overflow: hidden;
     text-align: center;
     width: 100%;
+    background: transparent;
 }
 
 </style>
