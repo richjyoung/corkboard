@@ -7,7 +7,7 @@
 
 <script>
 import icon_wrapper from './icon_wrapper.vue';
-import { A_POLAROID_DELETE, A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED } from '../state/action_types';
+import { A_POLAROID_DELETE, A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED, A_POLAROID_PROMOTE } from '../state/action_types';
 
 export default {
     name: 'polaroid_toolbar',
@@ -25,8 +25,10 @@ export default {
             e = e || window.event;
             var self = this;
 
+            e.preventDefault();
+            e.stopPropagation();
+
             if(e.target == self.$el) {
-                e.preventDefault();
 
                 var startX = e.clientX;
                 var startY = e.clientY;
@@ -51,7 +53,7 @@ export default {
                     startY = e.clientY;
                 }
 
-                self.$store.dispatch('polaroid_promote', self.itemId);
+                self.$store.dispatch(A_POLAROID_PROMOTE, self.itemId);
             }
         }
     },
