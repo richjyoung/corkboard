@@ -91,6 +91,7 @@ export default {
     text-align: right;
     font-size: 2rem;
     border-radius: 0.5rem;
+    user-select: none;
 }
 
 svg {
