@@ -3,18 +3,18 @@ import Vuex from 'vuex';
 import corkboard from './view/corkboard.vue';
 import store from './state';
 import { clipboard } from 'electron';
-import { A_APP_TOGGLE_GODMODE } from './state/action_types';
+import { 
+    A_APP_TOGGLE_GODMODE,
+    A_STICKY_NEW,
+    A_POLAROID_NEW
+} from './state/action_types';
 
 window.vm = new Vue({
     el: '#corkboard',
     store,
     render: h => h(corkboard),
     created: function() {
-        // this.$store.dispatch('app_created');
         document.onkeydown = this.keydown;
-    },
-    mounted: function() {
-        // this.$store.dispatch('app_mounted');
     },
     methods: {
         keydown: function(e) {
@@ -33,6 +33,11 @@ window.vm = new Vue({
             var clipboard_text = clipboard.readText();
             if(clipboard_text) {
                 console.log('Pasting text ' + clipboard_text + '...');
+                this.$store.dispatch(A_STICKY_NEW, {
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    content: clipboard_text.trim()
+                });
             }
 
             var clipboard_image = clipboard.readImage();
@@ -55,7 +60,7 @@ window.vm = new Vue({
                 console.log('Pasting ' + original_size.width + 'x' + original_size.height + ' image as '
                     + target_size.width + 'x' + target_size.height + '...');
 
-                this.$store.dispatch('polaroid_new', {
+                this.$store.dispatch(A_POLAROID_NEW, {
                     x: window.innerWidth / 2,
                     y: window.innerHeight / 2,
                     url: data_url
