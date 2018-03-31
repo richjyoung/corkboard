@@ -4,6 +4,9 @@ export const A_LOAD_STATE = 'load_state';
 // App
 export const A_APP_OBSERVE_Z = 'app_observe_z';
 export const A_APP_TOGGLE_GODMODE = 'app_toggle_godmode';
+export const A_APP_ZOOM_RESET = 'app_zoom_reset';
+export const A_APP_ZOOM_IN = 'app_zoom_in';
+export const A_APP_ZOOM_OUT = 'app_zoom_out';
 
 // Sticky Store
 export const A_STICKY_EDIT_CONTENT = 'sticky_edit_content';
