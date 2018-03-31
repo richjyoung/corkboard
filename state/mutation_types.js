@@ -1,5 +1,7 @@
 // App
 export const M_APP_OBSERVE_Z = 'app_observe_z';
+export const M_APP_TOGGLE_GODMODE = 'app_toggle_godmode';
+
 
 // Polaroid Store
 export const M_POLAROID_EDIT_CAPTION = 'polaroid_edit_caption';

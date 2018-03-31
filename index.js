@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import corkboard from './view/corkboard.vue';
 import store from './state';
 import { clipboard } from 'electron';
+import { A_APP_TOGGLE_GODMODE } from './state/action_types';
 
 window.vm = new Vue({
     el: '#corkboard',
@@ -24,7 +25,7 @@ window.vm = new Vue({
             } else if (e.key == "s" && e.ctrlKey) {
                 this.$store.dispatch('save_state');
             } else if (e.code == "KeyA" && e.ctrlKey && e.altKey && e.shiftKey) {
-                this.$store.dispatch('toggle_godmode');
+                this.$store.dispatch(A_APP_TOGGLE_GODMODE);
             }
         },
         paste: function() {

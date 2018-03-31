@@ -3,6 +3,7 @@ export const A_LOAD_STATE = 'load_state';
 
 // App
 export const A_APP_OBSERVE_Z = 'app_observe_z';
+export const A_APP_TOGGLE_GODMODE = 'app_toggle_godmode';
 
 // Polaroid Store
 export const A_POLAROID_EDIT_CAPTION = 'polaroid_edit_caption';
