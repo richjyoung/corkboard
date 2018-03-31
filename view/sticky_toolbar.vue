@@ -97,12 +97,13 @@ export default {
 
 .toolbar svg {
     display: none;
+    float: right;
 }
 
 svg {
     height: 1.2rem;
     padding: 0px;
-    padding-bottom: 0.4rem;
+    padding-top: 0.4rem;
     color:rgba(0, 0, 0, 0.2);
 }
 
