@@ -20,7 +20,7 @@
 <script>
 import polaroid_toolbar from './polaroid_toolbar.vue';
 import polaroid_caption from './polaroid_caption.vue';
-import { A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED, A_POLAROID_PROMOTE } from '../state/action_types';
+import { A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED } from '../state/action_types';
 
 export default {
     name: 'polaroid',
@@ -28,9 +28,7 @@ export default {
     data: function() {
         return {
             rot: 0
-        }
-    },
-    methods: {
+        };
     },
     computed: {
         polaroid: function() {
@@ -49,7 +47,7 @@ export default {
                 document.onmouseup = null;
                 document.onmousemove = null;
                 self.$store.dispatch(A_POLAROID_MOVE_FINISHED, self.itemId);
-            }
+            };
 
             document.onmousemove = function(e) {
                 e = e || window.event;
@@ -63,9 +61,7 @@ export default {
 
                 startX = e.clientX;
                 startY = e.clientY;
-            }
-
-            self.$store.dispatch(A_POLAROID_PROMOTE, self.itemId);
+            };
         }
     },
     created: function() {
@@ -76,7 +72,7 @@ export default {
         'polaroid-toolbar': polaroid_toolbar,
         'polaroid-caption': polaroid_caption
     }
-}
+};
 </script>
 
 

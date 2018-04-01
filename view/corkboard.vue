@@ -31,22 +31,20 @@ export default {
                 document.onmouseup = function() {
                     document.onmouseup = null;
                     document.onmousemove = null;
-                }
+                };
 
                 document.onmousemove = function(e) {
                     e = e || window.event;
                     e.preventDefault();
 
-                    var x = e.clientX - startX
-                    var y = e.clientY - startY
-
-                    // console.log('moved ' + xx + ' ' + yy)
+                    var x = e.clientX - startX;
+                    var y = e.clientY - startY;
 
                     startX = e.clientX;
                     startY = e.clientY;
 
-                    window.scrollTo(document.body.scrollLeft - x, document.body.scrollTop-y)
-                }
+                    window.scrollTo(document.body.scrollLeft - x, document.body.scrollTop - y);
+                };
             }
         }
     },
@@ -57,11 +55,8 @@ export default {
         polaroids: function() {
             return this.$store.state.polaroids.items;
         }
-    },
-    mounted: function() {
-        // this.$store.commit('load_state');
     }
-}
+};
 </script>
 
 
