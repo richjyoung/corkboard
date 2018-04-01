@@ -126,6 +126,7 @@ svg {
     height: 1.2rem;
     padding: 0px;
     padding-top: 0.4rem;
+    margin-left: -0.4rem;
     color:rgba(0, 0, 0, 0.2);
 }
 
