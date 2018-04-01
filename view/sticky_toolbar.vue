@@ -1,11 +1,11 @@
 <template>
 <div class="toolbar" @mousedown="toolbar_mousedown">
-    <icon-wrapper icon="trash" @click="trash_click" />
-    <icon-wrapper icon="arrows_alt_h" @click="toggle_click($event, 'wide')" />
-    <icon-wrapper icon="paint_brush" @click="colour_click" />
-    <icon-wrapper icon="clone" @click="bring_to_front_click" />
-    <icon-wrapper icon="bold" @click="toggle_click($event, 'bold')" />
-    <icon-wrapper icon="align_centre" @click="toggle_click($event, 'centre')" />
+    <icon-wrapper icon="trash" @mouseup="trash_click" />
+    <icon-wrapper icon="arrows_alt_h" @mouseup="toggle_click($event, 'wide')" />
+    <icon-wrapper icon="paint_brush" @mouseup="colour_click" />
+    <icon-wrapper icon="clone" @mouseup="bring_to_front_click" />
+    <icon-wrapper icon="bold" @mouseup="toggle_click($event, 'bold')" />
+    <icon-wrapper icon="align_centre" @mouseup="toggle_click($event, 'centre')" />
 </div>
 </template>
 
@@ -26,67 +26,73 @@ import {
 export default {
     name: 'sticky_toolbar',
     props: ['item-id'],
+    data: function() {
+        return {
+            moving: false
+        };
+    },
     computed: {
         sticky: function() {
             return this.$store.getters.sticky(this.itemId);
         }
     },
     methods: {
-        trash_click: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.dispatch(A_STICKY_DELETE, this.itemId);
+        trash_click: function() {
+            if(!this.moving)
+                this.$store.dispatch(A_STICKY_DELETE, this.itemId);
         },
         toggle_click: function(e, field) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.dispatch(A_STICKY_TOGGLE_FIELD, {
-                id: this.itemId,
-                field: field
-            });
+            if(!this.moving)
+                this.$store.dispatch(A_STICKY_TOGGLE_FIELD, {
+                    id: this.itemId,
+                    field: field
+                });
         },
-        colour_click: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.dispatch(A_STICKY_CYCLE_COLOUR, this.itemId);
+        colour_click: function() {
+            if(!this.moving)
+                this.$store.dispatch(A_STICKY_CYCLE_COLOUR, this.itemId);
         },
-        bring_to_front_click: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
+        bring_to_front_click: function() {
+            if(!this.moving)
+                this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
         },
         toolbar_mousedown: function(e) {
             e = e || window.event;
             var self = this;
 
-            if(e.target == self.$el) {
+            var startX = e.clientX;
+            var startY = e.clientY;
+
+
+            document.onmouseup = function(e) {
+                document.onmouseup = null;
+                document.onmousemove = null;
+                if(self.moving) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    self.$store.dispatch(A_STICKY_MOVE_FINISHED, self.itemId);
+                }
+                self.moving = false;
+            };
+
+            document.onmousemove = function(e) {
+                e = e || window.event;
                 e.preventDefault();
 
-                var startX = e.clientX;
-                var startY = e.clientY;
+                if(!self.moving) {
+                    self.$store.dispatch(A_STICKY_MOVE_STARTED, self.itemId);
+                }
+                self.moving = true;
 
-                self.$store.dispatch(A_STICKY_MOVE_STARTED, self.itemId);
+                self.$store.dispatch(A_STICKY_MOVE, {
+                    id: self.itemId,
+                    x: e.clientX - startX,
+                    y: e.clientY - startY
+                });
 
-                document.onmouseup = function() {
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                    self.$store.dispatch(A_STICKY_MOVE_FINISHED, self.itemId);
-                };
-
-                document.onmousemove = function(e) {
-                    e = e || window.event;
-                    e.preventDefault();
-
-                    self.$store.dispatch(A_STICKY_MOVE, {
-                        id: self.itemId,
-                        x: e.clientX - startX,
-                        y: e.clientY - startY
-                    });
-
-                    startX = e.clientX;
-                    startY = e.clientY;
-                };
-            }
+                startX = e.clientX;
+                startY = e.clientY;
+            };
         }
     },
     components: {

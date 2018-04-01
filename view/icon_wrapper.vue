@@ -1,5 +1,5 @@
 <template>
-<font-awesome-icon :icon="get_icon" @click="$emit('click', $event)"/>
+<font-awesome-icon :icon="get_icon" @click="$emit('click', $event)" @mouseup="$emit('mouseup', $event)"/>
 </template>
 
 
