@@ -1,6 +1,7 @@
 <template>
     <div
         class="corkboard"
+        tabindex="0"
         @mousedown="corkboard_mousedown">
         <corkboard-toolbar />
         <sticky
@@ -39,7 +40,6 @@ export default {
         corkboard_mousedown: function (e) {
             e = e || window.event;
             if(e.target == this.$el) {
-                e.preventDefault();
 
                 var startX = e.clientX;
                 var startY = e.clientY;
