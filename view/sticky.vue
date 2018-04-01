@@ -43,7 +43,7 @@ export default {
         return {
             colours: ['#ffff88', '#88ff88', '#88ffff', '#ff88ff'],
             rot: 0
-        }
+        };
     },
     methods: {
         sticky_input: function(e) {
@@ -58,7 +58,7 @@ export default {
     },
     computed: {
         sticky: function() {
-            return this.$store.getters.sticky(this.itemId)
+            return this.$store.getters.sticky(this.itemId);
         }
     },
     created: function() {
@@ -68,7 +68,7 @@ export default {
     components: {
         'sticky-toolbar': sticky_toolbar
     }
-}
+};
 </script>
 
 
