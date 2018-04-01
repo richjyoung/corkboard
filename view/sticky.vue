@@ -21,6 +21,7 @@
                     fontFamily: sticky.bold ? 'Permanent Marker' : 'Nanum Pen Script',
                     textAlign: sticky.centre ? 'center' : 'left'
                 }"
+                @keydown="sticky_keydown"
                 @input="sticky_input" />
         </div>
     </div>
@@ -60,6 +61,9 @@ export default {
                 id: this.itemId,
                 value: e.target.value
             });
+        },
+        sticky_keydown: function(e) {
+            e.stopPropagation();
         },
         toggle: function(field) {
             console.log('field ' + field + ' toggled');
