@@ -1,6 +1,6 @@
 var { webFrame } = require('electron');
 
-import { 
+import {
     M_APP_OBSERVE_Z,
     M_APP_TOGGLE_GODMODE,
     M_APP_ZOOM_SET
@@ -20,4 +20,4 @@ export default {
         webFrame.setZoomFactor(f);
         localStorage.setItem('zoom_factor', f);
     }
-}
+};

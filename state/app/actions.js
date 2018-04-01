@@ -1,4 +1,4 @@
-import { 
+import {
     A_APP_OBSERVE_Z,
     A_APP_TOGGLE_GODMODE,
     A_APP_ZOOM_IN,
@@ -6,7 +6,7 @@ import {
     A_APP_ZOOM_RESET
 } from '../action_types';
 
-import { 
+import {
     M_APP_OBSERVE_Z,
     M_APP_TOGGLE_GODMODE,
     M_APP_ZOOM_SET
@@ -28,4 +28,4 @@ export default {
     [A_APP_ZOOM_RESET]: function(context) {
         context.commit(M_APP_ZOOM_SET, 1);
     }
-}
+};

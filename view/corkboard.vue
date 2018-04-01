@@ -1,9 +1,17 @@
 <template>
-<div class="corkboard" @mousedown="corkboard_mousedown">
-    <corkboard-toolbar />
-    <sticky v-for="(sticky, index) in stickies" :key=index :item-id="index" />
-    <polaroid v-for="(polaroid, index) in polaroids" :key=index :item-id="index" />
-</div>
+    <div
+        class="corkboard"
+        @mousedown="corkboard_mousedown">
+        <corkboard-toolbar />
+        <sticky
+            v-for="(sticky, index) in stickies"
+            :key="index"
+            :item-id="+index" />
+        <polaroid
+            v-for="(polaroid, index) in polaroids"
+            :key="index"
+            :item-id="+index" />
+    </div>
 </template>
 
 
@@ -13,18 +21,26 @@ import sticky from './sticky.vue';
 import polaroid from './polaroid.vue';
 
 export default {
-    name: 'corkboard',
+    name: 'Corkboard',
     components: {
         'corkboard-toolbar': corkboard_toolbar,
         'sticky': sticky,
         'polaroid': polaroid
+    },
+    computed: {
+        stickies: function() {
+            return this.$store.state.stickies.items;
+        },
+        polaroids: function() {
+            return this.$store.state.polaroids.items;
+        }
     },
     methods: {
         corkboard_mousedown: function (e) {
             e = e || window.event;
             if(e.target == this.$el) {
                 e.preventDefault();
-                
+
                 var startX = e.clientX;
                 var startY = e.clientY;
 
@@ -48,14 +64,6 @@ export default {
             }
         }
     },
-    computed: {
-        stickies: function() {
-            return this.$store.state.stickies.items;
-        },
-        polaroids: function() {
-            return this.$store.state.polaroids.items;
-        }
-    }
 };
 </script>
 

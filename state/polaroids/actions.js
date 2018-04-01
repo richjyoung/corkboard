@@ -33,13 +33,13 @@ export default {
                 context.commit(M_POLAROID_LOAD, req.result[i]);
                 context.commit(A_APP_OBSERVE_Z, req.result[i].z);
             }
-        }
+        };
     },
     [A_POLAROID_PROMOTE]: function(context, id) {
         var obj = {
             id: id,
             z: context.getters.maxZ + 1
-        }
+        };
         context.commit(M_POLAROID_PROMOTE, obj);
         context.commit(M_APP_OBSERVE_Z, obj.z);
         context.commit(M_POLAROID_SAVE, id);
@@ -76,10 +76,10 @@ export default {
         req.onsuccess = function() {
             context.commit(M_POLAROID_DELETE, itemId);
             console.log('Polaroid ' + itemId + ' deleted');
-        }
+        };
         req.onerror = function(event) {
             console.error('Error deleting Polaroid ' + itemId);
             console.error(event);
-        }
+        };
     }
 };

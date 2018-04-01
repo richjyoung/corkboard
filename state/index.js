@@ -6,13 +6,11 @@ import polaroids from './polaroids';
 
 Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV == 'development';
-
 export default new Vuex.Store({
     modules: {
         app,
         stickies,
         polaroids
     },
-    strict: true //debug
+    strict: true
 });

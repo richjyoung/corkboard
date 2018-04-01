@@ -1,6 +1,4 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
-const path = require('path');
-const url = require('url');
+const { app } = require('electron');
 const window = require('./window');
 const ipc_setup = require('./ipc');
 
@@ -19,7 +17,7 @@ app.on('ready', function() {
 app.on('window-all-closed', function() {
     console.log('Application windows closed');
     if(process.platform !== 'darwin') {
-        console.log('Application exited');    
+        console.log('Application exited');
         app.quit();
     }
 });
