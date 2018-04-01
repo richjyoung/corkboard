@@ -1,32 +1,29 @@
 <template>
-<div
-    class="sticky"
-    :style="{ 
-        top: sticky.y,
-        left: sticky.x,
-        zIndex: sticky.z,
-        transform: 'rotate(' + rot + 'deg)',
-        width: sticky.wide ? '25rem' : '15rem',
-        background: colours[sticky.colour]
-    }"
-    >
+    <div
+        :style="{
+            top: sticky.y,
+            left: sticky.x,
+            zIndex: sticky.z,
+            transform: 'rotate(' + rot + 'deg)',
+            width: sticky.wide ? '25rem' : '15rem',
+            background: colours[sticky.colour]
+        }"
+        class="sticky">
 
-    <sticky-toolbar 
-        :itemId="this.itemId"
-        @toggle="toggle"
-    />
+        <sticky-toolbar
+            :item-id="itemId"
+            @toggle="toggle" />
 
-    <div class="content">
-        <textarea
-            :value="sticky.content"
-            @input="sticky_input"
-            :style="{
-                fontFamily: sticky.bold ? 'Permanent Marker' : 'Nanum Pen Script',
-                textAlign: sticky.centre ? 'center' : 'left'
-            }"
-        />
+        <div class="content">
+            <textarea
+                :value="sticky.content"
+                :style="{
+                    fontFamily: sticky.bold ? 'Permanent Marker' : 'Nanum Pen Script',
+                    textAlign: sticky.centre ? 'center' : 'left'
+                }"
+                @input="sticky_input" />
+        </div>
     </div>
-</div>
 </template>
 
 
@@ -37,13 +34,25 @@ import {
 } from '../state/action_types';
 
 export default {
-    name: 'sticky',
-    props: ['item-id'],
+    name: 'Sticky',
+    components: {
+        'sticky-toolbar': sticky_toolbar
+    },
+    props: { 'itemId': Number },
     data: function() {
         return {
             colours: ['#ffff88', '#88ff88', '#88ffff', '#ff88ff'],
             rot: 0
         };
+    },
+    computed: {
+        sticky: function() {
+            return this.$store.getters.sticky(this.itemId);
+        }
+    },
+    created: function() {
+        var self = this;
+        self.rot = Math.random() * 10 - 5;
     },
     methods: {
         sticky_input: function(e) {
@@ -56,18 +65,6 @@ export default {
             console.log('field ' + field + ' toggled');
         }
     },
-    computed: {
-        sticky: function() {
-            return this.$store.getters.sticky(this.itemId);
-        }
-    },
-    created: function() {
-        var self = this;
-        self.rot = Math.random() * 10 - 5;
-    },
-    components: {
-        'sticky-toolbar': sticky_toolbar
-    }
 };
 </script>
 

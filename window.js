@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
@@ -15,7 +15,7 @@ module.exports = function(index) {
         require('vue-devtools').install();
         win.toggleDevTools();
     }
- 
+
     win.setMenu(null);
 
     win.loadURL(url.format({
@@ -25,4 +25,4 @@ module.exports = function(index) {
     }));
 
     return win;
-}
+};

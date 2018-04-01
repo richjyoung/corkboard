@@ -1,5 +1,8 @@
 <template>
-<font-awesome-icon :icon="get_icon" @click="$emit('click', $event)" @mouseup="$emit('mouseup', $event)"/>
+    <font-awesome-icon
+        :icon="get_icon"
+        @click="$emit('click', $event)"
+        @mouseup="$emit('mouseup', $event)" />
 </template>
 
 
@@ -36,16 +39,16 @@ var icon_map = {
 };
 
 export default {
-    name: 'icon_wrapper',
-    props: ['icon'],
+    name: 'IconWrapper',
+    components: {
+        FontAwesomeIcon
+    },
+    props: { 'icon': String },
     computed: {
         get_icon: function() {
             return icon_map[this.icon];
         }
     },
-    components: {
-        FontAwesomeIcon
-    }
 };
 </script>
 

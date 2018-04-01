@@ -1,12 +1,26 @@
 <template>
-<div class="toolbar" @mousedown="toolbar_mousedown">
-    <icon-wrapper icon="trash" @mouseup="trash_click" />
-    <icon-wrapper icon="arrows_alt_h" @mouseup="toggle_click($event, 'wide')" />
-    <icon-wrapper icon="paint_brush" @mouseup="colour_click" />
-    <icon-wrapper icon="clone" @mouseup="bring_to_front_click" />
-    <icon-wrapper icon="bold" @mouseup="toggle_click($event, 'bold')" />
-    <icon-wrapper icon="align_centre" @mouseup="toggle_click($event, 'centre')" />
-</div>
+    <div
+        class="toolbar"
+        @mousedown="toolbar_mousedown">
+        <icon-wrapper
+            icon="trash"
+            @mouseup="trash_click" />
+        <icon-wrapper
+            icon="arrows_alt_h"
+            @mouseup="toggle_click($event, 'wide')" />
+        <icon-wrapper
+            icon="paint_brush"
+            @mouseup="colour_click" />
+        <icon-wrapper
+            icon="clone"
+            @mouseup="bring_to_front_click" />
+        <icon-wrapper
+            icon="bold"
+            @mouseup="toggle_click($event, 'bold')" />
+        <icon-wrapper
+            icon="align_centre"
+            @mouseup="toggle_click($event, 'centre')" />
+    </div>
 </template>
 
 
@@ -24,8 +38,11 @@ import {
 } from '../state/action_types';
 
 export default {
-    name: 'sticky_toolbar',
-    props: ['item-id'],
+    name: 'StickyToolbar',
+    components: {
+        'icon-wrapper': icon_wrapper
+    },
+    props: { 'itemId': Number },
     data: function() {
         return {
             moving: false
@@ -38,23 +55,27 @@ export default {
     },
     methods: {
         trash_click: function() {
-            if(!this.moving)
+            if(!this.moving) {
                 this.$store.dispatch(A_STICKY_DELETE, this.itemId);
+            }
         },
         toggle_click: function(e, field) {
-            if(!this.moving)
+            if(!this.moving) {
                 this.$store.dispatch(A_STICKY_TOGGLE_FIELD, {
                     id: this.itemId,
                     field: field
                 });
+            }
         },
         colour_click: function() {
-            if(!this.moving)
+            if(!this.moving) {
                 this.$store.dispatch(A_STICKY_CYCLE_COLOUR, this.itemId);
+            }
         },
         bring_to_front_click: function() {
-            if(!this.moving)
+            if(!this.moving) {
                 this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
+            }
         },
         toolbar_mousedown: function(e) {
             e = e || window.event;
@@ -95,9 +116,6 @@ export default {
             };
         }
     },
-    components: {
-        'icon-wrapper': icon_wrapper
-    }
 };
 </script>
 
@@ -114,7 +132,7 @@ export default {
 }
 
 .toolbar:hover svg {
-    display: inline-block;    
+    display: inline-block;
 }
 
 .toolbar svg {
@@ -131,7 +149,7 @@ svg {
 }
 
 svg:hover {
-    color: rgba(0, 0, 0, 0.3);    
+    color: rgba(0, 0, 0, 0.3);
 }
 
 

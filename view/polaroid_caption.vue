@@ -1,5 +1,8 @@
 <template>
-    <input :value="polaroid.caption" @input="caption_input" @mousedown="mousedown">
+    <input
+        :value="polaroid.caption"
+        @input="caption_input"
+        @mousedown="mousedown">
 </template>
 
 
@@ -7,11 +10,16 @@
 import { A_POLAROID_EDIT_CAPTION } from '../state/action_types';
 
 export default {
-    name: 'polaroid_caption',
-    props: ['item-id'],
+    name: 'PolaroidCaption',
+    props: { 'itemId': Number },
     data: function() {
         return {
             rot: 0
+        };
+    },
+    computed: {
+        polaroid: function() {
+            return this.$store.getters.polaroid(this.itemId);
         }
     },
     methods: {
@@ -25,12 +33,7 @@ export default {
             });
         }
     },
-    computed: {
-        polaroid: function() {
-            return this.$store.getters.polaroid(this.itemId);
-        }
-    }
-}
+};
 </script>
 
 

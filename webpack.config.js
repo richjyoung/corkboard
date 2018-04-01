@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
     entry: './index.js',
@@ -28,7 +27,7 @@ module.exports = {
         ]
     },
     resolve: {
-        alias: {'vue$': 'vue/dist/vue.esm.js'},
+        alias: { 'vue$': 'vue/dist/vue.esm.js' },
         extensions: ['*', '.js', '.vue', '.json']
     }
-}
+};

@@ -5,4 +5,4 @@ export default {
     zoom_factor: function(state) {
         return state.zoom_factor;
     }
-}
+};
