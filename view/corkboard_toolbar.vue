@@ -1,13 +1,31 @@
 <template>
-<div class="toolbar" :style="{ zIndex: this.z }">
-    <icon-wrapper icon="sticky_note" @click="sticky_click" />
-    <icon-wrapper icon="search_plus" @click="zoom_click($event, 'in')" />
-    <icon-wrapper icon="search" @click="zoom_click($event, 'reset')" />
-    <icon-wrapper icon="search_minus" @click="zoom_click($event, 'out')" />
-    <icon-wrapper icon="expand" @click="fullscreen_click" />
-    <icon-wrapper v-if="this.godmode" icon="wrench" @click="devtools_click" />
-    <icon-wrapper v-if="this.godmode" icon="sync" @click="refresh_click" />
-</div>
+    <div
+        :style="{ zIndex: z }"
+        class="toolbar">
+        <icon-wrapper
+            icon="sticky_note"
+            @click="sticky_click" />
+        <icon-wrapper
+            icon="search_plus"
+            @click="zoom_click($event, 'in')" />
+        <icon-wrapper
+            icon="search"
+            @click="zoom_click($event, 'reset')" />
+        <icon-wrapper
+            icon="search_minus"
+            @click="zoom_click($event, 'out')" />
+        <icon-wrapper
+            icon="expand"
+            @click="fullscreen_click" />
+        <icon-wrapper
+            v-if="godmode"
+            icon="wrench"
+            @click="devtools_click" />
+        <icon-wrapper
+            v-if="godmode"
+            icon="sync"
+            @click="refresh_click" />
+    </div>
 </template>
 
 
@@ -24,7 +42,10 @@ import {
 var { ipcRenderer } = require('electron');
 
 export default {
-    name: 'corkboard_toolbar',
+    name: 'CorkboardToolbar',
+    components: {
+        'icon-wrapper': icon_wrapper
+    },
     computed: {
         z: function() {
             return this.$store.state.app.maxZ + 1;
@@ -51,17 +72,17 @@ export default {
             e.preventDefault();
             e.stopPropagation();
             switch (mode) {
-                case 'in':
-                    this.$store.dispatch(A_APP_ZOOM_IN);
-                    break;
-                case 'out':
-                    this.$store.dispatch(A_APP_ZOOM_OUT);
-                    break;
-                case 'reset':
-                    this.$store.dispatch(A_APP_ZOOM_RESET);
-                    break;
-                default:
-                    break;
+            case 'in':
+                this.$store.dispatch(A_APP_ZOOM_IN);
+                break;
+            case 'out':
+                this.$store.dispatch(A_APP_ZOOM_OUT);
+                break;
+            case 'reset':
+                this.$store.dispatch(A_APP_ZOOM_RESET);
+                break;
+            default:
+                break;
             }
         },
         fullscreen_click: function(e) {
@@ -75,10 +96,7 @@ export default {
             ipcRenderer.send('toggle_devtools');
         }
     },
-    components: {
-        'icon-wrapper': icon_wrapper
-    }
-}
+};
 </script>
 
 

@@ -1,9 +1,8 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
 import corkboard from './view/corkboard.vue';
 import store from './state';
 import { clipboard } from 'electron';
-import { 
+import {
     A_APP_TOGGLE_GODMODE,
     A_STICKY_NEW,
     A_POLAROID_NEW
@@ -12,19 +11,18 @@ import {
 window.vm = new Vue({
     el: '#corkboard',
     store,
-    render: h => h(corkboard),
     created: function() {
         document.onkeydown = this.keydown;
     },
     methods: {
         keydown: function(e) {
-            if(e.key == "v" && e.ctrlKey) {
+            if(e.key == 'v' && e.ctrlKey) {
                 this.paste();
-            } else if (e.key == "r" && e.ctrlKey) {
+            } else if (e.key == 'r' && e.ctrlKey) {
                 location.reload();
-            } else if (e.key == "s" && e.ctrlKey) {
+            } else if (e.key == 's' && e.ctrlKey) {
                 this.$store.dispatch('save_state');
-            } else if (e.code == "KeyA" && e.ctrlKey && e.altKey && e.shiftKey) {
+            } else if (e.code == 'KeyA' && e.ctrlKey && e.altKey && e.shiftKey) {
                 this.$store.dispatch(A_APP_TOGGLE_GODMODE);
             }
         },
@@ -44,19 +42,20 @@ window.vm = new Vue({
             if(!clipboard_image.isEmpty()) {
 
                 var original_size = clipboard_image.getSize();
+                var target_image;
                 if(original_size.height > 250 || original_size.width > 250) {
                     if(original_size.heigh > original_size.width) {
-                        var target_image = clipboard_image.resize({ height: 250 });
+                        target_image = clipboard_image.resize({ height: 250 });
                     } else {
-                        var target_image = clipboard_image.resize({ width: 250 });
+                        target_image = clipboard_image.resize({ width: 250 });
                     }
                 } else {
-                    var target_image = clipboard_image;
+                    target_image = clipboard_image;
                 }
 
                 var target_size = target_image.getSize();
                 var data_url = target_image.toDataURL();
-                
+
                 console.log('Pasting ' + original_size.width + 'x' + original_size.height + ' image as '
                     + target_size.width + 'x' + target_size.height + '...');
 
@@ -67,5 +66,6 @@ window.vm = new Vue({
                 });
             }
         }
-    }
+    },
+    render: h => h(corkboard),
 });

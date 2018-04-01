@@ -1,80 +1,75 @@
 <template>
-<div
-    class="sticky"
-    :style="{ 
-        top: sticky.y,
-        left: sticky.x,
-        zIndex: sticky.z,
-        transform: 'rotate(' + rot + 'deg)',
-        width: sticky.wide ? '25rem' : '15rem',
-        background: colours[sticky.colour]
-    }"
-    @click="sticky_clicked"
-    >
+    <div
+        :style="{
+            top: sticky.y,
+            left: sticky.x,
+            zIndex: sticky.z,
+            transform: 'rotate(' + rot + 'deg)',
+            width: sticky.wide ? '25rem' : '15rem',
+            background: colours[sticky.colour]
+        }"
+        class="sticky">
 
-    <sticky-toolbar 
-        :itemId="this.itemId"
-        @toggle="toggle"
-    />
+        <sticky-toolbar
+            :item-id="itemId"
+            @toggle="toggle" />
 
-    <div class="content">
-        <textarea
-            :value="sticky.content"
-            @input="sticky_input"
-            :style="{
-                fontFamily: sticky.bold ? 'Permanent Marker' : 'Nanum Pen Script',
-                textAlign: sticky.centre ? 'center' : 'left'
-            }"
-        />
+        <div class="content">
+            <textarea
+                :value="sticky.content"
+                :style="{
+                    fontFamily: sticky.bold ? 'Permanent Marker' : 'Nanum Pen Script',
+                    textAlign: sticky.centre ? 'center' : 'left'
+                }"
+                @keydown="sticky_keydown"
+                @input="sticky_input" />
+        </div>
     </div>
-</div>
 </template>
 
 
 <script>
 import sticky_toolbar from './sticky_toolbar.vue';
 import {
-    A_STICKY_PROMOTE,
     A_STICKY_EDIT_CONTENT
 } from '../state/action_types';
 
 export default {
-    name: 'sticky',
-    props: ['item-id'],
+    name: 'Sticky',
+    components: {
+        'sticky-toolbar': sticky_toolbar
+    },
+    props: { 'itemId': Number },
     data: function() {
         return {
             colours: ['#ffff88', '#88ff88', '#88ffff', '#ff88ff'],
             rot: 0
-        }
-    },
-    methods: {
-        sticky_clicked: function(e) {
-            e.preventDefault();
-            this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
-        },
-        sticky_input: function(e) {
-            this.$store.dispatch(A_STICKY_EDIT_CONTENT, {
-                id: this.itemId,
-                value: e.target.value
-            });
-        },
-        toggle: function(field) {
-            console.log('field ' + field + ' toggled');
-        }
+        };
     },
     computed: {
         sticky: function() {
-            return this.$store.getters.sticky(this.itemId)
+            return this.$store.getters.sticky(this.itemId);
         }
     },
     created: function() {
         var self = this;
         self.rot = Math.random() * 10 - 5;
     },
-    components: {
-        'sticky-toolbar': sticky_toolbar
-    }
-}
+    methods: {
+        sticky_input: function(e) {
+            this.$store.dispatch(A_STICKY_EDIT_CONTENT, {
+                id: this.itemId,
+                value: e.target.value
+            });
+        },
+        sticky_keydown: function(e) {
+            e.stopPropagation();
+        },
+        toggle: function(field) {
+            console.log('field ' + field + ' toggled');
+        }
+    },
+};
 </script>
 
 

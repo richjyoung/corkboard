@@ -9,16 +9,16 @@ db_open.onupgradeneeded = function() {
     db = db_open.result;
 
     if(!db.objectStoreNames.contains(DB_STICKIES)) {
-        db.createObjectStore(DB_STICKIES, {keyPath: "id"});
+        db.createObjectStore(DB_STICKIES, { keyPath: 'id' });
     }
 
     if(!db.objectStoreNames.contains(DB_POLAROIDS)) {
-        db.createObjectStore(DB_POLAROIDS, {keyPath: "id"});
+        db.createObjectStore(DB_POLAROIDS, { keyPath: 'id' });
     }
-}
+};
 
 db_open.onsuccess = function() {
     console.log('IndexedDB: onsuccess');
     db = db_open.result;
     window.vm.$store.dispatch('load_state');
-}
+};

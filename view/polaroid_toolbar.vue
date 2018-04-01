@@ -1,7 +1,14 @@
 <template>
-<div class="toolbar" @mousedown="toolbar_mousedown">
-    <icon-wrapper icon="trash" @click="trash_click" />
-</div>
+    <div
+        class="toolbar"
+        @mousedown="toolbar_mousedown">
+        <icon-wrapper
+            icon="trash"
+            @click="trash_click" />
+        <icon-wrapper
+            icon="clone"
+            @click="bring_to_front_click" />
+    </div>
 </template>
 
 
@@ -10,16 +17,29 @@ import icon_wrapper from './icon_wrapper.vue';
 import { A_POLAROID_DELETE, A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED, A_POLAROID_PROMOTE } from '../state/action_types';
 
 export default {
-    name: 'polaroid_toolbar',
-    props: ['item-id'],
+    name: 'PolaroidToolbar',
+    components: {
+        'icon-wrapper': icon_wrapper
+    },
+    props: { 'itemId': Number },
     data: function() {
         return {};
+    },
+    computed: {
+        polaroid: function() {
+            return this.$store.getters.polaroid(this.itemId);
+        }
     },
     methods: {
         trash_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
             this.$store.dispatch(A_POLAROID_DELETE, this.itemId);
+        },
+        bring_to_front_click: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.$store.dispatch(A_POLAROID_PROMOTE, this.itemId);
         },
         toolbar_mousedown: function(e) {
             e = e || window.event;
@@ -37,7 +57,7 @@ export default {
                     document.onmouseup = null;
                     document.onmousemove = null;
                     self.$store.dispatch(A_POLAROID_MOVE_FINISHED, self.itemId);
-                }
+                };
 
                 document.onmousemove = function(e) {
                     e = e || window.event;
@@ -51,21 +71,11 @@ export default {
 
                     startX = e.clientX;
                     startY = e.clientY;
-                }
-
-                self.$store.dispatch(A_POLAROID_PROMOTE, self.itemId);
+                };
             }
         }
     },
-    computed: {
-        polaroid: function() {
-            return this.$store.getters.polaroid(this.itemId);
-        }
-    },
-    components: {
-        'icon-wrapper': icon_wrapper
-    }
-}
+};
 </script>
 
 
@@ -79,7 +89,7 @@ export default {
 }
 
 .toolbar:hover svg {
-    display: inline-block;    
+    display: inline-block;
 }
 
 .toolbar svg {
@@ -95,7 +105,7 @@ svg {
 }
 
 svg:hover {
-    color: rgba(0, 0, 0, 0.3);    
+    color: rgba(0, 0, 0, 0.3);
 }
 
 </style>

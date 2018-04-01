@@ -1,3 +1,4 @@
 export default {
-    items: {}
+    items: {},
+    move_group: []
 };

@@ -1,41 +1,46 @@
 <template>
-<div
-    class="polaroid"
+    <div
         :style="{
-        top: polaroid.y,
-        left: polaroid.x,
-        zIndex: polaroid.z,
-        transform: 'rotate(' + rot + 'deg)'
-    }"
-    @mousedown="mousedown"
-    >
+            top: polaroid.y,
+            left: polaroid.x,
+            zIndex: polaroid.z,
+            transform: 'rotate(' + rot + 'deg)'
+        }"
+        class="polaroid"
+        @mousedown="mousedown">
 
-    <polaroid-toolbar :itemId="this.itemId" />
-    <img :src="polaroid.url">
-    <polaroid-caption :itemId="this.itemId" />
-</div>
+        <polaroid-toolbar :item-id="itemId" />
+        <img :src="polaroid.url">
+        <polaroid-caption :item-id="itemId" />
+    </div>
 </template>
 
 
 <script>
 import polaroid_toolbar from './polaroid_toolbar.vue';
 import polaroid_caption from './polaroid_caption.vue';
-import { A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED, A_POLAROID_PROMOTE } from '../state/action_types';
+import { A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED } from '../state/action_types';
 
 export default {
-    name: 'polaroid',
-    props: ['item-id'],
+    name: 'Polaroid',
+    components: {
+        'polaroid-toolbar': polaroid_toolbar,
+        'polaroid-caption': polaroid_caption
+    },
+    props: { 'itemId': Number },
     data: function() {
         return {
             rot: 0
-        }
-    },
-    methods: {
+        };
     },
     computed: {
         polaroid: function() {
             return this.$store.getters.polaroid(this.itemId);
         }
+    },
+    created: function() {
+        var self = this;
+        self.rot = Math.random() * 10 - 5;
     },
     methods: {
         mousedown: function(e) {
@@ -49,7 +54,7 @@ export default {
                 document.onmouseup = null;
                 document.onmousemove = null;
                 self.$store.dispatch(A_POLAROID_MOVE_FINISHED, self.itemId);
-            }
+            };
 
             document.onmousemove = function(e) {
                 e = e || window.event;
@@ -63,20 +68,10 @@ export default {
 
                 startX = e.clientX;
                 startY = e.clientY;
-            }
-
-            self.$store.dispatch(A_POLAROID_PROMOTE, self.itemId);
+            };
         }
     },
-    created: function() {
-        var self = this;
-        self.rot = Math.random() * 10 - 5;
-    },
-    components: {
-        'polaroid-toolbar': polaroid_toolbar,
-        'polaroid-caption': polaroid_caption
-    }
-}
+};
 </script>
 
 

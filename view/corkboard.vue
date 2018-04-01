@@ -1,9 +1,18 @@
 <template>
-<div class="corkboard" @mousedown="corkboard_mousedown">
-    <corkboard-toolbar />
-    <sticky v-for="(sticky, index) in stickies" :key=index :item-id="index" />
-    <polaroid v-for="(polaroid, index) in polaroids" :key=index :item-id="index" />
-</div>
+    <div
+        class="corkboard"
+        tabindex="0"
+        @mousedown="corkboard_mousedown">
+        <corkboard-toolbar />
+        <sticky
+            v-for="(sticky, index) in stickies"
+            :key="index"
+            :item-id="+index" />
+        <polaroid
+            v-for="(polaroid, index) in polaroids"
+            :key="index"
+            :item-id="+index" />
+    </div>
 </template>
 
 
@@ -13,42 +22,11 @@ import sticky from './sticky.vue';
 import polaroid from './polaroid.vue';
 
 export default {
-    name: 'corkboard',
+    name: 'Corkboard',
     components: {
         'corkboard-toolbar': corkboard_toolbar,
         'sticky': sticky,
         'polaroid': polaroid
-    },
-    methods: {
-        corkboard_mousedown: function (e) {
-            e = e || window.event;
-            if(e.target == this.$el) {
-                e.preventDefault();
-                
-                var startX = e.clientX;
-                var startY = e.clientY;
-
-                document.onmouseup = function() {
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                }
-
-                document.onmousemove = function(e) {
-                    e = e || window.event;
-                    e.preventDefault();
-
-                    var x = e.clientX - startX
-                    var y = e.clientY - startY
-
-                    // console.log('moved ' + xx + ' ' + yy)
-
-                    startX = e.clientX;
-                    startY = e.clientY;
-
-                    window.scrollTo(document.body.scrollLeft - x, document.body.scrollTop-y)
-                }
-            }
-        }
     },
     computed: {
         stickies: function() {
@@ -58,10 +36,35 @@ export default {
             return this.$store.state.polaroids.items;
         }
     },
-    mounted: function() {
-        // this.$store.commit('load_state');
-    }
-}
+    methods: {
+        corkboard_mousedown: function (e) {
+            e = e || window.event;
+            if(e.target == this.$el) {
+
+                var startX = e.clientX;
+                var startY = e.clientY;
+
+                document.onmouseup = function() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                };
+
+                document.onmousemove = function(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+
+                    var x = e.clientX - startX;
+                    var y = e.clientY - startY;
+
+                    startX = e.clientX;
+                    startY = e.clientY;
+
+                    window.scrollTo(document.body.scrollLeft - x, document.body.scrollTop - y);
+                };
+            }
+        }
+    },
+};
 </script>
 
 

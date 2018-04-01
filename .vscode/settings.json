@@ -1,0 +1,11 @@
+{
+    "eslint.options": {
+        "extensions": [".js", ".vue"]
+    },
+    "eslint.validate": [
+        "javascript", {
+            "language": "vue",
+            "autoFix": true
+        }
+    ]
+}

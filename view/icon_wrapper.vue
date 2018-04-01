@@ -1,5 +1,8 @@
 <template>
-<font-awesome-icon :icon="get_icon" @click="$emit('click', $event)"/>
+    <font-awesome-icon
+        :icon="get_icon"
+        @click="$emit('click', $event)"
+        @mouseup="$emit('mouseup', $event)" />
 </template>
 
 
@@ -17,6 +20,7 @@ import faWrench from '@fortawesome/fontawesome-free-solid/faWrench';
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus';
 import faSearchMinus from '@fortawesome/fontawesome-free-solid/faSearchMinus';
+import faClone from '@fortawesome/fontawesome-free-solid/faClone';
 
 var icon_map = {
     trash: faTrash,
@@ -30,21 +34,22 @@ var icon_map = {
     wrench: faWrench,
     search_plus: faSearchPlus,
     search_minus: faSearchMinus,
-    search: faSearch
-}
+    search: faSearch,
+    clone: faClone
+};
 
 export default {
-    name: 'icon_wrapper',
-    props: ['icon'],
+    name: 'IconWrapper',
+    components: {
+        FontAwesomeIcon
+    },
+    props: { 'icon': String },
     computed: {
         get_icon: function() {
             return icon_map[this.icon];
         }
     },
-    components: {
-        FontAwesomeIcon
-    }
-}
+};
 </script>
 
 
