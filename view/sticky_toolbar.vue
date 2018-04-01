@@ -17,6 +17,7 @@ import {
     A_STICKY_DELETE,
     A_STICKY_TOGGLE_FIELD,
     A_STICKY_CYCLE_COLOUR,
+    A_STICKY_MOVE_STARTED,
     A_STICKY_MOVE_FINISHED,
     A_STICKY_MOVE,
     A_STICKY_PROMOTE
@@ -27,7 +28,7 @@ export default {
     props: ['item-id'],
     computed: {
         sticky: function() {
-            return this.$store.getters.sticky(this.itemId)
+            return this.$store.getters.sticky(this.itemId);
         }
     },
     methods: {
@@ -64,11 +65,13 @@ export default {
                 var startX = e.clientX;
                 var startY = e.clientY;
 
+                self.$store.dispatch(A_STICKY_MOVE_STARTED, self.itemId);
+
                 document.onmouseup = function() {
                     document.onmouseup = null;
                     document.onmousemove = null;
                     self.$store.dispatch(A_STICKY_MOVE_FINISHED, self.itemId);
-                }
+                };
 
                 document.onmousemove = function(e) {
                     e = e || window.event;
@@ -82,14 +85,14 @@ export default {
 
                     startX = e.clientX;
                     startY = e.clientY;
-                }
+                };
             }
         }
     },
     components: {
         'icon-wrapper': icon_wrapper
     }
-}
+};
 </script>
 
 

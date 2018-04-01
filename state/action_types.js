@@ -14,6 +14,7 @@ export const A_STICKY_NEW = 'sticky_new';
 export const A_STICKY_DELETE = 'sticky_delete';
 export const A_STICKY_PROMOTE = 'sticky_promote';
 export const A_STICKY_TOGGLE_FIELD = 'sticky_toggle_field';
+export const A_STICKY_MOVE_STARTED = 'sticky_move_started';
 export const A_STICKY_MOVE = 'sticky_move';
 export const A_STICKY_MOVE_FINISHED = 'sticky_move_finished';
 export const A_STICKY_CYCLE_COLOUR = 'sticky_cycle_colour';
