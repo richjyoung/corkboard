@@ -1,6 +1,7 @@
 <template>
 <div class="toolbar" @mousedown="toolbar_mousedown">
     <icon-wrapper icon="trash" @click="trash_click" />
+    <icon-wrapper icon="clone" @click="bring_to_front_click" />
 </div>
 </template>
 
@@ -21,6 +22,11 @@ export default {
             e.stopPropagation();
             this.$store.dispatch(A_POLAROID_DELETE, this.itemId);
         },
+        bring_to_front_click: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.$store.dispatch(A_POLAROID_PROMOTE, this.itemId);
+        },
         toolbar_mousedown: function(e) {
             e = e || window.event;
             var self = this;
@@ -37,7 +43,7 @@ export default {
                     document.onmouseup = null;
                     document.onmousemove = null;
                     self.$store.dispatch(A_POLAROID_MOVE_FINISHED, self.itemId);
-                }
+                };
 
                 document.onmousemove = function(e) {
                     e = e || window.event;
@@ -51,9 +57,7 @@ export default {
 
                     startX = e.clientX;
                     startY = e.clientY;
-                }
-
-                self.$store.dispatch(A_POLAROID_PROMOTE, self.itemId);
+                };
             }
         }
     },
@@ -65,7 +69,7 @@ export default {
     components: {
         'icon-wrapper': icon_wrapper
     }
-}
+};
 </script>
 
 

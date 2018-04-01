@@ -9,7 +9,6 @@
         width: sticky.wide ? '25rem' : '15rem',
         background: colours[sticky.colour]
     }"
-    @click="sticky_clicked"
     >
 
     <sticky-toolbar 
@@ -34,7 +33,6 @@
 <script>
 import sticky_toolbar from './sticky_toolbar.vue';
 import {
-    A_STICKY_PROMOTE,
     A_STICKY_EDIT_CONTENT
 } from '../state/action_types';
 
@@ -48,10 +46,6 @@ export default {
         }
     },
     methods: {
-        sticky_clicked: function(e) {
-            e.preventDefault();
-            this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
-        },
         sticky_input: function(e) {
             this.$store.dispatch(A_STICKY_EDIT_CONTENT, {
                 id: this.itemId,

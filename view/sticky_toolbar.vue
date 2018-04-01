@@ -1,10 +1,11 @@
 <template>
 <div class="toolbar" @mousedown="toolbar_mousedown">
     <icon-wrapper icon="trash" @click="trash_click" />
-    <icon-wrapper icon="bold" @click="toggle_click($event, 'bold')" />
     <icon-wrapper icon="arrows_alt_h" @click="toggle_click($event, 'wide')" />
-    <icon-wrapper icon="align_centre" @click="toggle_click($event, 'centre')" />
     <icon-wrapper icon="paint_brush" @click="colour_click" />
+    <icon-wrapper icon="clone" @click="bring_to_front_click" />
+    <icon-wrapper icon="bold" @click="toggle_click($event, 'bold')" />
+    <icon-wrapper icon="align_centre" @click="toggle_click($event, 'centre')" />
 </div>
 </template>
 
@@ -48,6 +49,11 @@ export default {
             e.stopPropagation();
             this.$store.dispatch(A_STICKY_CYCLE_COLOUR, this.itemId);
         },
+        bring_to_front_click: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
+        },
         toolbar_mousedown: function(e) {
             e = e || window.event;
             var self = this;
@@ -77,8 +83,6 @@ export default {
                     startX = e.clientX;
                     startY = e.clientY;
                 }
-
-                self.$store.dispatch(A_STICKY_PROMOTE, self.itemId);
             }
         }
     },
