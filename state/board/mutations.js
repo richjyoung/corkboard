@@ -27,33 +27,36 @@ export default {
         state.action_group.push(root);
 
         // All elements below current in page, sorted in top-to-bottom order
-        var sorted_ids = state.items.filter((x) => {
+        var possible_items = state.items.filter((x) => {
             return x.y > root.y;
         }).sort((a, b) => {
-            return b.y < b.y;
+            return a.y > b.y;
         });
 
         // Iterate possible items
-        for(var i = 0; i < sorted_ids.length; i++) {
-            var current = sorted_ids[i];
+        for(var i = 0; i < possible_items.length; i++) {
+            var current = possible_items[i];
 
-            // Check if any item in the action group is a parent of this item
-            for(var j = 0; j < state.action_group.length; j++) {
+            // Check if any item in the action group is a parent of this item, finding the lowest
+            for(var j = state.action_group.length - 1; j >= 0; j--) {
                 var parent = state.action_group[j];
 
                 // Child on top of parent
                 if(current.z <= parent.z) {
+                    console.log(parent.id + ' -/-> ' + current.id);
                     continue;
                 }
 
                 // Child below parent
                 if(current.y - parent.y > parent.height) {
+                    console.log(parent.id + ' -/-> ' + current.id);
                     continue;
                 }
 
                 // Parent left of child
                 if(parent.x < current.x) {
                     if((current.x - parent.x) > parent.width) {
+                        console.log(parent.id + ' -/-> ' + current.id);
                         continue;
                     }
                 }
@@ -61,11 +64,14 @@ export default {
                 // Child left of parent
                 if(parent.x >= current.x) {
                     if((parent.x - current.x) > current.width) {
+                        console.log(parent.id + ' -/-> ' + current.id);
                         continue;
                     }
                 }
 
+                console.log(parent.id + ' ---> ' + current.id);
                 state.action_group.push(current);
+                break;
             }
         }
     },
@@ -84,7 +90,9 @@ export default {
             max_z = Math.max(...arr);
         }
 
-        state.action_group.forEach((item) => {
+        state.action_group.sort((a, b) => {
+            return a.z > b.z;
+        }).forEach((item) => {
             Vue.set(item, 'z', ++max_z);
         });
     },

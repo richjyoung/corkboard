@@ -86,16 +86,14 @@ img {
 }
 .pin:before {
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
-    border-bottom-left-radius: 0.2rem;
-    border-bottom-right-radius: 0.2rem;
     content: '';
     display: block;
     height: 2rem;
     left: 0;
     position: absolute;
-    transform-origin: 0.3rem 2.1rem;
+    transform-origin: 0.35rem 2.00rem;
     transform: rotate(90deg);
-    width: .2rem;
+    width: 0.4rem;
     z-index: -2;
 }
 

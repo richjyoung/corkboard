@@ -64,7 +64,9 @@ export default {
     },
     [A_BOARD_ITEM_SET_FIELD]: function(context, payload) {
         context.commit(M_BOARD_ITEM_SET_FIELD, payload);
-        context.commit(M_BOARD_ITEM_SAVE, payload.index);
+        if(!(payload.hasOwnProperty('save') && payload.save == false)) {
+            context.commit(M_BOARD_ITEM_SAVE, payload.index);
+        }
     },
     [A_BOARD_ITEM_DELETE]: function(context, index) {
         var id = context.getters.board_item_by_index(index).id;
