@@ -3,6 +3,16 @@ export const M_APP_OBSERVE_Z = 'app_observe_z';
 export const M_APP_TOGGLE_GODMODE = 'app_toggle_godmode';
 export const M_APP_ZOOM_SET = 'app_zoom_set';
 
+// Board Store
+export const M_BOARD_ADD_ITEM = 'board_add_item';
+export const M_BOARD_START_ACTION = 'board_start_action';
+export const M_BOARD_FINISH_ACTION = 'board_finish_action';
+export const M_BOARD_ITEM_SET_FIELD = 'board_item_set_field';
+export const M_BOARD_MOVE_ACTION_GROUP = 'board_move_action_group';
+export const M_BOARD_PROMOTE_ACTION_GROUP = 'board_promote_action_group';
+export const M_BOARD_ITEM_SAVE = 'board_item_save';
+export const M_BOARD_ITEM_DELETE = 'board_item_delete';
+
 // Sticky Store
 export const M_STICKY_LOAD = 'sticky_load';
 export const M_STICKY_NEW = 'sticky_new';

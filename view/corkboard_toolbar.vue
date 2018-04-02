@@ -33,7 +33,7 @@
 import rem_to_px from '../utils/rem_to_px';
 import icon_wrapper from './icon_wrapper.vue';
 import {
-    A_STICKY_NEW,
+    A_BOARD_ADD_ITEM,
     A_APP_ZOOM_RESET,
     A_APP_ZOOM_IN,
     A_APP_ZOOM_OUT
@@ -58,10 +58,17 @@ export default {
         sticky_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.$store.dispatch(A_STICKY_NEW, {
+
+            var obj = {
+                id: (new Date().getTime()),
+                board: this.$store.state.board.current_board,
+                type: 'sticky',
                 x: e.clientX - rem_to_px(15),
-                y: e.clientY
-            });
+                y: e.clientY,
+                z: this.$store.getters.item_max_field('z') + 1
+            };
+
+            this.$store.dispatch(A_BOARD_ADD_ITEM, obj);
         },
         refresh_click: function(e) {
             e.preventDefault();

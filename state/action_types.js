@@ -1,5 +1,15 @@
 // Global
 export const A_LOAD_STATE = 'load_state';
+export const A_LOAD_ALL = 'load_all';
+
+// Board
+export const A_BOARD_ADD_ITEM = 'board_add_item';
+export const A_BOARD_MOVE_START = 'board_move_start';
+export const A_BOARD_MOVE = 'board_move';
+export const A_BOARD_MOVE_FINISH = 'board_move_finish';
+export const A_BOARD_ITEM_SET_FIELD = 'board_item_set_field';
+export const A_BOARD_ITEM_DELETE = 'board_item_delete';
+
 
 // App
 export const A_APP_OBSERVE_Z = 'app_observe_z';
