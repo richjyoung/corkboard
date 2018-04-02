@@ -60,6 +60,9 @@ export default {
                 field: field,
                 value: !current
             });
+            if(field === 'wide') {
+                this.$emit('resize');
+            }
         },
         colour_click: function() {
             var current = this.sticky.colour || colours[0];

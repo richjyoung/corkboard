@@ -10,7 +10,7 @@ import {
     M_BOARD_ITEM_SAVE,
     M_BOARD_ITEM_DELETE
 } from '../mutation_types';
-import rem_to_px from '../../utils/rem_to_px';
+
 import { db, DB_CORKBOARD } from '../../data/indexeddb';
 
 export default {
@@ -41,18 +41,31 @@ export default {
             for(var j = 0; j < state.action_group.length; j++) {
                 var parent = state.action_group[j];
 
-                // TODO: Assumes sticky
-                var parent_width = parent.wide ? rem_to_px(25) : rem_to_px(15);
-                var parent_height = rem_to_px(15);
+                // Child on top of parent
+                if(current.z <= parent.z) {
+                    continue;
+                }
 
-                if(Math.abs(parent.x - current.x) < parent_width) {
-                    if(current.y - parent.y < parent_height) {
-                        if(current.z > parent.z) {
-                            state.action_group.push(current);
-                            break;
-                        }
+                // Child below parent
+                if(current.y - parent.y > parent.height) {
+                    continue;
+                }
+
+                // Parent left of child
+                if(parent.x < current.x) {
+                    if((current.x - parent.x) > parent.width) {
+                        continue;
                     }
                 }
+
+                // Child left of parent
+                if(parent.x >= current.x) {
+                    if((parent.x - current.x) > current.width) {
+                        continue;
+                    }
+                }
+
+                state.action_group.push(current);
             }
         }
     },
@@ -88,6 +101,6 @@ export default {
         };
     },
     [M_BOARD_ITEM_DELETE]: function(state, index) {
-        Vue.delete(state.items, index);
+        state.items.splice(index, 1);
     }
 };

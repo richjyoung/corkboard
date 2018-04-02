@@ -45,7 +45,7 @@ window.vm = new Vue({
                 var original_size = clipboard_image.getSize();
                 var target_image;
                 if(original_size.height > 500 || original_size.width > 500) {
-                    if(original_size.heigh > original_size.width) {
+                    if(original_size.height > original_size.width) {
                         target_image = clipboard_image.resize({ height: 500 });
                     } else {
                         target_image = clipboard_image.resize({ width: 500 });

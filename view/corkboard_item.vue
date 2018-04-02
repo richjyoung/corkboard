@@ -11,11 +11,13 @@
 
         <sticky
             v-if="item_type === 'sticky'"
-            :index="index" />
+            :index="index"
+            @resize="resize" />
 
-        <polaroid
+        <photo
             v-if="item_type === 'picture'"
-            :index="index" />
+            :index="index"
+            @resize="resize" />
 
     </div>
 </template>
@@ -23,19 +25,20 @@
 
 <script>
 import sticky from './sticky.vue';
-import polaroid from './polaroid.vue';
+import photo from './photo.vue';
 
 import {
     A_BOARD_MOVE_START,
     A_BOARD_MOVE,
-    A_BOARD_MOVE_FINISH
+    A_BOARD_MOVE_FINISH,
+    A_BOARD_ITEM_SET_FIELD
 } from '../state/action_types';
 
 export default {
     name: 'CorkboardItem',
     components: {
         'sticky': sticky,
-        'polaroid': polaroid
+        'photo': photo
     },
     props: { 'index': Number },
     data: function() {
@@ -55,7 +58,22 @@ export default {
     created: function() {
         this.rot = Math.random() * 10 - 5;
     },
+    mounted: function() {
+        this.resize();
+    },
     methods: {
+        resize: function() {
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: 'width',
+                value: this.$el.clientWidth
+            });
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: 'height',
+                value: this.$el.clientHeight
+            });
+        },
         mousedown: function(e) {
             e = e || window.event;
             var self = this;

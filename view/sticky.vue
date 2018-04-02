@@ -7,7 +7,8 @@
         class="sticky">
 
         <sticky-toolbar
-            :index="index" />
+            :index="index"
+            @resize="$emit('resize')" />
 
         <div class="content">
             <textarea
