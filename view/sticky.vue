@@ -12,7 +12,7 @@
             <textarea
                 :value="sticky.content"
                 :style="{
-                    fontFamily: sticky.bold ? 'Permanent Marker' : 'Nanum Pen Script',
+                    fontFamily: sticky.bold ? 'Sticky Bold' : 'Sticky Regular',
                     textAlign: sticky.centre ? 'center' : 'left'
                 }"
                 @keydown="sticky_keydown"
@@ -95,13 +95,14 @@ textarea {
     background-color: transparent;
     border: 0px solid;
     flex: 1 0 auto;
-    font-family: 'Nanum Pen Script';
-    font-size:2rem;
-    line-height: 1;
+    font-family: 'Sticky Regular';
+    font-size: 1.8rem;
+    line-height: 2rem;
     outline: none;
     overflow: hidden;
     resize: none;
     width: 100%;
+    vertical-align: middle;
 }
 
 

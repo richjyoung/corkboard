@@ -40,7 +40,7 @@ export default {
 input {
     border: 0px;
     flex: 0 0 2.5rem;
-    font-family: 'Nanum Pen Script';
+    font-family: 'Sticky Regular';
     font-size: 2rem;
     line-height: 1;
     outline: none;
