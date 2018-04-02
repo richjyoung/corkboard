@@ -1,17 +1,17 @@
 <template>
     <input
-        :value="polaroid.caption"
+        :value="polaroid.title"
         @input="caption_input"
-        @mousedown="mousedown">
+        @mousedown.stop>
 </template>
 
 
 <script>
-import { A_POLAROID_EDIT_CAPTION } from '../state/action_types';
+import { A_BOARD_ITEM_SET_FIELD } from '../state/action_types';
 
 export default {
     name: 'PolaroidCaption',
-    props: { 'itemId': Number },
+    props: { 'index': Number },
     data: function() {
         return {
             rot: 0
@@ -19,16 +19,14 @@ export default {
     },
     computed: {
         polaroid: function() {
-            return this.$store.getters.polaroid(this.itemId);
+            return this.$store.state.board.items[this.index];
         }
     },
     methods: {
-        mousedown: function(e) {
-            e.stopPropagation();
-        },
         caption_input: function(e) {
-            this.$store.dispatch(A_POLAROID_EDIT_CAPTION, {
-                itemId: this.itemId,
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: 'title',
                 value: e.target.value
             });
         }

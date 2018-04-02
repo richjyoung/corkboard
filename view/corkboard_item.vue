@@ -10,7 +10,11 @@
         @mousedown="mousedown">
 
         <sticky
-            v-if="board_item.type === 'sticky'"
+            v-if="item_type === 'sticky'"
+            :index="index" />
+
+        <polaroid
+            v-if="item_type === 'picture'"
             :index="index" />
 
     </div>
@@ -19,6 +23,7 @@
 
 <script>
 import sticky from './sticky.vue';
+import polaroid from './polaroid.vue';
 
 import {
     A_BOARD_MOVE_START,
@@ -29,7 +34,8 @@ import {
 export default {
     name: 'CorkboardItem',
     components: {
-        'sticky': sticky
+        'sticky': sticky,
+        'polaroid': polaroid
     },
     props: { 'index': Number },
     data: function() {
@@ -41,6 +47,9 @@ export default {
     computed: {
         board_item: function() {
             return this.$store.state.board.items[this.index];
+        },
+        item_type: function() {
+            return this.board_item.type ? this.board_item.type : 'sticky';
         }
     },
     created: function() {

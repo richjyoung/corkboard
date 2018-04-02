@@ -15,7 +15,11 @@ export default {
     board_items: function(state) {
         return function(board) {
             return state.items.filter((item) => {
-                return item.board === board;
+                if(!item.board) {
+                    return 'default' === board;
+                } else {
+                    return item.board === board;
+                }
             });
         };
     },

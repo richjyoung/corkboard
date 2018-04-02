@@ -34,6 +34,7 @@ export default {
         };
     },
     [A_BOARD_ADD_ITEM]: function(context, item) {
+        item.id = item.id || (new Date().getTime());
         var tx = db.transaction(DB_CORKBOARD, 'readwrite');
         var store = tx.objectStore(DB_CORKBOARD);
         var req = store.put(item);

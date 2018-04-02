@@ -1,80 +1,36 @@
 <template>
-    <div
-        class="toolbar"
-        @mousedown="toolbar_mousedown">
+    <div class="toolbar">
         <icon-wrapper
             icon="trash"
+            @mousedown.stop
             @click="trash_click" />
-        <icon-wrapper
-            icon="clone"
-            @click="bring_to_front_click" />
     </div>
 </template>
 
 
 <script>
 import icon_wrapper from './icon_wrapper.vue';
-import { A_POLAROID_DELETE, A_POLAROID_MOVE, A_POLAROID_MOVE_FINISHED, A_POLAROID_PROMOTE } from '../state/action_types';
+import { A_BOARD_ITEM_DELETE } from '../state/action_types';
 
 export default {
     name: 'PolaroidToolbar',
     components: {
         'icon-wrapper': icon_wrapper
     },
-    props: { 'itemId': Number },
+    props: { 'index': Number },
     data: function() {
         return {};
     },
     computed: {
         polaroid: function() {
-            return this.$store.getters.polaroid(this.itemId);
+            return this.$store.state.board.items[this.index];
         }
     },
     methods: {
-        trash_click: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.dispatch(A_POLAROID_DELETE, this.itemId);
-        },
-        bring_to_front_click: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.$store.dispatch(A_POLAROID_PROMOTE, this.itemId);
-        },
-        toolbar_mousedown: function(e) {
-            e = e || window.event;
-            var self = this;
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            if(e.target == self.$el) {
-
-                var startX = e.clientX;
-                var startY = e.clientY;
-
-                document.onmouseup = function() {
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                    self.$store.dispatch(A_POLAROID_MOVE_FINISHED, self.itemId);
-                };
-
-                document.onmousemove = function(e) {
-                    e = e || window.event;
-                    e.preventDefault();
-
-                    self.$store.dispatch(A_POLAROID_MOVE, {
-                        itemId: self.itemId,
-                        x: e.clientX - startX,
-                        y: e.clientY - startY
-                    });
-
-                    startX = e.clientX;
-                    startY = e.clientY;
-                };
-            }
+        trash_click: function() {
+            this.$store.dispatch(A_BOARD_ITEM_DELETE, this.index);
         }
-    },
+    }
 };
 </script>
 

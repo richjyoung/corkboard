@@ -4,8 +4,7 @@ import store from './state';
 import { clipboard } from 'electron';
 import {
     A_APP_TOGGLE_GODMODE,
-    A_STICKY_NEW,
-    A_POLAROID_NEW
+    A_BOARD_ADD_ITEM
 } from './state/action_types';
 
 window.vm = new Vue({
@@ -31,9 +30,11 @@ window.vm = new Vue({
             var clipboard_text = clipboard.readText();
             if(clipboard_text) {
                 console.log('Pasting text ' + clipboard_text + '...');
-                this.$store.dispatch(A_STICKY_NEW, {
+                this.$store.dispatch(A_BOARD_ADD_ITEM, {
                     x: window.innerWidth / 2,
                     y: window.innerHeight / 2,
+                    z: this.$store.getters.item_max_field('z') + 1,
+                    type: 'sticky',
                     content: clipboard_text.trim()
                 });
             }
@@ -43,11 +44,11 @@ window.vm = new Vue({
 
                 var original_size = clipboard_image.getSize();
                 var target_image;
-                if(original_size.height > 250 || original_size.width > 250) {
+                if(original_size.height > 500 || original_size.width > 500) {
                     if(original_size.heigh > original_size.width) {
-                        target_image = clipboard_image.resize({ height: 250 });
+                        target_image = clipboard_image.resize({ height: 500 });
                     } else {
-                        target_image = clipboard_image.resize({ width: 250 });
+                        target_image = clipboard_image.resize({ width: 500 });
                     }
                 } else {
                     target_image = clipboard_image;
@@ -59,10 +60,12 @@ window.vm = new Vue({
                 console.log('Pasting ' + original_size.width + 'x' + original_size.height + ' image as '
                     + target_size.width + 'x' + target_size.height + '...');
 
-                this.$store.dispatch(A_POLAROID_NEW, {
+                this.$store.dispatch(A_BOARD_ADD_ITEM, {
                     x: window.innerWidth / 2,
                     y: window.innerHeight / 2,
-                    url: data_url
+                    z: this.$store.getters.item_max_field('z') + 1,
+                    type: 'picture',
+                    content: data_url
                 });
             }
         }
