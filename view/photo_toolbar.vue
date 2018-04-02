@@ -13,7 +13,7 @@ import icon_wrapper from './icon_wrapper.vue';
 import { A_BOARD_ITEM_DELETE } from '../state/action_types';
 
 export default {
-    name: 'PolaroidToolbar',
+    name: 'PhotoToolbar',
     components: {
         'icon-wrapper': icon_wrapper
     },
@@ -38,29 +38,22 @@ export default {
 <style scoped>
 
 .toolbar {
-    width: 17rem;
-    height: 1.5rem;
-    text-align: right;
-    font-size: 1rem;
-}
-
-.toolbar:hover svg {
-    display: inline-block;
+    position: fixed;
+    right: 0.2rem;
+    top: 0.2rem;
 }
 
 .toolbar svg {
-    display: none;
-    float: right;
+    color:rgba(0, 0, 0, 0);
+    font-size: 1.2rem;
+    line-height: 1.2rem;
 }
 
-svg {
-    height: 1rem;
-    padding-top: 0.25rem;
-    padding-right: 0.25rem;
-    color:rgba(0, 0, 0, 0.2);
+.toolbar:hover svg {
+    color: rgba(0, 0, 0, 0.2);
 }
 
-svg:hover {
+.toolbar svg:hover {
     color: rgba(0, 0, 0, 0.3);
 }
 

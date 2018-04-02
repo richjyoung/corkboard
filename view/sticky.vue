@@ -1,27 +1,22 @@
 <template>
     <div
         :style="{
-            top: sticky.y,
-            left: sticky.x,
-            zIndex: sticky.z,
-            transform: 'rotate(' + rot + 'deg)',
             width: sticky.wide ? '25rem' : '15rem',
-            background: colours[sticky.colour]
+            background: sticky.colour ? sticky.colour : '#ffff88'
         }"
         class="sticky">
 
-        <sticky-toolbar
-            :item-id="itemId"
-            @toggle="toggle" />
+        <sticky-toolbar :index="index" />
 
         <div class="content">
             <textarea
                 :value="sticky.content"
                 :style="{
-                    fontFamily: sticky.bold ? 'Permanent Marker' : 'Nanum Pen Script',
+                    fontFamily: sticky.bold ? 'Sticky Bold' : 'Sticky Regular',
                     textAlign: sticky.centre ? 'center' : 'left'
                 }"
                 @keydown="sticky_keydown"
+                @mousedown.stop
                 @input="sticky_input" />
         </div>
     </div>
@@ -31,7 +26,7 @@
 <script>
 import sticky_toolbar from './sticky_toolbar.vue';
 import {
-    A_STICKY_EDIT_CONTENT
+    A_BOARD_ITEM_SET_FIELD
 } from '../state/action_types';
 
 export default {
@@ -39,7 +34,7 @@ export default {
     components: {
         'sticky-toolbar': sticky_toolbar
     },
-    props: { 'itemId': Number },
+    props: { 'index': Number },
     data: function() {
         return {
             colours: ['#ffff88', '#88ff88', '#88ffff', '#ff88ff'],
@@ -48,25 +43,26 @@ export default {
     },
     computed: {
         sticky: function() {
-            return this.$store.getters.sticky(this.itemId);
+            return this.$store.state.board.items[this.index];
         }
     },
     created: function() {
         var self = this;
         self.rot = Math.random() * 10 - 5;
     },
+    updated: function() {
+        this.$emit('resize');
+    },
     methods: {
         sticky_input: function(e) {
-            this.$store.dispatch(A_STICKY_EDIT_CONTENT, {
-                id: this.itemId,
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: 'content',
                 value: e.target.value
             });
         },
         sticky_keydown: function(e) {
             e.stopPropagation();
-        },
-        toggle: function(field) {
-            console.log('field ' + field + ' toggled');
         }
     },
 };
@@ -83,7 +79,6 @@ export default {
     font-size:2rem;
     height: 15rem;
     line-height: 1;
-    position: absolute;
     text-align:center;
 }
 
@@ -100,13 +95,14 @@ textarea {
     background-color: transparent;
     border: 0px solid;
     flex: 1 0 auto;
-    font-family: 'Nanum Pen Script';
-    font-size:2rem;
-    line-height: 1;
+    font-family: 'Sticky Regular';
+    font-size: 1.8rem;
+    line-height: 2rem;
     outline: none;
     overflow: hidden;
     resize: none;
     width: 100%;
+    vertical-align: middle;
 }
 
 
