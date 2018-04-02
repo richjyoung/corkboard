@@ -71,9 +71,8 @@ export default {
     },
     [M_BOARD_MOVE_ACTION_GROUP]: function(state, payload) {
         state.action_group.forEach((item) => {
-            for(var param in payload) {
-                Vue.set(item, param, item[param] + payload[param]);
-            }
+            Vue.set(item, 'x', item.x + payload.x);
+            Vue.set(item, 'y', item.y + payload.y);
         });
     },
     [M_BOARD_PROMOTE_ACTION_GROUP]: function(state) {

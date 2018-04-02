@@ -1,24 +1,23 @@
 <template>
     <div class="photo">
+
         <div class="pin" />
 
-        <!-- <polaroid-toolbar :index="index" /> -->
+        <photo-toolbar :index="index" />
         <img
-            :src="polaroid.content"
+            :src="photo.content"
             @load="$emit('resize', $event)">
     </div>
 </template>
 
 
 <script>
-import polaroid_toolbar from './polaroid_toolbar.vue';
-import polaroid_caption from './polaroid_caption.vue';
+import photo_toolbar from './photo_toolbar.vue';
 
 export default {
     name: 'Photo',
     components: {
-        'polaroid-toolbar': polaroid_toolbar,
-        'polaroid-caption': polaroid_caption
+        'photo-toolbar': photo_toolbar
     },
     props: { 'index': Number },
     data: function() {
@@ -27,7 +26,7 @@ export default {
         };
     },
     computed: {
-        polaroid: function() {
+        photo: function() {
             return this.$store.state.board.items[this.index];
         }
     },
@@ -52,6 +51,10 @@ export default {
     width: 100%;
     height: 100%;
     content: '';
+}
+
+img {
+    user-select: none;
 }
 
 .pin {

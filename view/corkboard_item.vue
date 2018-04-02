@@ -7,6 +7,7 @@
             transform: 'rotate(' + rot + 'deg)',
         }"
         class="corkboard_item"
+        @dblclick="doubleclick"
         @mousedown="mousedown">
 
         <sticky
@@ -62,6 +63,13 @@ export default {
         this.resize();
     },
     methods: {
+        doubleclick: function() {
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: 'z',
+                value: this.$store.getters.item_max_field('z') + 1
+            });
+        },
         resize: function() {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
