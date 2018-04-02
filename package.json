@@ -27,7 +27,17 @@
       "!state/*",
       "!data/*",
       "!utils/*"
-    ]
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis"
+        },
+        {
+          "target": "portable"
+        }
+      ]
+    }
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.5",
