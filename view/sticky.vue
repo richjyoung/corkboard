@@ -6,9 +6,7 @@
         }"
         class="sticky">
 
-        <sticky-toolbar
-            :index="index"
-            @resize="$emit('resize')" />
+        <sticky-toolbar :index="index" />
 
         <div class="content">
             <textarea
@@ -51,6 +49,9 @@ export default {
     created: function() {
         var self = this;
         self.rot = Math.random() * 10 - 5;
+    },
+    updated: function() {
+        this.$emit('resize');
     },
     methods: {
         sticky_input: function(e) {
