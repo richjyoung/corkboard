@@ -1,25 +1,25 @@
 <template>
-    <div
-        class="toolbar"
-        @mousedown="toolbar_mousedown">
+    <div class="toolbar">
         <icon-wrapper
             icon="trash"
-            @mouseup="trash_click" />
+            @mousedown.stop
+            @click="trash_click" />
         <icon-wrapper
             icon="arrows_alt_h"
-            @mouseup="toggle_click($event, 'wide')" />
+            @mousedown.stop
+            @click="toggle_click($event, 'wide')" />
         <icon-wrapper
             icon="paint_brush"
-            @mouseup="colour_click" />
-        <icon-wrapper
-            icon="clone"
-            @mouseup="bring_to_front_click" />
+            @mousedown.stop
+            @click="colour_click" />
         <icon-wrapper
             icon="bold"
-            @mouseup="toggle_click($event, 'bold')" />
+            @mousedown.stop
+            @click="toggle_click($event, 'bold')" />
         <icon-wrapper
             icon="align_centre"
-            @mouseup="toggle_click($event, 'centre')" />
+            @mousedown.stop
+            @click="toggle_click($event, 'centre')" />
     </div>
 </template>
 
@@ -28,94 +28,48 @@
 import icon_wrapper from './icon_wrapper.vue';
 
 import {
-    A_STICKY_DELETE,
-    A_STICKY_TOGGLE_FIELD,
-    A_STICKY_CYCLE_COLOUR,
-    A_STICKY_MOVE_STARTED,
-    A_STICKY_MOVE_FINISHED,
-    A_STICKY_MOVE,
-    A_STICKY_PROMOTE
+    A_BOARD_ITEM_SET_FIELD,
+    A_BOARD_ITEM_DELETE
 } from '../state/action_types';
+
+var colours = ['#ffff88', '#88ff88', '#88ffff', '#ff88ff'];
 
 export default {
     name: 'StickyToolbar',
     components: {
         'icon-wrapper': icon_wrapper
     },
-    props: { 'itemId': Number },
+    props: { 'index': Number },
     data: function() {
         return {
-            moving: false
         };
     },
     computed: {
         sticky: function() {
-            return this.$store.getters.sticky(this.itemId);
+            return this.$store.state.board.items[this.index];
         }
     },
     methods: {
         trash_click: function() {
-            if(!this.moving) {
-                this.$store.dispatch(A_STICKY_DELETE, this.itemId);
-            }
+            this.$store.dispatch(A_BOARD_ITEM_DELETE, this.index);
         },
         toggle_click: function(e, field) {
-            if(!this.moving) {
-                this.$store.dispatch(A_STICKY_TOGGLE_FIELD, {
-                    id: this.itemId,
-                    field: field
-                });
-            }
+            var current = this.sticky[field] || false;
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: field,
+                value: !current
+            });
         },
         colour_click: function() {
-            if(!this.moving) {
-                this.$store.dispatch(A_STICKY_CYCLE_COLOUR, this.itemId);
-            }
-        },
-        bring_to_front_click: function() {
-            if(!this.moving) {
-                this.$store.dispatch(A_STICKY_PROMOTE, this.itemId);
-            }
-        },
-        toolbar_mousedown: function(e) {
-            e = e || window.event;
-            var self = this;
-
-            var startX = e.clientX;
-            var startY = e.clientY;
-
-
-            document.onmouseup = function(e) {
-                document.onmouseup = null;
-                document.onmousemove = null;
-                if(self.moving) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    self.$store.dispatch(A_STICKY_MOVE_FINISHED, self.itemId);
-                }
-                self.moving = false;
-            };
-
-            document.onmousemove = function(e) {
-                e = e || window.event;
-                e.preventDefault();
-
-                if(!self.moving) {
-                    self.$store.dispatch(A_STICKY_MOVE_STARTED, self.itemId);
-                }
-                self.moving = true;
-
-                self.$store.dispatch(A_STICKY_MOVE, {
-                    id: self.itemId,
-                    x: e.clientX - startX,
-                    y: e.clientY - startY
-                });
-
-                startX = e.clientX;
-                startY = e.clientY;
-            };
+            var current = this.sticky.colour || colours[0];
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: 'colour',
+                value: colours[(colours.indexOf(current) + 1) % colours.length]
+            });
         }
-    },
+    }
 };
 </script>
 

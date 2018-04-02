@@ -4,36 +4,36 @@
         tabindex="0"
         @mousedown="corkboard_mousedown">
         <corkboard-toolbar />
-        <sticky
+        <!-- <sticky
             v-for="(sticky, index) in stickies"
             :key="index"
             :item-id="+index" />
         <polaroid
             v-for="(polaroid, index) in polaroids"
             :key="index"
-            :item-id="+index" />
+            :item-id="+index" /> -->
+
+        <corkboard-item
+            v-for="(item, index) in board_items"
+            :key="index"
+            :index="index" />
     </div>
 </template>
 
 
 <script>
 import corkboard_toolbar from './corkboard_toolbar.vue';
-import sticky from './sticky.vue';
-import polaroid from './polaroid.vue';
+import corkboard_item from './corkboard_item.vue';
 
 export default {
     name: 'Corkboard',
     components: {
         'corkboard-toolbar': corkboard_toolbar,
-        'sticky': sticky,
-        'polaroid': polaroid
+        'corkboard-item': corkboard_item
     },
     computed: {
-        stickies: function() {
-            return this.$store.state.stickies.items;
-        },
-        polaroids: function() {
-            return this.$store.state.polaroids.items;
+        board_items: function() {
+            return this.$store.getters.board_items('default');
         }
     },
     methods: {
