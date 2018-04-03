@@ -41,9 +41,14 @@ export default {
     position: fixed;
     box-sizing: border-box;
     right: 0rem;
+    top: -2rem;
     padding: 0.4rem;
     user-select: none;
     height: 2rem;
+}
+
+.toolbar:hover {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .toolbar svg {
@@ -53,11 +58,11 @@ export default {
 }
 
 .toolbar:hover svg {
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .toolbar svg:hover {
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 </style>
