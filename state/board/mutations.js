@@ -1,5 +1,5 @@
 import Vue from 'vue';
-
+import { logIf } from '../../utils/logwrap';
 import {
     M_BOARD_ADD_ITEM,
     M_BOARD_ITEM_SET_FIELD,
@@ -7,18 +7,16 @@ import {
     M_BOARD_FINISH_ACTION,
     M_BOARD_MOVE_ACTION_GROUP,
     M_BOARD_PROMOTE_ACTION_GROUP,
-    M_BOARD_ITEM_SAVE,
     M_BOARD_ITEM_DELETE
 } from '../mutation_types';
 
-import { db, DB_CORKBOARD } from '../../data/indexeddb';
+const DEBUG = true;
 
 export default {
     [M_BOARD_ADD_ITEM]: function(state, item) {
         state.items.push(item);
     },
     [M_BOARD_ITEM_SET_FIELD]: function(state, payload) {
-        // console.log('M_BOARD_ITEM_SET_FIELD: payload=' + JSON.stringify(payload));
         Vue.set(state.items[payload.index], payload.field, payload.value);
     },
     [M_BOARD_START_ACTION]: function(state, index) {
@@ -43,20 +41,20 @@ export default {
 
                 // Child on top of parent
                 if(current.z <= parent.z) {
-                    console.log(parent.id + ' -/-> ' + current.id);
+                    logIf(DEBUG, parent.id + ' -/-> ' + current.id + ' (z below)');
                     continue;
                 }
 
                 // Child below parent
                 if(current.y - parent.y > parent.height) {
-                    console.log(parent.id + ' -/-> ' + current.id);
+                    logIf(DEBUG, parent.id + ' -/-> ' + current.id + ' (y below)');
                     continue;
                 }
 
                 // Parent left of child
                 if(parent.x < current.x) {
                     if((current.x - parent.x) > parent.width) {
-                        console.log(parent.id + ' -/-> ' + current.id);
+                        logIf(DEBUG, parent.id + ' -/-> ' + current.id + ' (x right)');
                         continue;
                     }
                 }
@@ -64,12 +62,12 @@ export default {
                 // Child left of parent
                 if(parent.x >= current.x) {
                     if((parent.x - current.x) > current.width) {
-                        console.log(parent.id + ' -/-> ' + current.id);
+                        logIf(DEBUG, parent.id + ' -/-> ' + current.id + ' (x left)');
                         continue;
                     }
                 }
 
-                console.log(parent.id + ' ---> ' + current.id);
+                logIf(DEBUG, parent.id + ' ---> ' + current.id);
                 state.action_group.push(current);
                 break;
             }
@@ -98,14 +96,6 @@ export default {
     },
     [M_BOARD_FINISH_ACTION]: function(state) {
         state.action_group = [];
-    },
-    [M_BOARD_ITEM_SAVE]: function(state, index) {
-        var tx = db.transaction(DB_CORKBOARD, 'readwrite');
-        var store = tx.objectStore(DB_CORKBOARD);
-        var req = store.put(state.items[index]);
-        req.onsuccess = function() {
-            console.log('Saved item ' + state.items[index].id);
-        };
     },
     [M_BOARD_ITEM_DELETE]: function(state, index) {
         state.items.splice(index, 1);

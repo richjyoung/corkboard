@@ -4,7 +4,8 @@ import store from './state';
 import { clipboard } from 'electron';
 import {
     A_APP_TOGGLE_GODMODE,
-    A_BOARD_ADD_ITEM
+    A_BOARD_ADD_ITEM,
+    A_LOAD_ALL
 } from './state/action_types';
 
 window.vm = new Vue({
@@ -12,6 +13,9 @@ window.vm = new Vue({
     store,
     created: function() {
         document.onkeydown = this.keydown;
+    },
+    mounted: function() {
+        this.$store.dispatch(A_LOAD_ALL);
     },
     methods: {
         keydown: function(e) {
