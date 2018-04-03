@@ -18,6 +18,11 @@
             @mousedown.stop
             @click="toggle_click($event, 'bold')" />
         <icon-wrapper
+            v-if="sticky.size != 2"
+            icon="text_height"
+            @mousedown.stop
+            @click="toggle_click($event, 'dense')" />
+        <icon-wrapper
             icon="paint_brush"
             @mousedown.stop
             @click="colour_click" />
@@ -71,7 +76,8 @@ export default {
                 bold: this.sticky.bold,
                 centre: this.sticky.centre,
                 colour: this.sticky.colour,
-                size: this.sticky.size
+                size: this.sticky.size,
+                dense: this.sticky.dense
             });
         },
         toggle_click: function(e, field) {

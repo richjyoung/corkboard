@@ -7,7 +7,8 @@
             small: sticky.size && sticky.size == 2,
             large: sticky.size && sticky.size == 1,
             bold: sticky.bold,
-            centre: sticky.centre
+            centre: sticky.centre,
+            dense: sticky.dense
         }"
         class="sticky">
 
@@ -106,7 +107,7 @@ textarea {
     flex: 1 0 auto;
     font-family: 'Sticky Regular';
     font-size: 1.6rem;
-    line-height: 2rem;
+    line-height: 2.15rem;
     height: 13rem;
     outline: none;
     overflow: hidden;
@@ -117,6 +118,11 @@ textarea {
     vertical-align: middle;
 }
 
+/* Dense Sticky */
+.sticky.dense textarea {
+    font-size: 1.5rem;
+    line-height: 1.6rem;
+}
 
 /* Large Sticky */
 .sticky.large {
@@ -135,6 +141,10 @@ textarea {
 }
 .sticky.small textarea {
     height: 3rem;
+    line-height: 3rem;
+}
+.sticky.small.dense textarea {
+    font-size: 1.6rem;
     line-height: 3rem;
 }
 
