@@ -19,7 +19,7 @@ module.exports = function(index) {
     win.setMenu(null);
 
     win.loadURL(url.format({
-        pathname: path.join(__dirname, index),
+        pathname: path.resolve(__dirname, '..', index),
         protocol: 'file:',
         slashes: true
     }));
