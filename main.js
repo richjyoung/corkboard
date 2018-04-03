@@ -1,6 +1,7 @@
 const { app } = require('electron');
-const window = require('./window');
-const ipc_setup = require('./ipc');
+const window = require('./app/window');
+const ipc_setup = require('./app/ipc');
+const database_setup = require('./app/sqlite3db');
 
 let win;
 
@@ -11,6 +12,7 @@ app.on('ready', function() {
         win = null;
     });
     ipc_setup(win);
+    database_setup();
     console.log('Application started');
 });
 
