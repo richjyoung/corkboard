@@ -4,8 +4,11 @@ import store from './state';
 import { clipboard } from 'electron';
 import {
     A_APP_TOGGLE_GODMODE,
-    A_BOARD_ADD_ITEM
+    A_BOARD_ADD_ITEM,
+    A_LOAD_ALL
 } from './state/action_types';
+
+import rem_to_px from './utils/rem_to_px';
 
 window.vm = new Vue({
     el: '#corkboard',
@@ -13,10 +16,15 @@ window.vm = new Vue({
     created: function() {
         document.onkeydown = this.keydown;
     },
+    mounted: function() {
+        this.$store.dispatch(A_LOAD_ALL);
+    },
     methods: {
         keydown: function(e) {
             if(e.key == 'v' && e.ctrlKey) {
                 this.paste();
+            } else if (e.key == 'n' && e.ctrlKey) {
+                this.new_sticky();
             } else if (e.key == 'r' && e.ctrlKey) {
                 location.reload();
             } else if (e.key == 's' && e.ctrlKey) {
@@ -25,14 +33,22 @@ window.vm = new Vue({
                 this.$store.dispatch(A_APP_TOGGLE_GODMODE);
             }
         },
+        new_sticky: function() {
+            this.$store.dispatch(A_BOARD_ADD_ITEM, {
+                x: (window.innerWidth - rem_to_px(15)) / 2,
+                y: (window.innerHeight - rem_to_px(15)) / 2,
+                z: this.$store.getters.item_max_field('z') + 1,
+                type: 'sticky'
+            });
+        },
         paste: function() {
 
             var clipboard_text = clipboard.readText();
             if(clipboard_text) {
                 console.log('Pasting text ' + clipboard_text + '...');
                 this.$store.dispatch(A_BOARD_ADD_ITEM, {
-                    x: window.innerWidth / 2,
-                    y: window.innerHeight / 2,
+                    x: (window.innerWidth - rem_to_px(15)) / 2,
+                    y: (window.innerHeight - rem_to_px(15)) / 2,
                     z: this.$store.getters.item_max_field('z') + 1,
                     type: 'sticky',
                     content: clipboard_text.trim()

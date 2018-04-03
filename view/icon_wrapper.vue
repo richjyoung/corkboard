@@ -22,6 +22,7 @@ import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus';
 import faSearchMinus from '@fortawesome/fontawesome-free-solid/faSearchMinus';
 import faClone from '@fortawesome/fontawesome-free-solid/faClone';
+import faTextHeight from '@fortawesome/fontawesome-free-solid/faTextHeight';
 
 var icon_map = {
     trash: faTrash,
@@ -36,7 +37,8 @@ var icon_map = {
     search_plus: faSearchPlus,
     search_minus: faSearchMinus,
     search: faSearch,
-    clone: faClone
+    clone: faClone,
+    text_height: faTextHeight
 };
 
 export default {
