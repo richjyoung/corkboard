@@ -10,6 +10,7 @@
 
         <div class="content">
             <textarea
+                ref="content"
                 :value="sticky.content"
                 :style="{
                     fontFamily: sticky.bold ? 'Sticky Bold' : 'Sticky Regular',
@@ -50,6 +51,9 @@ export default {
         var self = this;
         self.rot = Math.random() * 10 - 5;
     },
+    mounted: function() {
+        this.focus();
+    },
     updated: function() {
         this.$emit('resize');
     },
@@ -63,6 +67,9 @@ export default {
         },
         sticky_keydown: function(e) {
             e.stopPropagation();
+        },
+        focus: function() {
+            this.$refs.content.focus();
         }
     },
 };
