@@ -8,15 +8,18 @@
         }"
         class="corkboard_item"
         @dblclick="doubleclick"
-        @mousedown="mousedown">
+        @mousedown="mousedown"
+        @click="click">
 
         <sticky
             v-if="item_type === 'sticky'"
+            ref="child"
             :index="index"
             @resize="resize" />
 
         <photo
             v-if="item_type === 'picture'"
+            ref="child"
             :index="index"
             @resize="resize" />
 
@@ -69,6 +72,9 @@ export default {
                 field: 'z',
                 value: this.$store.getters.item_max_field('z') + 1
             });
+        },
+        click: function() {
+            this.$refs.child.focus();
         },
         resize: function() {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
