@@ -1,25 +1,30 @@
 <template>
-    <div class="toolbar">
+    <div
+        :class="{
+            small: sticky.size && sticky.size == 2
+        }"
+        class="toolbar">
+
         <icon-wrapper
-            icon="trash"
+            icon="align_centre"
             @mousedown.stop
-            @click="trash_click" />
-        <icon-wrapper
-            icon="arrows_alt_h"
-            @mousedown.stop
-            @click="toggle_click($event, 'wide')" />
-        <icon-wrapper
-            icon="paint_brush"
-            @mousedown.stop
-            @click="colour_click" />
+            @click="toggle_click($event, 'centre')" />
         <icon-wrapper
             icon="bold"
             @mousedown.stop
             @click="toggle_click($event, 'bold')" />
         <icon-wrapper
-            icon="align_centre"
+            icon="paint_brush"
             @mousedown.stop
-            @click="toggle_click($event, 'centre')" />
+            @click="colour_click" />
+        <icon-wrapper
+            icon="arrows_alt_h"
+            @mousedown.stop
+            @click="size_click" />
+        <icon-wrapper
+            icon="trash"
+            @mousedown.stop
+            @click="trash_click" />
     </div>
 </template>
 
@@ -31,8 +36,6 @@ import {
     A_BOARD_ITEM_SET_FIELD,
     A_BOARD_ITEM_DELETE
 } from '../state/action_types';
-
-var colours = ['#ffff88', '#88ff88', '#88ffff', '#ff88ff'];
 
 export default {
     name: 'StickyToolbar',
@@ -61,12 +64,20 @@ export default {
                 value: !current
             });
         },
+        size_click: function() {
+            var current = +this.sticky.size || 0;
+            this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
+                index: this.index,
+                field: 'size',
+                value: (current + 1) % 3
+            });
+        },
         colour_click: function() {
-            var current = this.sticky.colour || colours[0];
+            var current = +this.sticky.colour || 0;
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'colour',
-                value: colours[(colours.indexOf(current) + 1) % colours.length]
+                value: current + 1 % 3
             });
         }
     }
@@ -76,35 +87,40 @@ export default {
 
 <style scoped>
 
+/* Regular Sticky */
 .toolbar {
-    flex: 0 0 2rem;
-    width: 100%;
-    /* background: #efef78; */
-    background: rgba(0, 0, 0, 0.1);
-    text-align: right;
+    position: fixed;
+    box-sizing: border-box;
+    right: 0rem;
+    padding: 0.4rem;
     user-select: none;
+    height: 2rem;
 }
-
-.toolbar:hover svg {
-    display: inline-block;
-}
-
 .toolbar svg {
-    display: none;
-    float: right;
+    color:rgba(0, 0, 0, 0);
+    font-size: 1.2rem;
+    line-height: 1.2rem;
 }
-
-svg {
-    height: 1.2rem;
-    padding: 0px;
-    padding-top: 0.4rem;
-    margin-left: -0.4rem;
-    color:rgba(0, 0, 0, 0.2);
+.toolbar:hover svg {
+    color: rgba(0, 0, 0, 0.4);
 }
-
-svg:hover {
-    color: rgba(0, 0, 0, 0.3);
+.toolbar svg:hover {
+    color: rgba(0, 0, 0, 0.8);
 }
 
 
+/* Small Sticky */
+.toolbar.small {
+    top: -2rem;
+}
+.toolbar.small:hover{
+    background: rgba(0, 0, 0, 0.2);
+}
+.toolbar.small:hover svg {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.toolbar.small svg:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
 </style>
