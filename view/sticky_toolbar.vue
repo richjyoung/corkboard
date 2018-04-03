@@ -6,6 +6,10 @@
         class="toolbar">
 
         <icon-wrapper
+            icon="clone"
+            @mousedown.stop
+            @click="clone_click" />
+        <icon-wrapper
             icon="align_centre"
             @mousedown.stop
             @click="toggle_click($event, 'centre')" />
@@ -34,7 +38,8 @@ import icon_wrapper from './icon_wrapper.vue';
 
 import {
     A_BOARD_ITEM_SET_FIELD,
-    A_BOARD_ITEM_DELETE
+    A_BOARD_ITEM_DELETE,
+    A_BOARD_ADD_ITEM
 } from '../state/action_types';
 
 export default {
@@ -55,6 +60,19 @@ export default {
     methods: {
         trash_click: function() {
             this.$store.dispatch(A_BOARD_ITEM_DELETE, this.index);
+        },
+        clone_click: function() {
+            this.$store.dispatch(A_BOARD_ADD_ITEM, {
+                type: 'sticky',
+                x: this.sticky.x,
+                y: this.sticky.y + this.sticky.height,
+                z: this.$store.getters.item_max_field('z') + 1,
+                content: this.sticky.content,
+                bold: this.sticky.bold,
+                centre: this.sticky.centre,
+                colour: this.sticky.colour,
+                size: this.sticky.size
+            });
         },
         toggle_click: function(e, field) {
             var current = this.sticky[field] || false;
