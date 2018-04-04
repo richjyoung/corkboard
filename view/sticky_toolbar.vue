@@ -101,7 +101,7 @@ export default {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'colour',
-                value: current + 1 % 3
+                value: (current + 1) % 4
             });
         }
     }
