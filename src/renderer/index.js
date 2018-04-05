@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import corkboard from './view/corkboard.vue';
+import corkboard from './corkboard.vue';
 import store from './state';
 import { clipboard } from 'electron';
 import {

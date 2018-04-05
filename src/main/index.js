@@ -1,11 +1,14 @@
 const { app } = require('electron');
-const window = require('./app/window');
-const ipc_setup = require('./app/ipc');
-const database_setup = require('./app/sqlite3db');
+const window = require('./window');
+const ipc_setup = require('./ipc');
+const database_setup = require('./sqlite3db');
 
 let win;
 
 app.on('ready', function() {
+    if(process.env.NODE_ENV ==='development') {
+        require('vue-devtools').install();
+    }
     win = window('index.html');
     win.on('closed', function() {
         console.log('Window closed');
