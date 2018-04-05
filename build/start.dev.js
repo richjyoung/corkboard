@@ -27,7 +27,7 @@ watch(main_config, (err, stats) => {
     } else {
         log('main', 'blue', stats.toString(stat_config));
         electron_process = spawn(path.resolve(__dirname, '../node_modules/electron/dist/electron.exe'), [
-            path.join(__dirname, '..')
+            '--inspect=5858', path.join(__dirname, '..')
         ]);
         electron_process.stdout.on('data', (data) => {
             log('electron', 'yellow', `${data}`);
