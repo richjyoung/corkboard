@@ -11,7 +11,7 @@ fs.readdirSync('node_modules').filter(function(x) {
 
 module.exports = {
     entry: {
-        renderer: path.join(__dirname, '../src/main/index.js')
+        main: path.join(__dirname, '../src/main/index.js')
     },
     target: 'electron-main',
     output: {
