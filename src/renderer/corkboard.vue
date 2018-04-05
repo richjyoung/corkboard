@@ -22,8 +22,8 @@
 
 
 <script>
-import corkboard_toolbar from './corkboard_toolbar.vue';
-import corkboard_item from './corkboard_item.vue';
+import corkboard_toolbar from './view/corkboard_toolbar.vue';
+import corkboard_item from './view/corkboard_item.vue';
 
 export default {
     name: 'Corkboard',
@@ -68,7 +68,24 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
+@font-face {
+    font-family: 'Sticky Regular';
+    src: url('res/fonts/AnnieUseYourTelescope-Regular.ttf');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Sticky Bold';
+    src: url('res/fonts/PermanentMarker-Regular.ttf');
+}
+
+body {
+    background: #795a2c;
+    background-image: url('res/img/corkboard.jpg');
+    background-size: 10rem 10rem;
+    overflow: hidden;
+}
+
 .corkboard {
     width: 100%;
     height: 100%;

@@ -1,13 +1,14 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './index.js',
-    mode: process.env.NODE_ENV,
+    entry: {
+        renderer: path.join(__dirname, '../src/renderer/index.js')
+    },
     target: 'electron-renderer',
     output: {
-        path: path.resolve(__dirname, './dist'),
-        publicPath: '',
-        filename: 'bundle.js'
+        path: path.join(__dirname, '../dist/electron'),
+        filename: '[name].js'
     },
     module: {
         rules: [
@@ -18,14 +19,25 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader'
             },{
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.(png|jpg|gif|svg|ttf)$/,
                 loader: 'file-loader',
                 options: {
-                    name: '[name].[ext]?[hash]'
+                    name: '[hash].[ext]'
                 }
             }
         ]
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.resolve(__dirname, '../src/index.ejs'),
+            minify: {
+                collapseWhitespace: true,
+                removeAttributeQuotes: true,
+                removeComments: true
+            }
+        })
+    ],
     resolve: {
         alias: { 'vue$': 'vue/dist/vue.esm.js' },
         extensions: ['*', '.js', '.vue', '.json']

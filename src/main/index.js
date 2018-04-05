@@ -1,7 +1,7 @@
 const { app } = require('electron');
-const window = require('./app/window');
-const ipc_setup = require('./app/ipc');
-const database_setup = require('./app/sqlite3db');
+const window = require('./window');
+const ipc_setup = require('./ipc');
+const database_setup = require('./sqlite3db');
 
 let win;
 
