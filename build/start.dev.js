@@ -12,10 +12,12 @@ const stat_config = {
 };
 
 let electron_process;
+let closing = false;
 
 watch(main_config, (err, stats) => {
     if(electron_process) {
         log('main', 'blue', 'Stopping existing child process...');
+        closing = true;
         electron_process.kill();
     }
     if (err) {
@@ -30,9 +32,14 @@ watch(main_config, (err, stats) => {
         electron_process.stdout.on('data', (data) => {
             log('electron', 'yellow', `${data}`);
         });
-
         electron_process.stderr.on('data', (data) => {
             log('electron', 'red', `${data}`);
+        });
+        electron_process.on('close', () => {
+            if(!closing) {
+                process.exit(0);
+            }
+            closing = false;
         });
     }
 });
@@ -49,15 +56,15 @@ watch(renderer_config, (err, stats) => {
 
 function watch(config, callback) {
     config.mode = 'development';
-    // var lasthash = null;
+    var lasthash = null;
     webpack(config).watch({
         aggregateTimeout: 300,
         poll: undefined
     }, (err, stats) => {
-        // if(lasthash !== stats.hash) {
-        // }
-        callback(err, stats);
-        // lasthash = stats.hash;
+        if(lasthash !== stats.hash) {
+            callback(err, stats);
+        }
+        lasthash = stats.hash;
     });
 }
 

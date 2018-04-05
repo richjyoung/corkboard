@@ -6,6 +6,9 @@ const database_setup = require('./sqlite3db');
 let win;
 
 app.on('ready', function() {
+    if(process.env.NODE_ENV ==='development') {
+        require('vue-devtools').install();
+    }
     win = window('index.html');
     win.on('closed', function() {
         console.log('Window closed');
