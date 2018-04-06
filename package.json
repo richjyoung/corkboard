@@ -23,6 +23,7 @@
         "@fortawesome/fontawesome-free-solid": "^5.0.9",
         "@fortawesome/vue-fontawesome": "0.0.22",
         "chalk": "^2.3.2",
+        "electron-config": "^1.0.0",
         "mkdirp": "^0.5.1",
         "sqlite3": "^4.0.0",
         "touch": "^3.1.0",
