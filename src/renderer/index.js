@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import corkboard from './corkboard.vue';
 import store from './state';
-import { clipboard } from 'electron';
+import { clipboard, ipcRenderer } from 'electron';
 import {
     A_APP_TOGGLE_GODMODE,
     A_BOARD_ADD_ITEM,
@@ -9,6 +9,10 @@ import {
 } from './state/action_types';
 
 import rem_to_px from './utils/rem_to_px';
+
+
+import { RPC } from '../common/rpc_client';
+
 
 window.vm = new Vue({
     el: '#corkboard',
@@ -18,6 +22,12 @@ window.vm = new Vue({
     },
     mounted: function() {
         this.$store.dispatch(A_LOAD_ALL);
+        RPC.something((err, res) => {
+            console.log(res);
+        });
+        RPC.something((err, res) => {
+            console.log(res);
+        });
     },
     methods: {
         keydown: function(e) {

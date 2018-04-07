@@ -3,24 +3,27 @@ import url from 'url';
 import { BrowserWindow } from 'electron';
 import { App } from './index';
 import { logwrap } from './logwrap';
-const logger = logwrap('App');
+const logger = logwrap('Window');
 
 export class Window {
 
     constructor(tag) {
-        logger.info('Creating window instance...');
         this._tag = tag;
+        logger.verbose('Creating %s window instance', tag);
+
         this._url = url.format({
             pathname: path.join(__dirname, 'index.html'),
             protocol: 'file:',
+            hash: this._tag,
             slashes: true
         });
+        logger.debug('URL: %s', this._url);
+
         this._win = this.create_window();
 
         if (process.env.NODE_ENV == 'development') {
             this.toggle_dev_tools();
         }
-        logger.info('Created window instance');
     }
 
     get win() {
@@ -33,6 +36,7 @@ export class Window {
         };
         Object.assign(opts, App.config.get('winBounds'));
 
+        logger.debug('Browser window options: %j', opts);
         var win = new BrowserWindow(opts);
 
         win.setMenu(null);
@@ -54,6 +58,7 @@ export class Window {
     }
 
     win_ready_to_show() {
+        logger.info('Ready to show');
         if(App.config.get('maximised')) {
             this._win.maximize();
         }
@@ -61,12 +66,13 @@ export class Window {
     }
 
     win_close() {
+        logger.verbose('Close');
         App.config.set('winBounds', this._win.getBounds());
         App.config.set('maximised', this._win.isMaximized());
     }
 
     win_closed() {
-        logger.info('Window closed');
+        logger.info('Closed');
         this._win = null;
     }
 
