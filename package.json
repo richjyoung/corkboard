@@ -7,6 +7,7 @@
     "scripts": {
         "build": "node ./build/build.js",
         "build:dev": "cross-env NODE_ENV=development node ./build/build.js",
+        "build:watch": "cross-env NODE_ENV=development node ./build/build.watch.js",
         "start": "cross-env NODE_ENV=production electron .",
         "start:dev": "cross-env NODE_ENV=development node ./build/start.dev.js",
         "pack": "cross-env NODE_ENV=production electron-builder --dir",
@@ -25,6 +26,7 @@
         "chalk": "^2.3.2",
         "electron-config": "^1.0.0",
         "mkdirp": "^0.5.1",
+        "sprintf-js": "^1.1.1",
         "sqlite3": "^4.0.0",
         "touch": "^3.1.0",
         "vue": "^2.5.16",

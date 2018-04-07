@@ -29,7 +29,7 @@ module.exports = {
             "always"
         ],
         "no-console": [
-            "off"
+            "error"
         ],
         "no-trailing-spaces": [
             "error"
