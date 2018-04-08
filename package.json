@@ -12,8 +12,8 @@
         "start:dev": "cross-env NODE_ENV=development node ./build/start.dev.js",
         "pack": "cross-env NODE_ENV=production electron-builder --dir",
         "dist": "cross-env NODE_ENV=production electron-builder",
-        "lint": "cross-env eslint ./ --ext .vue",
-        "lint:fix": "cross-env eslint ./ --fix --ext .vue",
+        "lint": "cross-env eslint . --ext .js,.vue -f node_modules/eslint-detailed-reporter/lib/detailed.js -o eslint.html",
+        "lint:fix": "cross-env eslint . --fix --ext .js,.vue -f node_modules/eslint-detailed-reporter/lib/detailed.js -o eslint.html",
         "postinstall": "cross-env electron-builder install-app-deps"
     },
     "author": "R. J. Young",
@@ -40,6 +40,7 @@
         "electron": "^1.8.4",
         "electron-builder": "^20.8.1",
         "eslint": "^4.19.1",
+        "eslint-detailed-reporter": "^0.7.3",
         "eslint-plugin-html": "^4.0.2",
         "eslint-plugin-vue": "^4.4.0",
         "file-loader": "^1.1.11",
