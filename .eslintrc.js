@@ -120,7 +120,6 @@ module.exports = {
         'func-call-spacing': [ 'error', 'never' ],
         'func-name-matching': [ 'error' ],
         'func-names': [ 'error', 'as-needed' ],
-        'id-blacklist': [ 'error', 'data', 'callback' ],
         'id-length': [ 'error' ],
         'indent': [ 'error', 4 ],
         'key-spacing': [ 'error' ],
