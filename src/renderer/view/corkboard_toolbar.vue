@@ -60,7 +60,6 @@ export default {
             e.stopPropagation();
 
             var obj = {
-                id: (new Date().getTime()),
                 board: this.$store.state.board.current_board,
                 type: 'sticky',
                 x: e.clientX - rem_to_px(15),

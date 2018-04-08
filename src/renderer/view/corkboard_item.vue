@@ -79,12 +79,12 @@ export default {
         resize: function() {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
-                field: 'width',
+                field: 'settings.width',
                 value: this.$el.clientWidth
             });
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
-                field: 'height',
+                field: 'settings.height',
                 value: this.$el.clientHeight
             });
         },
@@ -101,7 +101,7 @@ export default {
                 if(self.moving) {
                     e.preventDefault();
                     e.stopPropagation();
-                    self.$store.dispatch(A_BOARD_MOVE_FINISH);
+                    self.$store.dispatch(A_BOARD_MOVE_FINISH, self.index);
                 }
                 self.moving = false;
             };

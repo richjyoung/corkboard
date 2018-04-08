@@ -17,12 +17,20 @@ export default {
         state.items.push(item);
     },
     [M_BOARD_ITEM_SET_FIELD]: function(state, payload) {
-        Vue.set(state.items[payload.index], payload.field, payload.value);
+        if(payload.field.split('.')[0] === 'settings') {
+            // Settings field
+            Vue.set(state.items[payload.index].settings, payload.field.split('.')[1], payload.value);
+        } else {
+            Vue.set(state.items[payload.index], payload.field, payload.value);
+        }
     },
     [M_BOARD_START_ACTION]: function(state, index) {
         // Root element
         var root = state.items[index];
         state.action_group.push(root);
+        state.move_action.id = index;
+        state.move_action.x = root.x;
+        state.move_action.y = root.y;
 
         // All elements below current in page, sorted in top-to-bottom order
         var possible_items = state.items.filter((x) => {
@@ -46,14 +54,14 @@ export default {
                 }
 
                 // Child below parent
-                if(current.y - parent.y > parent.height) {
+                if(current.y - parent.y > parent.settings.height) {
                     logIf(DEBUG, parent.id + ' -/-> ' + current.id + ' (y below)');
                     continue;
                 }
 
                 // Parent left of child
                 if(parent.x < current.x) {
-                    if((current.x - parent.x) > parent.width) {
+                    if((current.x - parent.x) > parent.settings.width) {
                         logIf(DEBUG, parent.id + ' -/-> ' + current.id + ' (x right)');
                         continue;
                     }
@@ -61,7 +69,7 @@ export default {
 
                 // Child left of parent
                 if(parent.x >= current.x) {
-                    if((parent.x - current.x) > current.width) {
+                    if((parent.x - current.x) > current.settings.width) {
                         logIf(DEBUG, parent.id + ' -/-> ' + current.id + ' (x left)');
                         continue;
                     }

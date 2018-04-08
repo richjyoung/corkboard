@@ -1,7 +1,7 @@
 <template>
     <div
         :class="{
-            small: sticky.size && sticky.size == 2
+            small: sticky.settings.size && sticky.settings.size == 2
         }"
         class="toolbar">
 
@@ -70,37 +70,33 @@ export default {
             this.$store.dispatch(A_BOARD_ADD_ITEM, {
                 type: 'sticky',
                 x: this.sticky.x,
-                y: this.sticky.y + this.sticky.height,
+                y: this.sticky.y + this.sticky.settings.height,
                 z: this.$store.getters.item_max_field('z') + 1,
                 content: this.sticky.content,
-                bold: this.sticky.bold,
-                centre: this.sticky.centre,
-                colour: this.sticky.colour,
-                size: this.sticky.size,
-                dense: this.sticky.dense
+                settings: Object.assign({}, this.sticky.settings)
             });
         },
         toggle_click: function(e, field) {
-            var current = this.sticky[field] || false;
+            var current = this.sticky.settings[field] || false;
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
-                field: field,
+                field: 'settings.' + field,
                 value: !current
             });
         },
         size_click: function() {
-            var current = +this.sticky.size || 0;
+            var current = +this.sticky.settings.size || 0;
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
-                field: 'size',
+                field: 'settings.size',
                 value: (current + 1) % 3
             });
         },
         colour_click: function() {
-            var current = +this.sticky.colour || 0;
+            var current = +this.sticky.settings.colour || 0;
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
-                field: 'colour',
+                field: 'settings.colour',
                 value: (current + 1) % 4
             });
         }

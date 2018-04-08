@@ -79,7 +79,6 @@ class RPCProxy {
                 args: args
             };
             if(typeof callback === 'function') {
-                logger.debug('%s returned via callback', method);
                 callbacks[id] = callback;
                 parcel.args = args.slice(0, args.length - 1);
             }
