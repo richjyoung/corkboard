@@ -53,5 +53,12 @@ export default {
 
     board_action_group: function(state) {
         return state.action_group;
+    },
+
+    board_move_delta: function(state) {
+        return {
+            dx: state.items[state.move_action.id].x - state.move_action.x,
+            dy: state.items[state.move_action.id].y - state.move_action.y
+        };
     }
 };

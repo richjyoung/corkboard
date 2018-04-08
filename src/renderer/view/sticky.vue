@@ -1,14 +1,14 @@
 <template>
     <div
         :class="{
-            green: sticky.colour && sticky.colour == 1,
-            blue: sticky.colour && sticky.colour == 2,
-            pink: sticky.colour && sticky.colour == 3,
-            small: sticky.size && sticky.size == 2,
-            large: sticky.size && sticky.size == 1,
-            bold: sticky.bold,
-            centre: sticky.centre,
-            dense: sticky.dense
+            green: sticky.settings.colour && sticky.settings.colour == 1,
+            blue: sticky.settings.colour && sticky.settings.colour == 2,
+            pink: sticky.settings.colour && sticky.settings.colour == 3,
+            small: sticky.settings.size && sticky.settings.size == 2,
+            large: sticky.settings.size && sticky.settings.size == 1,
+            bold: sticky.settings.bold,
+            centre: sticky.settings.centre,
+            dense: sticky.settings.dense
         }"
         class="sticky">
 
@@ -21,8 +21,8 @@
                 ref="content"
                 :value="sticky.content"
                 :style="{
-                    fontFamily: sticky.bold ? 'Sticky Bold' : 'Sticky Regular',
-                    textAlign: sticky.centre ? 'center' : 'left'
+                    fontFamily: sticky.settings.bold ? 'Sticky Bold' : 'Sticky Regular',
+                    textAlign: sticky.settings.centre ? 'center' : 'left'
                 }"
                 @keydown="sticky_keydown"
                 @mousedown.stop

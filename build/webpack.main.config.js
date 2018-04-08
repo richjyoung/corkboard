@@ -18,6 +18,7 @@ module.exports = {
         path: path.join(__dirname, '../dist/electron'),
         filename: '[name].js'
     },
+    devtool: 'source-map',
     externals: node_modules,
     module: {
         rules: [
