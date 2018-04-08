@@ -6,6 +6,7 @@ module.exports = {
         renderer: path.join(__dirname, '../src/renderer/index.js')
     },
     target: 'electron-renderer',
+    devtool: 'source-map',
     output: {
         path: path.join(__dirname, '../dist/electron'),
         filename: '[name].js'
