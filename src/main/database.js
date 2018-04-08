@@ -1,14 +1,14 @@
-import path from 'path';
-import sqlite3 from 'sqlite3';
-import mkdirp from 'mkdirp';
-import touch from 'touch';
+import { OPEN_READWRITE, Database as SqlDatabase } from 'sqlite3';
 import { logwrap } from './logwrap';
+import mkdirp from 'mkdirp';
+import path from 'path';
+import touch from 'touch';
+
 const logger = logwrap('Database');
 
 export class Database {
-    constructor(path) {
-        this._path = path;
-        this._conn = undefined;
+    constructor(dbPath) {
+        this._path = dbPath;
         this._version = 0;
         this._ready = false;
 
@@ -22,37 +22,41 @@ export class Database {
     }
 
     connect() {
-        return this.create_path_if_not_exists()
-            .then(() => this.create_file_if_not_exists())
-            .then(() => this.open_db())
-            .then(() => this.load_version())
+        return this.createPathIfNotExists()
+            .then(() => { return this.createFileIfNotExists(); })
+            .then(() => { return this.openDb(); })
+            .then(() => { return this.loadVersion(); })
             .then(() => { this.upgrade(); });
     }
 
     upgrade() {
-        var upgrade_function = `upgrade_${this._version}_${this._version + 1}`;
-        logger.debug('Checking function %s()', upgrade_function);
-        if(this[upgrade_function]) {
-            logger.verbose('Starting upgrade from %d to %d...', this._version, this._version + 1);
-            this[upgrade_function]((err) => {
+        const upgradeFunction = `upgrade_${this._version}_${this._version + 1}`;
+        logger.debug('Checking function %s()', upgradeFunction);
+        if(this[upgradeFunction]) {
+            logger.verbose('Starting upgrade from %d to %d...',
+                this._version, this._version + 1);
+
+            this[upgradeFunction]((err) => {
                 if(err) {
                     logger.error('Upgrade failed');
                 } else {
-                    logger.verbose('Upgrade from %d to %d', this._version, this._version + 1);
+                    logger.verbose('Upgrade from %d to %d',
+                        this._version, this._version + 1);
+
                     this._version++;
                     this.upgrade();
                 }
             });
         } else {
             logger.info('Up to date');
-            this.save_version();
+            this.saveVersion();
         }
     }
 
-    create_path_if_not_exists() {
-        var self = this;
+    createPathIfNotExists() {
+        const self = this;
         return new Promise((resolve, reject) => {
-            mkdirp(path.dirname(self._path), function(err) {
+            mkdirp(path.dirname(self._path), (err) => {
                 if(err) {
                     reject(err);
                 } else {
@@ -62,21 +66,21 @@ export class Database {
         });
     }
 
-    create_file_if_not_exists() {
-        var self = this;
+    createFileIfNotExists() {
+        const self = this;
         return new Promise((resolve) => {
-            touch(self._path, function() {
+            touch(self._path, () => {
                 resolve();
             });
         });
     }
 
-    open_db() {
-        var self = this;
+    openDb() {
+        const self = this;
         return new Promise((resolve, reject) => {
-            self._conn = new sqlite3.Database(self._path, sqlite3.OPEN_READWRITE, (err) => {
-                if(err){
-                    logger.error('Failed to open database at ' + self._path);
+            self._conn = new SqlDatabase(self._path, OPEN_READWRITE, (err) => {
+                if(err) {
+                    logger.error(`Failed to open database at ${self._path}`);
                     reject(err);
                 } else {
                     logger.info('Connected');
@@ -86,25 +90,25 @@ export class Database {
         });
     }
 
-    load_version() {
-        var self = this;
+    loadVersion() {
+        const self = this;
         return new Promise((resolve, reject) => {
             self._conn.get('PRAGMA user_version;', (err, result) => {
                 if(err) {
                     reject(err);
                 } else {
                     self._version = result.user_version;
-                    logger.verbose('Version ' + self._version);
+                    logger.verbose(`Version ${self._version}`);
                     resolve();
                 }
             });
         });
     }
 
-    save_version() {
-        var self = this;
+    saveVersion() {
+        const self = this;
         return new Promise((resolve, reject) => {
-            self._conn.get('PRAGMA user_version = ' + this._version + ';', (err, result) => {
+            self._conn.get(`PRAGMA user_version = ${this._version};`, (err) => {
                 if(err) {
                     reject(err);
                 } else {
@@ -115,8 +119,8 @@ export class Database {
         });
     }
 
-    upgrade_0_1(callback) {
-        var query = [
+    upgrade_0_1(callback) { // eslint-disable-line camelcase
+        const query = [
             'CREATE TABLE IF NOT EXISTS corkboard (',
             'id INTEGER PRIMARY KEY,',
             'type TEXT NOT NULL,',
@@ -132,5 +136,4 @@ export class Database {
 
         this._conn.get(query, callback);
     }
-
 }

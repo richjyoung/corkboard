@@ -1,30 +1,32 @@
-import path from 'path';
 import { app } from 'electron';
-import electron_config from 'electron-config';
-import { Window } from './window';
 import { Database } from './database';
+import ElectronConfig from 'electron-config';
 import { logwrap } from './logwrap';
+import path from 'path';
+import { Window } from './window';
+
 const logger = logwrap('App');
 
 export class App {
-
     constructor() {
-        this._config = new electron_config();
+        this._config = new ElectronConfig();
         logger.debug('Application config: %j', this._config.store);
 
-        this._database_path = path.join(app.getPath('userData'), 'default.db');
-        logger.debug('Database path: %s', this._database_path);
+        this._databasePath = path.join(app.getPath('userData'), 'default.db');
+        logger.debug('Database path: %s', this._databasePath);
 
-        this._database = new Database(this._database_path);
+        this._database = new Database(this._databasePath);
         this._windows = [];
 
         this._env = process.env.NODE_ENV || 'production';
         logger.debug('NODE_ENV: %s', this._env);
 
         // App callbacks
-        app.on('ready', evt => this.app_ready(evt));
-        app.on('window-all-closed', evt => this.app_window_all_closed(evt));
-        app.on('quit', evt => this.app_quit(evt));
+        app.on('ready', (evt) => { return this.appReady(evt); });
+        app.on('window-all-closed', (evt) => {
+            return App.appWindowAllClosed(evt);
+        });
+        app.on('quit', (evt) => { return this.appQuit(evt); });
     }
 
     get config() {
@@ -35,17 +37,17 @@ export class App {
         return this._database;
     }
 
-    app_ready() {
+    appReady() {
+        const win = new Window('corkboard');
         logger.info('Ready');
-        var win = new Window('corkboard');
-        if(this._env ==='development') {
-            require('vue-devtools').install();
-            win.toggle_dev_tools();
+        if(this._env === 'development') {
+            require('vue-devtools').install(); // eslint-disable-line global-require
+            win.toggleDevTools();
         }
         this._windows.push(win);
     }
 
-    app_window_all_closed() {
+    static appWindowAllClosed() {
         logger.verbose('Application windows closed');
         if(process.platform !== 'darwin') {
             logger.info('Application exited');
@@ -53,14 +55,14 @@ export class App {
         }
     }
 
-    app_quit() {
+    appQuit() {
         this._database.close();
         logger.info('Quit');
     }
 
-    web_contents_window(web_contents) {
-        return this._windows.filter((x) => {
-            return x.win.webContents == web_contents;
+    webContentsWindow(webContents) {
+        return this._windows.filter((window) => {
+            return window.win.webContents === webContents;
         })[0];
     }
 }

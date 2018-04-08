@@ -1,63 +1,61 @@
+import { App } from './index';
+import { BrowserWindow } from 'electron';
+import { logwrap } from './logwrap';
 import path from 'path';
 import url from 'url';
-import { BrowserWindow } from 'electron';
-import { App } from './index';
-import { logwrap } from './logwrap';
+
 const logger = logwrap('Window');
 
 export class Window {
-
     constructor(tag) {
         this._tag = tag;
         logger.verbose('Creating %s window instance', tag);
 
         this._url = url.format({
+            hash: this._tag,
             pathname: path.join(__dirname, 'index.html'),
             protocol: 'file:',
-            hash: this._tag,
             slashes: true
         });
         logger.debug('URL: %s', this._url);
 
-        this._win = this.create_window();
+        this._win = this.createWindow();
 
-        if (process.env.NODE_ENV == 'development') {
-            this.toggle_dev_tools();
+        if(process.env.NODE_ENV === 'development') {
+            this.toggleDevTools();
         }
     }
 
-    get win() {
+    get browserWindow() {
         return this._win;
     }
 
-    create_window() {
-        var opts = {
-            show: false
-        };
-        Object.assign(opts, App.config.get('winBounds'));
+    createWindow() {
+        const opts = { show: false };
+        const win = new BrowserWindow(opts);
 
+        Object.assign(opts, App.config.get('winBounds'));
         logger.debug('Browser window options: %j', opts);
-        var win = new BrowserWindow(opts);
 
         win.setMenu(null);
         win.loadURL(this._url);
 
-        win.once('ready-to-show', () => this.win_ready_to_show());
-        win.on('close', () => this.win_close());
-        win.on('closed', () => this.win_closed());
+        win.once('ready-to-show', () => { return this.winReadyToShow(); });
+        win.on('close', () => { return this.winClose(); });
+        win.on('closed', () => { return this.winClosed(); });
 
         return win;
     }
 
-    toggle_dev_tools() {
+    toggleDevTools() {
         this._win.toggleDevTools();
     }
 
-    toggle_fullscreen() {
+    toggleFullscreen() {
         this._win.setFullScreen(!this._win.isFullScreen());
     }
 
-    win_ready_to_show() {
+    winReadyToShow() {
         logger.info('Ready to show');
         if(App.config.get('maximised')) {
             this._win.maximize();
@@ -65,15 +63,14 @@ export class Window {
         this._win.show();
     }
 
-    win_close() {
+    winClose() {
         logger.verbose('Close');
         App.config.set('winBounds', this._win.getBounds());
         App.config.set('maximised', this._win.isMaximized());
     }
 
-    win_closed() {
+    winClosed() {
         logger.info('Closed');
         this._win = null;
     }
-
 }

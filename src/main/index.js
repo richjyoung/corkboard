@@ -4,11 +4,11 @@ setlevel('debug');
 logger.info('Starting application at %s', new Date().toLocaleString());
 
 import { App } from './app';
-import { RPC } from './rpc_server';
 import methods from './rpc_methods';
+import { RPC } from './rpc_server';
 
-let app = new App();
-let rpc = new RPC(methods);
+const app = new App();
+const rpc = new RPC(methods);
 
 export { app as App, rpc as RPC };
 

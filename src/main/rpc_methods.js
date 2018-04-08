@@ -1,27 +1,31 @@
 import { App } from './index';
 
-export default class {
+const QUERY_LAST_ROW = 'SELECT last_insert_rowid();';
 
+export default class {
     static db_load_all(evt, callback) {
-        var query = 'SELECT id, type, content, title, x, y, z, settings from corkboard;';
+        const query = [
+            'SELECT id, type, content, title, x, y, z, settings',
+            'FROM corkboard;'
+        ].join(' ');
+
         App.database.connection.all(query, (err, rows) => {
             if(err) {
-                callback(err);
-            } else {
-                rows.forEach((x) => {
-                    if(x.settings) {
-                        x.settings = JSON.parse(x.settings);
-                    } else {
-                        x.settings = {};
-                    }
-                });
-                callback(undefined, rows);
+                return callback(err);
             }
+            rows.forEach((row) => {
+                if(row.settings) {
+                    row.settings = JSON.parse(row.settings);
+                } else {
+                    row.settings = {};
+                }
+            });
+            return callback(null, rows);
         });
     }
 
     static db_add_item(evt, item, callback) {
-        var query = [
+        const query = [
             'INSERT INTO corkboard (',
             'type, content, title, x, y, z, settings',
             ') VALUES (',
@@ -29,7 +33,7 @@ export default class {
             ');'
         ].join('');
 
-        var params = [
+        const params = [
             item.type,
             item.content,
             item.title,
@@ -41,21 +45,20 @@ export default class {
 
         App.database.connection.all(query, params, (err) => {
             if(err) {
-                callback(err);
-            } else {
-                App.database.connection.all('SELECT last_insert_rowid();', (err, rows) => {
-                    if(err) {
-                        callback(err);
-                    } else {
-                        callback(undefined, rows[0]['last_insert_rowid()']);
-                    }
-                });
+                return callback(err);
             }
+            App.database.connection.all(QUERY_LAST_ROW, (err2, rows) => {
+                if(err2) {
+                    return callback(err2);
+                }
+                return callback(null, rows[0]['last_insert_rowid()']);
+            });
+            return null;
         });
     }
 
     static db_move_finish(evt, indexes, delta, callback) {
-        var query = [
+        const query = [
             'UPDATE corkboard SET',
             'x = x + ?,',
             'y = y + ?',
@@ -64,7 +67,7 @@ export default class {
             ')'
         ].join(' ');
 
-        var params = [
+        const params = [
             delta.dx,
             delta.dy
         ];
@@ -73,31 +76,32 @@ export default class {
     }
 
     static db_set_field(evt, id, field, value, callback) {
-        if(typeof value === 'object') {
-            value = JSON.stringify(value);
-        }
-
-        var query = [
+        const query = [
             'UPDATE corkboard SET',
-            field + '=?',
+            `${field}=?`,
             'WHERE id=?'
         ].join(' ');
 
-        var params = [
+        const params = [
             value,
             id
-        ];
+        ].map((param) => {
+            if(typeof param === 'object') {
+                return JSON.stringify(param);
+            }
+            return param;
+        });
 
         App.database.connection.all(query, params, callback);
     }
 
     static db_delete(evt, id, callback) {
-        var query = [
+        const query = [
             'DELETE FROM corkboard',
             'WHERE id=?;'
         ].join(' ');
 
-        var params = [
+        const params = [
             id
         ];
 
@@ -105,11 +109,10 @@ export default class {
     }
 
     static toggle_fullscreen(evt) {
-        App.web_contents_window(evt.sender).toggle_fullscreen();
+        App.webContentsWindow(evt.sender).toggle_fullscreen();
     }
 
     static toggle_devtools(evt) {
-        App.web_contents_window(evt.sender).toggle_dev_tools();
+        App.webContentsWindow(evt.sender).toggle_dev_tools();
     }
-
 }
