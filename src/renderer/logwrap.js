@@ -1,6 +1,6 @@
 import { sprintf } from 'sprintf-js';
 
-let loglevel = 'silly';
+let loglevel = 'info';
 
 export function setlevel(level) {
     loglevel = level;

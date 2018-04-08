@@ -20,13 +20,14 @@ import {
 } from '../mutation_types';
 
 import { db, combine_settings, extract_settings } from '../sqlite3db_proxy';
+import { RPC } from '../../rpc_client';
 
 const DEBUG = false;
 
 export default {
     [A_LOAD_ALL]: function(context) {
         var query = 'SELECT id, type, content, title, x, y, z, settings from corkboard;';
-        db.all(query, (err, rows) => {
+        RPC.db_all(query, (err, rows) => {
             errorIf(err, err);
             combine_settings(rows);
             rows.forEach((row) => { context.commit(M_BOARD_ADD_ITEM, row); });
@@ -51,9 +52,9 @@ export default {
             extract_settings(item)
         ];
 
-        db.all(query, params, (err) => {
+        RPC.db_all(query, params, (err) => {
             errorIf(err, err);
-            db.all('SELECT last_insert_rowid();', (err, rows) => {
+            RPC.db_all('SELECT last_insert_rowid();', (err, rows) => {
                 errorIf(err, err);
                 item.id = rows[0]['last_insert_rowid()'];
                 logIf(DEBUG, 'Added item ' + item.id);
@@ -91,7 +92,7 @@ export default {
                 item.id
             ];
 
-            db.all(query, params, (err) => {
+            RPC.db_all(query, params, (err) => {
                 errorIf(err, err);
                 logIf(DEBUG, 'Saved item ' + item.id);
             });
@@ -121,7 +122,7 @@ export default {
             item.id
         ];
 
-        db.all(query, params, (err) => {
+        RPC.db_all(query, params, (err) => {
             errorIf(err, err);
             logIf(DEBUG, 'Saved item ' + item.id);
         });
@@ -138,7 +139,7 @@ export default {
             id
         ];
 
-        db.all(query, params, (err) => {
+        RPC.db_all(query, params, (err) => {
             errorIf(err, err);
             logIf(DEBUG, 'Deleted item ' + id);
             context.commit(M_BOARD_ITEM_DELETE, index);

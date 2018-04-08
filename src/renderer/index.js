@@ -9,9 +9,8 @@ import {
 } from './state/action_types';
 
 import rem_to_px from './utils/rem_to_px';
-
-
-import { RPC } from '../common/rpc_client';
+import { setlevel } from './logwrap';
+setlevel('debug');
 
 
 window.vm = new Vue({
@@ -22,12 +21,6 @@ window.vm = new Vue({
     },
     mounted: function() {
         this.$store.dispatch(A_LOAD_ALL);
-        RPC.something((err, res) => {
-            console.log(res);
-        });
-        RPC.something((err, res) => {
-            console.log(res);
-        });
     },
     methods: {
         keydown: function(e) {

@@ -39,7 +39,7 @@ import {
     A_APP_ZOOM_OUT
 } from '../state/action_types';
 
-var { ipcRenderer } = require('electron');
+import { RPC }  from '../rpc_client';
 
 export default {
     name: 'CorkboardToolbar',
@@ -95,12 +95,12 @@ export default {
         fullscreen_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            ipcRenderer.send('toggle_fullscreen');
+            RPC.toggle_fullscreen();
         },
         devtools_click: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            ipcRenderer.send('toggle_devtools');
+            RPC.toggle_devtools();
         }
     },
 };
