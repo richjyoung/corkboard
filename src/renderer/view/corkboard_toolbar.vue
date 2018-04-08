@@ -33,34 +33,32 @@
 import rem_to_px from '../utils/rem_to_px';
 import icon_wrapper from './icon_wrapper.vue';
 import {
-    A_BOARD_ADD_ITEM,
-    A_APP_ZOOM_RESET,
     A_APP_ZOOM_IN,
-    A_APP_ZOOM_OUT
+    A_APP_ZOOM_OUT,
+    A_APP_ZOOM_RESET,
+    A_BOARD_ADD_ITEM
 } from '../state/action_types';
 
-import { RPC }  from '../rpc_client';
+import { RPC } from '../rpc_client';
 
 export default {
     name: 'CorkboardToolbar',
-    components: {
-        'icon-wrapper': icon_wrapper
-    },
+    components: { 'icon-wrapper': icon_wrapper },
     computed: {
-        z: function() {
+        z() {
             return this.$store.state.app.maxZ + 1;
         },
-        godmode: function() {
+        godmode() {
             return this.$store.state.app.godmode;
         }
     },
     methods: {
-        sticky_click: function(e) {
+        sticky_click(e) {
             e.preventDefault();
             e.stopPropagation();
 
-            var obj = {
-                board: this.$store.state.board.current_board,
+            const obj = {
+                board: this.$store.state.board.currentBoard,
                 type: 'sticky',
                 x: e.clientX - rem_to_px(15),
                 y: e.clientY,
@@ -69,15 +67,15 @@ export default {
 
             this.$store.dispatch(A_BOARD_ADD_ITEM, obj);
         },
-        refresh_click: function(e) {
+        refresh_click(e) {
             e.preventDefault();
             e.stopPropagation();
             location.reload();
         },
-        zoom_click: function(e, mode) {
+        zoom_click(e, mode) {
             e.preventDefault();
             e.stopPropagation();
-            switch (mode) {
+            switch(mode) {
             case 'in':
                 this.$store.dispatch(A_APP_ZOOM_IN);
                 break;
@@ -91,17 +89,17 @@ export default {
                 break;
             }
         },
-        fullscreen_click: function(e) {
+        fullscreen_click(e) {
             e.preventDefault();
             e.stopPropagation();
             RPC.toggle_fullscreen();
         },
-        devtools_click: function(e) {
+        devtools_click(e) {
             e.preventDefault();
             e.stopPropagation();
             RPC.toggle_devtools();
         }
-    },
+    }
 };
 </script>
 

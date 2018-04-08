@@ -12,20 +12,24 @@ import {
     M_APP_ZOOM_SET
 } from '../mutation_types';
 
+const ZOOM_INCREMENT = 0.1;
+
 export default {
-    [A_APP_TOGGLE_GODMODE]: function(context) {
+    [A_APP_OBSERVE_Z](context, zIndex) {
+        context.commit(M_APP_OBSERVE_Z, zIndex);
+    },
+    [A_APP_TOGGLE_GODMODE](context) {
         context.commit(M_APP_TOGGLE_GODMODE);
     },
-    [A_APP_OBSERVE_Z]: function(context, z) {
-        context.commit(M_APP_OBSERVE_Z, z);
+    [A_APP_ZOOM_IN](context) {
+        context.commit(M_APP_ZOOM_SET,
+            context.getters.zoom_factor + ZOOM_INCREMENT);
     },
-    [A_APP_ZOOM_IN]: function(context) {
-        context.commit(M_APP_ZOOM_SET, context.getters.zoom_factor + 0.1);
+    [A_APP_ZOOM_OUT](context) {
+        context.commit(M_APP_ZOOM_SET,
+            context.getters.zoom_factor - ZOOM_INCREMENT);
     },
-    [A_APP_ZOOM_OUT]: function(context) {
-        context.commit(M_APP_ZOOM_SET, context.getters.zoom_factor - 0.1);
-    },
-    [A_APP_ZOOM_RESET]: function(context) {
+    [A_APP_ZOOM_RESET](context) {
         context.commit(M_APP_ZOOM_SET, 1);
     }
 };

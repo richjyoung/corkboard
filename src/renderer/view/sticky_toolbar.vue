@@ -42,31 +42,28 @@
 import icon_wrapper from './icon_wrapper.vue';
 
 import {
-    A_BOARD_ITEM_SET_FIELD,
+    A_BOARD_ADD_ITEM,
     A_BOARD_ITEM_DELETE,
-    A_BOARD_ADD_ITEM
+    A_BOARD_ITEM_SET_FIELD
 } from '../state/action_types';
 
 export default {
     name: 'StickyToolbar',
-    components: {
-        'icon-wrapper': icon_wrapper
-    },
-    props: { 'index': Number },
-    data: function() {
-        return {
-        };
+    components: { 'icon-wrapper': icon_wrapper },
+    props: { index: Number },
+    data() {
+        return {};
     },
     computed: {
-        sticky: function() {
+        sticky() {
             return this.$store.state.board.items[this.index];
         }
     },
     methods: {
-        trash_click: function() {
+        trash_click() {
             this.$store.dispatch(A_BOARD_ITEM_DELETE, this.index);
         },
-        clone_click: function() {
+        clone_click() {
             this.$store.dispatch(A_BOARD_ADD_ITEM, {
                 type: 'sticky',
                 x: this.sticky.x,
@@ -76,24 +73,24 @@ export default {
                 settings: Object.assign({}, this.sticky.settings)
             });
         },
-        toggle_click: function(e, field) {
-            var current = this.sticky.settings[field] || false;
+        toggle_click(e, field) {
+            const current = this.sticky.settings[field] || false;
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
-                field: 'settings.' + field,
+                field: `settings.${field}`,
                 value: !current
             });
         },
-        size_click: function() {
-            var current = +this.sticky.settings.size || 0;
+        size_click() {
+            const current = Number(this.sticky.settings.size) || 0;
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'settings.size',
                 value: (current + 1) % 3
             });
         },
-        colour_click: function() {
-            var current = +this.sticky.settings.colour || 0;
+        colour_click() {
+            const current = Number(this.sticky.settings.colour) || 0;
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'settings.colour',

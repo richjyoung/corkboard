@@ -6,9 +6,9 @@ class RPCProxy {
     constructor() {
         this._id = 0;
         this._callbacks = {};
-        var self = this;
+        const self = this;
         return new Proxy(this, {
-            get: function (target, prop) {
+            get(target, prop) {
                 if(typeof self[prop] === 'undefined') {
                     self.attach_rpc_endpoint(prop);
                 }
@@ -26,7 +26,7 @@ class RPCProxy {
     }
 
     ipc_result(method, evt, id, args) {
-        var callbacks = this._callbacks[method];
+        const callbacks = this._callbacks[method];
         if(callbacks[id]) {
             callbacks[id](undefined, ...args);
             callbacks[id] = undefined;
@@ -35,7 +35,7 @@ class RPCProxy {
     }
 
     ipc_error(method, evt, id, err) {
-        var callbacks = this._callbacks[method];
+        const callbacks = this._callbacks[method];
         if(callbacks[id]) {
             callbacks[id](err || {});
             callbacks[id] = undefined;
@@ -44,15 +44,15 @@ class RPCProxy {
     }
 
     attach_rpc_endpoint(method) {
-        var self = this;
+        const self = this;
         logger.debug('Attaching RPC endpoint for method %s', method);
 
         this._callbacks[method] = this._callbacks[method] || {};
-        var callbacks = this._callbacks[method];
+        const callbacks = this._callbacks[method];
 
-        var rpc_signature = `rpc_${method}`;
-        var rpc_callback = `rpc_${method}_r`;
-        var rpc_error = `rpc_${method}_e`;
+        const rpc_signature = `rpc_${method}`;
+        const rpc_callback = `rpc_${method}_r`;
+        const rpc_error = `rpc_${method}_e`;
 
         // Register success handler
         this[rpc_callback] = function(evt, args) {
@@ -71,12 +71,12 @@ class RPCProxy {
 
         // Register method proxy
         this[method] = function() {
-            var args = Array.prototype.slice.call(arguments);
-            var id = this.next_id();
-            var callback = args[args.length - 1];
-            var parcel = {
-                id: id,
-                args: args
+            const args = Array.prototype.slice.call(arguments);
+            const id = this.next_id();
+            const callback = args[args.length - 1];
+            const parcel = {
+                id,
+                args
             };
             if(typeof callback === 'function') {
                 callbacks[id] = callback;
@@ -85,8 +85,6 @@ class RPCProxy {
             logger.debug('Transaction: method=%s,id=%d,args=%j', method, id, parcel.args);
             ipcRenderer.send(rpc_signature, parcel);
         };
-
-
     }
 }
 

@@ -11,26 +11,24 @@ import { A_BOARD_ITEM_SET_FIELD } from '../state/action_types';
 
 export default {
     name: 'PolaroidCaption',
-    props: { 'index': Number },
-    data: function() {
-        return {
-            rot: 0
-        };
+    props: { index: Number },
+    data() {
+        return { rot: 0 };
     },
     computed: {
-        polaroid: function() {
+        polaroid() {
             return this.$store.state.board.items[this.index];
         }
     },
     methods: {
-        caption_input: function(e) {
+        caption_input(e) {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'title',
                 value: e.target.value
             });
         }
-    },
+    }
 };
 </script>
 

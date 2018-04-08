@@ -32,17 +32,16 @@ export default {
         'corkboard-item': corkboard_item
     },
     computed: {
-        board_items: function() {
+        board_items() {
             return this.$store.getters.board_items('default');
         }
     },
     methods: {
-        corkboard_mousedown: function (e) {
+        corkboard_mousedown(e) {
             e = e || window.event;
             if(e.target == this.$el) {
-
-                var startX = e.clientX;
-                var startY = e.clientY;
+                let startX = e.clientX;
+                let startY = e.clientY;
 
                 document.onmouseup = function() {
                     document.onmouseup = null;
@@ -53,8 +52,8 @@ export default {
                     e = e || window.event;
                     e.preventDefault();
 
-                    var x = e.clientX - startX;
-                    var y = e.clientY - startY;
+                    const x = e.clientX - startX;
+                    const y = e.clientY - startY;
 
                     startX = e.clientX;
                     startY = e.clientY;
@@ -63,7 +62,7 @@ export default {
                 };
             }
         }
-    },
+    }
 };
 </script>
 

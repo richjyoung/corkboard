@@ -1,8 +1,8 @@
 export default {
-    maxZ: function(state) {
+    maxZ(state) {
         return state.maxZ;
     },
-    zoom_factor: function(state) {
+    zoomFactor(state) {
         return state.zoom_factor;
     }
 };

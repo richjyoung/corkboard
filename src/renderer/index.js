@@ -1,93 +1,100 @@
-import Vue from 'vue';
-import corkboard from './corkboard.vue';
-import store from './state';
-import { clipboard, ipcRenderer } from 'electron';
 import {
     A_APP_TOGGLE_GODMODE,
     A_BOARD_ADD_ITEM,
     A_LOAD_ALL
 } from './state/action_types';
-
-import rem_to_px from './utils/rem_to_px';
+import {
+    PHOTO_MAX_DIMENSION,
+    STICKY_REGULAR_WIDTH
+} from './constants';
+import { clipboard } from 'electron';
+import corkboard from './corkboard.vue';
+import remToPx from './utils/rem_to_px';
 import { setlevel } from './logwrap';
+import store from './state';
+import Vue from 'vue';
+
 setlevel('debug');
 
-
 window.vm = new Vue({
+    /* eslint-disable sort-keys */
     el: '#corkboard',
     store,
-    created: function() {
+    created() {
         document.onkeydown = this.keydown;
     },
-    mounted: function() {
+    mounted() {
         this.$store.dispatch(A_LOAD_ALL);
     },
     methods: {
-        keydown: function(e) {
-            if(e.key == 'v' && e.ctrlKey) {
+        keydown(e) {
+            if(e.key === 'v' && e.ctrlKey) {
                 this.paste();
-            } else if (e.key == 'n' && e.ctrlKey) {
-                this.new_sticky();
-            } else if (e.key == 'r' && e.ctrlKey) {
+            } else if(e.key === 'n' && e.ctrlKey) {
+                this.newSticky();
+            } else if(e.key === 'r' && e.ctrlKey) {
                 location.reload();
-            } else if (e.key == 's' && e.ctrlKey) {
+            } else if(e.key === 's' && e.ctrlKey) {
                 this.$store.dispatch('save_state');
-            } else if (e.code == 'KeyA' && e.ctrlKey && e.altKey && e.shiftKey) {
+            } else if(e.code === 'KeyA' && e.ctrlKey && e.altKey
+                && e.shiftKey) {
+
                 this.$store.dispatch(A_APP_TOGGLE_GODMODE);
             }
         },
-        new_sticky: function() {
+        newSticky() {
             this.$store.dispatch(A_BOARD_ADD_ITEM, {
-                x: (window.innerWidth - rem_to_px(15)) / 2,
-                y: (window.innerHeight - rem_to_px(15)) / 2,
+                x: (window.innerWidth - remToPx(STICKY_REGULAR_WIDTH)) / 2,
+                y: (window.innerHeight - remToPx(STICKY_REGULAR_WIDTH)) / 2,
                 z: this.$store.getters.item_max_field('z') + 1,
                 type: 'sticky'
             });
         },
-        paste: function() {
-
-            var clipboard_text = clipboard.readText();
-            if(clipboard_text) {
-                console.log('Pasting text ' + clipboard_text + '...');
+        paste() {
+            const clipboardText = clipboard.readText();
+            if(clipboardText) {
                 this.$store.dispatch(A_BOARD_ADD_ITEM, {
-                    x: (window.innerWidth - rem_to_px(15)) / 2,
-                    y: (window.innerHeight - rem_to_px(15)) / 2,
+                    x: (window.innerWidth - remToPx(STICKY_REGULAR_WIDTH)) / 2,
+                    y: (window.innerHeight - remToPx(STICKY_REGULAR_WIDTH)) / 2,
                     z: this.$store.getters.item_max_field('z') + 1,
                     type: 'sticky',
-                    content: clipboard_text.trim()
+                    content: clipboardText.trim()
                 });
             }
 
-            var clipboard_image = clipboard.readImage();
-            if(!clipboard_image.isEmpty()) {
+            const clipboardImage = clipboard.readImage();
+            if(!clipboardImage.isEmpty()) {
+                const originalSize = clipboardImage.getSize();
+                let targetImage = null;
+                if(originalSize.height > PHOTO_MAX_DIMENSION
+                    || originalSize.width > PHOTO_MAX_DIMENSION) {
 
-                var original_size = clipboard_image.getSize();
-                var target_image;
-                if(original_size.height > 500 || original_size.width > 500) {
-                    if(original_size.height > original_size.width) {
-                        target_image = clipboard_image.resize({ height: 500 });
+                    if(originalSize.height > originalSize.width) {
+                        targetImage = clipboardImage.resize({
+                            height: PHOTO_MAX_DIMENSION
+                        });
                     } else {
-                        target_image = clipboard_image.resize({ width: 500 });
+                        targetImage = clipboardImage.resize({
+                            width: PHOTO_MAX_DIMENSION
+                        });
                     }
                 } else {
-                    target_image = clipboard_image;
+                    targetImage = clipboardImage;
                 }
 
-                var target_size = target_image.getSize();
-                var data_url = target_image.toDataURL();
-
-                console.log('Pasting ' + original_size.width + 'x' + original_size.height + ' image as '
-                    + target_size.width + 'x' + target_size.height + '...');
+                const dataUrl = targetImage.toDataURL();
 
                 this.$store.dispatch(A_BOARD_ADD_ITEM, {
                     x: window.innerWidth / 2,
                     y: window.innerHeight / 2,
                     z: this.$store.getters.item_max_field('z') + 1,
                     type: 'picture',
-                    content: data_url
+                    content: dataUrl
                 });
             }
         }
     },
-    render: h => h(corkboard),
+    render: (h) => { return h(corkboard); }
+    /* eslint-disable sort-keys */
 });
+

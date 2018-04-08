@@ -1,10 +1,38 @@
 export default {
 
-    boards: function(state) {
-        var boards = state.items.map((item) => {
+    boardActionGroup(state) {
+        return state.actionGroup;
+    },
+
+    boardItemByIndex(state) {
+        return (index) => {
+            return state.items[index];
+        };
+    },
+
+    boardItems(state) {
+        return (board) => {
+            return state.items.filter((item) => {
+                if(!item.board) {
+                    return board === 'default';
+                }
+                return item.board === board;
+            });
+        };
+    },
+
+    boardMoveDelta(state) {
+        return {
+            dx: state.items[state.moveAction.id].x - state.moveAction.x,
+            dy: state.items[state.moveAction.id].y - state.moveAction.y
+        };
+    },
+
+    boards(state) {
+        const boards = state.items.map((item) => {
             return item.board || 'default';
-        }).filter((el, i, a) => {
-            return i === a.indexOf(el);
+        }).filter((val, index, arr) => {
+            return index === arr.indexOf(val);
         });
         if(boards.indexOf('default') < 0) {
             boards.push('default');
@@ -12,53 +40,24 @@ export default {
         return boards;
     },
 
-    board_items: function(state) {
-        return function(board) {
-            return state.items.filter((item) => {
-                if(!item.board) {
-                    return 'default' === board;
-                } else {
-                    return item.board === board;
-                }
-            });
-        };
-    },
 
-    board_item_by_index: function(state) {
-        return function(index) {
-            return state.items[index];
-        };
-    },
-
-    item_index_from_id: function(state) {
-        return function(id) {
+    itemIndexFromId(state) {
+        return (id) => {
             return state.items.findIndex((item) => {
                 return item.id === id;
             });
         };
     },
 
-    item_max_field: function(state) {
-        return function(field) {
-            var arr =state.items.map((item) => {
+    itemMaxField(state) {
+        return (field) => {
+            const arr = state.items.map((item) => {
                 return item[field];
             });
-            if(arr.length == 0) {
+            if(arr.length === 0) {
                 return null;
-            } else {
-                return Math.max(...arr);
             }
-        };
-    },
-
-    board_action_group: function(state) {
-        return state.action_group;
-    },
-
-    board_move_delta: function(state) {
-        return {
-            dx: state.items[state.move_action.id].x - state.move_action.x,
-            dy: state.items[state.move_action.id].y - state.move_action.y
+            return Math.max(...arr);
         };
     }
 };

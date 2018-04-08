@@ -14,20 +14,18 @@ import { A_BOARD_ITEM_DELETE } from '../state/action_types';
 
 export default {
     name: 'PolaroidToolbar',
-    components: {
-        'icon-wrapper': icon_wrapper
-    },
-    props: { 'index': Number },
-    data: function() {
+    components: { 'icon-wrapper': icon_wrapper },
+    props: { index: Number },
+    data() {
         return {};
     },
     computed: {
-        polaroid: function() {
+        polaroid() {
             return this.$store.state.board.items[this.index];
         }
     },
     methods: {
-        trash_click: function() {
+        trash_click() {
             this.$store.dispatch(A_BOARD_ITEM_DELETE, this.index);
         }
     }

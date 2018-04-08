@@ -16,24 +16,20 @@ import photo_toolbar from './photo_toolbar.vue';
 
 export default {
     name: 'Photo',
-    components: {
-        'photo-toolbar': photo_toolbar
-    },
-    props: { 'index': Number },
-    data: function() {
-        return {
-            rot: 0
-        };
+    components: { 'photo-toolbar': photo_toolbar },
+    props: { index: Number },
+    data() {
+        return { rot: 0 };
     },
     computed: {
-        photo: function() {
+        photo() {
             return this.$store.state.board.items[this.index];
         }
     },
-    created: function() {
-        var self = this;
+    created() {
+        const self = this;
         self.rot = Math.random() * 10 - 5;
-    },
+    }
 };
 </script>
 

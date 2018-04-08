@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
 import app from './app';
 import board from './board';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex);
 

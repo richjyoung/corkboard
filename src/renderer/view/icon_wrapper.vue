@@ -24,7 +24,7 @@ import faSearchMinus from '@fortawesome/fontawesome-free-solid/faSearchMinus';
 import faClone from '@fortawesome/fontawesome-free-solid/faClone';
 import faTextHeight from '@fortawesome/fontawesome-free-solid/faTextHeight';
 
-var icon_map = {
+const icon_map = {
     trash: faTrash,
     bold: faBold,
     arrows_alt_h: faArrowsAltH,
@@ -43,15 +43,13 @@ var icon_map = {
 
 export default {
     name: 'IconWrapper',
-    components: {
-        FontAwesomeIcon
-    },
-    props: { 'icon': String },
+    components: { FontAwesomeIcon },
+    props: { icon: String },
     computed: {
-        get_icon: function() {
+        get_icon() {
             return icon_map[this.icon];
         }
-    },
+    }
 };
 </script>
 

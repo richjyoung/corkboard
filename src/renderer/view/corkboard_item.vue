@@ -32,51 +32,51 @@ import sticky from './sticky.vue';
 import photo from './photo.vue';
 
 import {
-    A_BOARD_MOVE_START,
+    A_BOARD_ITEM_SET_FIELD,
     A_BOARD_MOVE,
     A_BOARD_MOVE_FINISH,
-    A_BOARD_ITEM_SET_FIELD
+    A_BOARD_MOVE_START
 } from '../state/action_types';
 
 export default {
     name: 'CorkboardItem',
     components: {
-        'sticky': sticky,
-        'photo': photo
+        sticky,
+        photo
     },
-    props: { 'index': Number },
-    data: function() {
+    props: { index: Number },
+    data() {
         return {
             rot: 0,
             moving: false
         };
     },
     computed: {
-        board_item: function() {
+        board_item() {
             return this.$store.state.board.items[this.index];
         },
-        item_type: function() {
+        item_type() {
             return this.board_item.type ? this.board_item.type : 'sticky';
         }
     },
-    created: function() {
+    created() {
         this.rot = Math.random() * 10 - 5;
     },
-    mounted: function() {
+    mounted() {
         this.resize();
     },
     methods: {
-        doubleclick: function() {
+        doubleclick() {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'z',
                 value: this.$store.getters.item_max_field('z') + 1
             });
         },
-        click: function() {
+        click() {
             this.$refs.child.focus();
         },
-        resize: function() {
+        resize() {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'settings.width',
@@ -88,12 +88,12 @@ export default {
                 value: this.$el.clientHeight
             });
         },
-        mousedown: function(e) {
+        mousedown(e) {
             e = e || window.event;
-            var self = this;
+            const self = this;
 
-            var startX = e.clientX;
-            var startY = e.clientY;
+            let startX = e.clientX;
+            let startY = e.clientY;
 
             document.onmouseup = function(e) {
                 document.onmouseup = null;

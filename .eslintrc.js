@@ -3,7 +3,7 @@ module.exports = {
         'es6': true,
         'node': true
     },
-    'extends': ['eslint:recommended'],
+    'extends': ['eslint:recommended', 'plugin:vue/recommended'],
     'parserOptions': {
         'sourceType': 'module'
     },
@@ -17,6 +17,7 @@ module.exports = {
         'no-extra-parens': [ 'error' ],
         'no-prototype-builtins': [ 'error' ],
         'no-template-curly-in-string': [ 'error' ],
+
         // ---------- Best Practices ----------
         'accessor-pairs': [ 'error' ],
         'array-callback-return': [ 'error' ],
@@ -50,7 +51,7 @@ module.exports = {
         'no-labels': [ 'error' ],
         'no-lone-blocks': [ 'error' ],
         'no-loop-func': [ 'error' ],
-        'no-magic-numbers': [ 'error', { 'ignore': [0, 1], 'ignoreArrayIndexes': true, 'enforceConst': true, 'detectObjects': true } ],
+        'no-magic-numbers': [ 'error', { 'ignore': [0, 1, 2], 'ignoreArrayIndexes': true, 'enforceConst': true, 'detectObjects': true } ],
         'no-multi-spaces': [ 'error' ],
         'no-multi-str': [ 'error' ],
         'no-new': [ 'error' ],
@@ -79,8 +80,10 @@ module.exports = {
         'vars-on-top': [ 'error' ],
         'wrap-iife': [ 'error' ],
         'yoda': [ 'error' ],
+
         // ---------- Strict Mode ----------
         'strict': [ 'error' ],
+
         // ---------- Variables ----------
         'init-declarations': [ 'error' ],
         'no-catch-shadow': [ 'error' ],
@@ -91,6 +94,7 @@ module.exports = {
         'no-undef-init': [ 'error' ],
         'no-undefined': [ 'error' ],
         'no-use-before-define': [ 'error' ],
+
         // ---------- Node.js and CommonJS ----------
         'callback-return': [ 'error' ],
         'global-require': [ 'error' ],
@@ -103,6 +107,7 @@ module.exports = {
         'no-process-exit': [ 'error' ],
         'no-restricted-modules': [ 'error' ],
         'no-sync': [ 'error' ],
+
         // ---------- Stylistic ----------
         'array-bracket-newline': [ 'error', { 'minItems': 1 } ],
         'array-bracket-spacing': [ 'error', 'always' ],
@@ -110,7 +115,7 @@ module.exports = {
         'block-spacing': [ 'error', 'always' ],
         'brace-style': [ 'error', '1tbs', { 'allowSingleLine': true } ],
         'camelcase': [ 'error' ],
-        'capitalized-comments': [ 'error' ],
+        'capitalized-comments': [ 'error', 'always', { 'ignoreConsecutiveComments': true } ],
         'comma-dangle': [ 'error', 'never' ],
         'comma-spacing': [ 'error' ],
         'comma-style': [ 'error', 'last' ],
@@ -120,7 +125,6 @@ module.exports = {
         'func-call-spacing': [ 'error', 'never' ],
         'func-name-matching': [ 'error' ],
         'func-names': [ 'error', 'as-needed' ],
-        'id-length': [ 'error' ],
         'indent': [ 'error', 4 ],
         'key-spacing': [ 'error' ],
         'keyword-spacing': [ 'error', { 'overrides': {
@@ -139,7 +143,7 @@ module.exports = {
         'max-len': [ 'error', { 'code': 80, 'ignoreTrailingComments': true } ],
         'max-lines': [ 'error' ],
         'max-nested-callbacks': [ 'error', 2 ],
-        'max-statements': [ 'error', 20 ],
+        'max-statements': [ 'error', 30 ],
         'max-statements-per-line': [ 'error', { 'max': 2 } ],
         'multiline-ternary': [ 'error', 'never' ],
         'new-cap': [ 'error' ],
@@ -147,7 +151,6 @@ module.exports = {
         'newline-per-chained-call': [ 'error', { 'ignoreChainWithDepth': 2 } ],
         'no-array-constructor': [ 'error' ],
         'no-bitwise': [ 'error' ],
-        'no-continue': [ 'warn' ],
         'no-inline-comments': [ 'error' ],
         'no-lonely-if': [ 'error' ],
         'no-mixed-operators': [ 'error' ],
@@ -160,13 +163,12 @@ module.exports = {
         'no-trailing-spaces': [ 'error' ],
         'no-unneeded-ternary': [ 'error' ],
         'no-whitespace-before-property': [ 'error' ],
-        'object-curly-newline': [ 'error', { 'multiline': true } ],
+        'object-curly-newline': [ 'error', { 'consistent': true } ],
         'object-curly-spacing': [ 'error', 'always' ],
         'object-property-newline': [ 'error' ],
         'one-var': [ 'error', 'never' ],
         'operator-assignment': [ 'error', 'always' ],
         'operator-linebreak': [ 'error', 'before' ],
-        'padded-blocks': [ 'error', 'never' ],
         'quote-props': [ 'error', 'as-needed' ],
         'quotes': [ 'error', 'single', { 'avoidEscape': true, 'allowTemplateLiterals': true } ],
         'semi': [ 'error', 'always' ],
@@ -183,6 +185,7 @@ module.exports = {
         'switch-colon-spacing': [ 'error' ],
         'template-tag-spacing': [ 'error', 'never' ],
         'unicode-bom': [ 'error', 'never' ],
+
         // ---------- ECMAScript 6 ----------
         'arrow-body-style': [ 'error', 'always' ],
         'arrow-parens': [ 'error', 'always' ],
@@ -206,6 +209,13 @@ module.exports = {
         'sort-imports': [ 'error', { 'ignoreCase': true } ],
         'symbol-description': [ 'error' ],
         'template-curly-spacing': [ 'error', 'never' ],
-        'yield-star-spacing': [ 'error', { 'before': true, 'after': false } ]
+        'yield-star-spacing': [ 'error', { 'before': true, 'after': false } ],
+
+        // ---------- Vue ----------
+        'vue/require-default-prop': [ 'off' ],
+        'vue/html-indent': [ 'error', 4 ],
+        'vue/html-closing-bracket-newline': [ 'error' ],
+        'vue/html-closing-bracket-spacing': [ 'error' ],
+        'vue/prop-name-casing': [ 'error' ]
     }
 };

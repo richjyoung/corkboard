@@ -17,23 +17,20 @@ export default {
         'polaroid-toolbar': polaroid_toolbar,
         'polaroid-caption': polaroid_caption
     },
-    props: { 'index': Number },
-    data: function() {
-        return {
-            rot: 0
-        };
+    props: { index: Number },
+    data() {
+        return { rot: 0 };
     },
     computed: {
-        polaroid: function() {
+        polaroid() {
             return this.$store.state.board.items[this.index];
         }
     },
-    created: function() {
-        var self = this;
+    created() {
+        const self = this;
         self.rot = Math.random() * 10 - 5;
     },
-    methods: {
-    },
+    methods: {}
 };
 </script>
 

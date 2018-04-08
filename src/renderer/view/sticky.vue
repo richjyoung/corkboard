@@ -34,52 +34,53 @@
 
 <script>
 import sticky_toolbar from './sticky_toolbar.vue';
-import {
-    A_BOARD_ITEM_SET_FIELD
-} from '../state/action_types';
+import { A_BOARD_ITEM_SET_FIELD } from '../state/action_types';
 
 export default {
     name: 'Sticky',
-    components: {
-        'sticky-toolbar': sticky_toolbar
-    },
-    props: { 'index': Number },
-    data: function() {
+    components: { 'sticky-toolbar': sticky_toolbar },
+    props: { index: Number },
+    data() {
         return {
-            colours: ['#ffff88', '#88ff88', '#88ffff', '#ff88ff'],
+            colours: [
+                '#ffff88',
+                '#88ff88',
+                '#88ffff',
+                '#ff88ff'
+            ],
             rot: 0
         };
     },
     computed: {
-        sticky: function() {
+        sticky() {
             return this.$store.state.board.items[this.index];
         }
     },
-    created: function() {
-        var self = this;
+    created() {
+        const self = this;
         self.rot = Math.random() * 10 - 5;
     },
-    mounted: function() {
+    mounted() {
         this.focus();
     },
-    updated: function() {
+    updated() {
         this.$emit('resize');
     },
     methods: {
-        sticky_input: function(e) {
+        sticky_input(e) {
             this.$store.dispatch(A_BOARD_ITEM_SET_FIELD, {
                 index: this.index,
                 field: 'content',
                 value: e.target.value
             });
         },
-        sticky_keydown: function(e) {
+        sticky_keydown(e) {
             e.stopPropagation();
         },
-        focus: function() {
+        focus() {
             this.$refs.content.focus();
         }
-    },
+    }
 };
 </script>
 
