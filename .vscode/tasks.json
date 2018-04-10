@@ -6,6 +6,18 @@
         {
             "command": "npx",
             "type": "shell",
+            "label": "babel",
+            "args": [
+                "babel",
+                "src/main",
+                "-d",
+                "lib"
+            ],
+            "group": "build"
+        },
+        {
+            "command": "npx",
+            "type": "shell",
             "label": "babel:dev",
             "args": [
                 "babel",
@@ -13,23 +25,6 @@
                 "-d",
                 "lib",
                 "-s"
-            ],
-            "group": "build",
-            "options": {
-                "env": {
-                    "NODE_ENV": "development"
-                }
-            }
-        },
-        {
-            "command": "npx",
-            "dependsOn": "babel:dev",
-            "type": "shell",
-            "label": "webpack:dev",
-            "args": [
-                "webpack",
-                "--config",
-                "build/webpack.renderer.config"
             ],
             "group": "build",
             "options": {
@@ -58,6 +53,33 @@
                 }
             },
             "problemMatcher": []
+        },
+        {
+            "command": "npx",
+            "type": "shell",
+            "label": "webpack",
+            "args": [
+                "webpack",
+                "--config",
+                "build/webpack.renderer.config"
+            ],
+            "group": "build"
+        },
+        {
+            "command": "npx",
+            "type": "shell",
+            "label": "webpack:dev",
+            "args": [
+                "webpack",
+                "--config",
+                "build/webpack.renderer.config"
+            ],
+            "group": "build",
+            "options": {
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            }
         },
         {
             "command": "npx",
