@@ -1,0 +1,9 @@
+{
+    "presets": [
+        ["env", {
+            "targets": {
+                "electron": "1.8.4"
+            }
+        }]
+    ]
+}

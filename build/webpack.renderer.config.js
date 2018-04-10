@@ -5,15 +5,20 @@ module.exports = {
     entry: {
         renderer: path.join(__dirname, '../src/renderer/index.js')
     },
+    mode: process.env.NODE_ENV,
     target: 'electron-renderer',
     devtool: 'source-map',
     output: {
-        path: path.join(__dirname, '../dist/electron'),
+        path: path.join(__dirname, '../dist'),
         filename: '[name].js'
     },
     module: {
         rules: [
             {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            },{
                 test: /\.css$/,
                 use: ['vue-style-loader', 'css-loader']
             },{
