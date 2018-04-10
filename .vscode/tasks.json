@@ -1,0 +1,82 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "command": "npx",
+            "type": "shell",
+            "label": "babel:dev",
+            "args": [
+                "babel",
+                "src/main",
+                "-d",
+                "lib",
+                "-s"
+            ],
+            "group": "build",
+            "options": {
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            }
+        },
+        {
+            "command": "npx",
+            "dependsOn": "babel:dev",
+            "type": "shell",
+            "label": "webpack:dev",
+            "args": [
+                "webpack",
+                "--config",
+                "build/webpack.renderer.config"
+            ],
+            "group": "build",
+            "options": {
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            }
+        },
+        {
+            "command": "npx",
+            "isBackground": true,
+            "type": "shell",
+            "label": "babel:watch",
+            "args": [
+                "babel",
+                "src/main",
+                "-d",
+                "lib",
+                "-s",
+                "--watch"
+            ],
+            "group": "build",
+            "options": {
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "command": "npx",
+            "isBackground": true,
+            "type": "shell",
+            "label": "webpack:watch",
+            "args": [
+                "webpack",
+                "--config",
+                "build/webpack.renderer.config",
+                "--watch"
+            ],
+            "group": "build",
+            "options": {
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            },
+            "problemMatcher": []
+        }
+    ]
+}
