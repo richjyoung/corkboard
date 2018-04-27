@@ -1,15 +1,15 @@
 import { App } from './index';
 
 export default class {
-
     static db_load_all(evt, callback) {
-        var query = 'SELECT id, type, content, title, x, y, z, settings from corkboard;';
+        var query =
+            'SELECT id, type, content, title, x, y, z, settings from corkboard;';
         App.database.connection.all(query, (err, rows) => {
-            if(err) {
+            if (err) {
                 callback(err);
             } else {
                 rows.forEach((x) => {
-                    if(x.settings) {
+                    if (x.settings) {
                         x.settings = JSON.parse(x.settings);
                     } else {
                         x.settings = {};
@@ -40,16 +40,19 @@ export default class {
         ];
 
         App.database.connection.all(query, params, (err) => {
-            if(err) {
+            if (err) {
                 callback(err);
             } else {
-                App.database.connection.all('SELECT last_insert_rowid();', (err, rows) => {
-                    if(err) {
-                        callback(err);
-                    } else {
-                        callback(undefined, rows[0]['last_insert_rowid()']);
+                App.database.connection.all(
+                    'SELECT last_insert_rowid();',
+                    (err, rows) => {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(undefined, rows[0]['last_insert_rowid()']);
+                        }
                     }
-                });
+                );
             }
         });
     }
@@ -64,42 +67,26 @@ export default class {
             ')'
         ].join(' ');
 
-        var params = [
-            delta.dx,
-            delta.dy
-        ];
+        var params = [delta.dx, delta.dy];
 
         App.database.connection.all(query, params, callback);
     }
 
     static db_set_field(evt, id, field, value, callback) {
-        if(typeof value === 'object') {
+        if (typeof value === 'object') {
             value = JSON.stringify(value);
         }
 
-        var query = [
-            'UPDATE corkboard SET',
-            field + '=?',
-            'WHERE id=?'
-        ].join(' ');
+        var query = `UPDATE corkboard SET ${field}=? WHERE id=?`;
 
-        var params = [
-            value,
-            id
-        ];
+        var params = [value, id];
 
         App.database.connection.all(query, params, callback);
     }
 
     static db_delete(evt, id, callback) {
-        var query = [
-            'DELETE FROM corkboard',
-            'WHERE id=?;'
-        ].join(' ');
-
-        var params = [
-            id
-        ];
+        var query = 'DELETE FROM corkboard WHERE id=?';
+        var params = [id];
 
         App.database.connection.all(query, params, callback);
     }
@@ -112,4 +99,5 @@ export default class {
         App.web_contents_window(evt.sender).toggle_dev_tools();
     }
 
+    static getBoards() {}
 }

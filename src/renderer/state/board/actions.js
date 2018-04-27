@@ -27,7 +27,9 @@ export default {
     [A_LOAD_ALL]: function(context) {
         RPC.db_load_all((err, rows) => {
             errorIf(err, err);
-            rows.forEach((row) => { context.commit(M_BOARD_ADD_ITEM, row); });
+            rows.forEach((row) => {
+                context.commit(M_BOARD_ADD_ITEM, row);
+            });
         });
     },
     [A_BOARD_ADD_ITEM]: function(context, item) {
@@ -71,7 +73,7 @@ export default {
         context.commit(M_BOARD_ITEM_SET_FIELD, payload);
         var item = context.getters.board_item_by_index(payload.index);
 
-        if(payload.field.split('.')[0] === 'settings') {
+        if (payload.field.split('.')[0] === 'settings') {
             // Settings field
             var settings = Object.assign({}, item.settings);
             settings[payload.field.split('.')[1]] = payload.value;
@@ -83,7 +85,6 @@ export default {
             errorIf(err, err);
             logIf(DEBUG, 'Saved item ' + item.id);
         });
-
     },
     [A_BOARD_ITEM_DELETE]: function(context, index) {
         var id = context.getters.board_item_by_index(index).id;

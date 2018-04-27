@@ -26,19 +26,29 @@ export class Database {
             .then(() => this.create_file_if_not_exists())
             .then(() => this.open_db())
             .then(() => this.load_version())
-            .then(() => { this.upgrade(); });
+            .then(() => {
+                this.upgrade();
+            });
     }
 
     upgrade() {
         var upgrade_function = `upgrade_${this._version}_${this._version + 1}`;
         logger.debug('Checking function %s()', upgrade_function);
-        if(this[upgrade_function]) {
-            logger.verbose('Starting upgrade from %d to %d...', this._version, this._version + 1);
+        if (this[upgrade_function]) {
+            logger.verbose(
+                'Starting upgrade from %d to %d...',
+                this._version,
+                this._version + 1
+            );
             this[upgrade_function]((err) => {
-                if(err) {
+                if (err) {
                     logger.error('Upgrade failed');
                 } else {
-                    logger.verbose('Upgrade from %d to %d', this._version, this._version + 1);
+                    logger.verbose(
+                        'Upgrade from %d to %d',
+                        this._version,
+                        this._version + 1
+                    );
                     this._version++;
                     this.upgrade();
                 }
@@ -53,7 +63,7 @@ export class Database {
         var self = this;
         return new Promise((resolve, reject) => {
             mkdirp(path.dirname(self._path), function(err) {
-                if(err) {
+                if (err) {
                     reject(err);
                 } else {
                     resolve();
@@ -74,15 +84,21 @@ export class Database {
     open_db() {
         var self = this;
         return new Promise((resolve, reject) => {
-            self._conn = new sqlite3.Database(self._path, sqlite3.OPEN_READWRITE, (err) => {
-                if(err){
-                    logger.error('Failed to open database at ' + self._path);
-                    reject(err);
-                } else {
-                    logger.info('Connected');
-                    resolve();
+            self._conn = new sqlite3.Database(
+                self._path,
+                sqlite3.OPEN_READWRITE,
+                (err) => {
+                    if (err) {
+                        logger.error(
+                            'Failed to open database at ' + self._path
+                        );
+                        reject(err);
+                    } else {
+                        logger.info('Connected');
+                        resolve();
+                    }
                 }
-            });
+            );
         });
     }
 
@@ -90,7 +106,7 @@ export class Database {
         var self = this;
         return new Promise((resolve, reject) => {
             self._conn.get('PRAGMA user_version;', (err, result) => {
-                if(err) {
+                if (err) {
                     reject(err);
                 } else {
                     self._version = result.user_version;
@@ -104,14 +120,17 @@ export class Database {
     save_version() {
         var self = this;
         return new Promise((resolve, reject) => {
-            self._conn.get('PRAGMA user_version = ' + this._version + ';', (err, result) => {
-                if(err) {
-                    reject(err);
-                } else {
-                    logger.verbose('Version saved');
-                    resolve();
+            self._conn.get(
+                'PRAGMA user_version = ' + this._version + ';',
+                (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        logger.verbose('Version saved');
+                        resolve();
+                    }
                 }
-            });
+            );
         });
     }
 
@@ -133,4 +152,18 @@ export class Database {
         this._conn.get(query, callback);
     }
 
+    upgrade_1_2(callback) {
+        var query = [
+            'ALTER TABLE corkboard',
+            'ADD COLUMN board TEXT DEFAULT "default"'
+        ].join(' ');
+
+        this._conn.get(query, callback);
+    }
+
+    upgrade_2_3(callback) {
+        var query = ['UPDATE corkboard', 'SET board = "default";'].join(' ');
+
+        this._conn.get(query, callback);
+    }
 }
