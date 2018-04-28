@@ -8,8 +8,8 @@ class RPCProxy {
         this._callbacks = {};
         var self = this;
         return new Proxy(this, {
-            get: function (target, prop) {
-                if(typeof self[prop] === 'undefined') {
+            get: function(target, prop) {
+                if (typeof self[prop] === 'undefined') {
                     self.attach_rpc_endpoint(prop);
                 }
                 return Reflect.get(...arguments);
@@ -27,7 +27,7 @@ class RPCProxy {
 
     ipc_result(method, evt, id, args) {
         var callbacks = this._callbacks[method];
-        if(callbacks[id]) {
+        if (callbacks[id]) {
             callbacks[id](undefined, ...args);
             callbacks[id] = undefined;
             delete callbacks[id];
@@ -36,7 +36,7 @@ class RPCProxy {
 
     ipc_error(method, evt, id, err) {
         var callbacks = this._callbacks[method];
-        if(callbacks[id]) {
+        if (callbacks[id]) {
             callbacks[id](err || {});
             callbacks[id] = undefined;
             delete callbacks[id];
@@ -56,18 +56,27 @@ class RPCProxy {
 
         // Register success handler
         this[rpc_callback] = function(evt, args) {
-            logger.debug('Result: method=%s,id=%d,args=%j', method, args.id, args.args);
+            logger.debug(
+                'Result: method=%s,id=%d,args=%j',
+                method,
+                args.id,
+                args.args
+            );
             self.ipc_result(method, evt, args.id, args.args);
         };
         ipcRenderer.on(rpc_callback, this[rpc_callback]);
 
         // Register failure handler
         this[rpc_error] = function(evt, args) {
-            logger.debug('Error: method=%s,id=%d,args=%j', method, args.id, args.err);
+            logger.debug(
+                'Error: method=%s,id=%d,args=%j',
+                method,
+                args.id,
+                args.err
+            );
             self.ipc_error(method, evt, args.id, args.err);
         };
         ipcRenderer.on(rpc_error, this[rpc_error]);
-
 
         // Register method proxy
         this[method] = function() {
@@ -78,15 +87,18 @@ class RPCProxy {
                 id: id,
                 args: args
             };
-            if(typeof callback === 'function') {
+            if (typeof callback === 'function') {
                 callbacks[id] = callback;
                 parcel.args = args.slice(0, args.length - 1);
             }
-            logger.debug('Transaction: method=%s,id=%d,args=%j', method, id, parcel.args);
+            logger.debug(
+                'Transaction: method=%s,id=%d,args=%j',
+                method,
+                id,
+                parcel.args
+            );
             ipcRenderer.send(rpc_signature, parcel);
         };
-
-
     }
 }
 

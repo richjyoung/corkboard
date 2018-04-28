@@ -7,11 +7,10 @@ export function setlevel(level) {
 }
 
 export function logwrap(tag) {
-
     const levels = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'];
 
     function log(level, msg, args) {
-        if(levels.indexOf(level) <= levels.indexOf(loglevel)) {
+        if (levels.indexOf(level) <= levels.indexOf(loglevel)) {
             console.log(sprintf('[%7s] %s: ' + msg, level, tag, ...args)); //eslint-disable-line no-console
         }
     }
@@ -23,6 +22,6 @@ export function logwrap(tag) {
         info: (msg, ...args) => log('info', msg, args),
         warn: (msg, ...args) => log('warn', msg, args),
         error: (msg, ...args) => log('error', msg, args),
-        log: (level, msg, ...args) => log(level, msg, ...args),
+        log: (level, msg, ...args) => log(level, msg, ...args)
     };
 }
